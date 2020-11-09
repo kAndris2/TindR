@@ -31,3 +31,9 @@ CREATE TABLE public.searches (
 	FOREIGN KEY(id) REFERENCES public.accounts(id) ON DELETE CASCADE
 );
 
+CREATE TABLE public.pictures (
+	id int not null PRIMARY KEY,
+	upload_date bigint not null,
+	route character varying(300) not null,
+	FOREIGN KEY(id) REFERENCES public.accounts(id) ON DELETE CASCADE
+);
