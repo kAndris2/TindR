@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\User;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -66,5 +66,22 @@ class UserController extends Controller
     public function getUsers() 
     {
         return User::all();
+    }
+
+    public function getUserById($id)
+    {
+        return User::find($id);
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $currentUser = User::find($id);
+        $currentUser->update($request->all());
+    }
+
+    public function deleteUser($id)
+    {
+        $user = User::find($id);
+        $user->delete();
     }
 }

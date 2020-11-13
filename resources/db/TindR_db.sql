@@ -6,9 +6,9 @@ CREATE TABLE accounts (
 );
 
 CREATE TABLE users (
-	account_id int not null PRIMARY KEY,
+	id int not null PRIMARY KEY,
 	name character varying(20) not null,
-	age int not null,
+	birthdate bigint not null,
 	passion character varying(150) not null,
 	gender character varying(30),
 	description character varying(500),
@@ -19,28 +19,45 @@ CREATE TABLE users (
 	sexual_orientation character varying(30),
 	global boolean,
 	status boolean,
-	FOREIGN KEY(account_id) REFERENCES accounts(id) ON DELETE CASCADE
+	FOREIGN KEY(id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
 CREATE TABLE searches (
-	account_id int not null PRIMARY KEY,
+	id int not null PRIMARY KEY,
 	max_distance int CHECK (max_distance <= 161),
 	looking_for character varying(15),
 	min_age int CHECK(min_age >= 18),
 	max_age int CHECK((max_age != min_age) AND (max_age > min_age)),
-	FOREIGN KEY(account_id) REFERENCES accounts(id) ON DELETE CASCADE
+	FOREIGN KEY(id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
 CREATE TABLE public.pictures (
-	account_id int not null PRIMARY KEY,
+	id int not null PRIMARY KEY,
 	upload_date bigint not null,
 	route character varying(300) not null,
-	FOREIGN KEY(account_id) REFERENCES accounts(id) ON DELETE CASCADE
+	FOREIGN KEY(id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE public.matches (
+	id serial not null PRIMARY KEY,
+	user1_id int not null,
+	user2_id int not null,
+	date bigint not null,
+	FOREIGN KEY(user1_id) REFERENCES accounts(id) ON DELETE CASCADE,
+	FOREIGN KEY(user2_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE public.likes (
+	id serial not null PRIMARY KEY,
+	owner_id int not null,
+	receiver_id int not null,
+	FOREIGN KEY(owner_id) REFERENCES accounts(id) ON DELETE CASCADE,
+	FOREIGN KEY(receiver_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
 CREATE FUNCTION create_searches() RETURNS TRIGGER AS $$
 	BEGIN
-		INSERT INTO searches (account_id) VALUES (NEW.id);
+		INSERT INTO searches (id) VALUES (NEW.id);
 		RETURN NEW;
 			
 	END;

@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,12 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/us', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResources([
-    'user' => 'API\UserController'
-  ]);
-
-Route::get('/users', 'UserController@getUsers');
+Route::get("users", [UserController::class, 'getUsers']);
+Route::get("user/{id}", [UserController::class, 'getUserById']);
+Route::put("update_user/{id}", [UserController::class, 'updateUser']);
+Route::delete("delete_user/{id}", [UserController::class, "deleteUser"]);
