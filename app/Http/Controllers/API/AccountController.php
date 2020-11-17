@@ -9,6 +9,11 @@ use App\Models\User;
 
 class AccountController extends Controller
 {
+    public function getAccountById($id) 
+    {
+        return Account::find($id);
+    }
+
     public function register(Request $request) 
     {
         $newUser = Account::create([

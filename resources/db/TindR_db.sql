@@ -17,8 +17,6 @@ CREATE TABLE users (
 	school character varying(50),
 	anthem character varying(250),
 	sexual_orientation character varying(30),
-	global boolean,
-	status boolean,
 	FOREIGN KEY(id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
@@ -28,6 +26,8 @@ CREATE TABLE searches (
 	looking_for character varying(15),
 	min_age int CHECK(min_age >= 18),
 	max_age int CHECK((max_age != min_age) AND (max_age > min_age)),
+	global boolean,
+	status boolean,
 	FOREIGN KEY(id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
@@ -51,6 +51,15 @@ CREATE TABLE public.likes (
 	id serial not null PRIMARY KEY,
 	owner_id int not null,
 	receiver_id int not null,
+	FOREIGN KEY(owner_id) REFERENCES accounts(id) ON DELETE CASCADE,
+	FOREIGN KEY(receiver_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE public.dislikes (
+	id serial not null PRIMARY KEY,
+	owner_id int not null,
+	receiver_id int not null,
+	date bigint not null,
 	FOREIGN KEY(owner_id) REFERENCES accounts(id) ON DELETE CASCADE,
 	FOREIGN KEY(receiver_id) REFERENCES accounts(id) ON DELETE CASCADE
 );

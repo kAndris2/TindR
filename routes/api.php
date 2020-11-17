@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\AccountController;
+use App\Http\Controllers\API\SearchController;
+use App\Http\Controllers\API\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +26,15 @@ Route::get("users", [UserController::class, 'getUsers']);
 Route::get("user/{id}", [UserController::class, 'getUserById']);
 Route::put("update_user/{id}", [UserController::class, 'updateUser']);
 
+Route::get("profile_data/{id}", [SearchController::class, 'getProfileData']);
+Route::put("update_search/{id}", [SearchController::class, "updateSearch"]);
+
+Route::put("account/{id}", [AccountController::class, "getAccountById"]);
 Route::post("register", [AccountController::class, "register"]);
 Route::post("login", [AccountController::class, "login"]);
 Route::post("logout", [AccountController::class, "logout"]);
 Route::put("update_account/{id}", [AccountController::class, "updateAccount"]);
 Route::delete("delete_account/{id}", [AccountController::class, "deleteAccount"]);
+
+Route::put("add_like/{giver}/{receiver}", [LikeController::class, "addLike"]);
+Route::put("add_dislike/{giver}/{receiver}", [LikeController::class, "addDislike"]);
