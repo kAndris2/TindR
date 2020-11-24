@@ -6,11 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit {
-  title: number = 4.745445;
-  
-  try() {
-    console.log("ffff");
-  }
 
   constructor() { }
 
