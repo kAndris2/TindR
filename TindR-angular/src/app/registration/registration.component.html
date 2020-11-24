@@ -1,21 +1,25 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
 <!------ Include the above in your HEAD tag ---------->
 
 		<div class="container">
 			<div class="row main">
 				<div class="main-login main-center">
 				<h5>Sign up!</h5>
-					<form class="" method="post" action="#">
+					<form [formGroup]="form" (ngSubmit)="submitForm()">
 						
 						<div class="form-group">
 							<label for="name" class="cols-sm-2 control-label">Your Name</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>
+									<input type="text" 
+											class="form-control" 
+											formControlName="name" id="name"  
+											placeholder="Enter your Name"
+											/>
 								</div>
 							</div>
 						</div>
@@ -25,7 +29,7 @@
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+									<input type="text" class="form-control" formControlName="email" id="email"  placeholder="Enter your Email"/>
 								</div>
 							</div>
 						</div>
@@ -35,7 +39,7 @@
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+									<input type="number" class="form-control" formControlName="phone_number" id="phone_number"  placeholder="Enter your Phone number"/>
 								</div>
 							</div>
 						</div>
@@ -45,7 +49,7 @@
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+									<input type="password" class="form-control" formControlName="password" id="password"  placeholder="Enter your Password"/>
 								</div>
 							</div>
 						</div>
@@ -55,13 +59,35 @@
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password"/>
+									<input type="password" class="form-control" formControlName="confirm" id="confirm"  placeholder="Confirm your Password"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="confirm" class="cols-sm-2 control-label">Birthdate</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-birthday-cake" aria-hidden="true"></i></span>
+									<input type="date" class="form-control" formControlName="birthdate" id="birthdate"  placeholder="Enter your Birthdate"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="confirm" class="cols-sm-2 control-label">Add some passion</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fas fa-grin-hearts" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" formControlName="passion" id="passion"  placeholder="Add some Passion (eg.: walking,hiking)"/>
 								</div>
 							</div>
 						</div>
 
 						<div class="form-group ">
-							<a href="https://deepak646.blogspot.com/" target="_blank" type="button" id="button" class="btn btn-primary btn-lg btn-block login-button">Register</a>
+							<input type="submit" 
+									class="btn btn-primary btn-lg btn-block login-button" 
+									value="Register">
 						</div>
 						
 					</form>

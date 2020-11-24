@@ -16,20 +16,22 @@ class AccountController extends Controller
 
     public function register(Request $request) 
     {
-        $newUser = Account::create([
+        $newAccountId = Account::create([
             "email" => $request["email"],
             "password" => $request["password"],
             "phone_number" => $request["phone_number"]
-        ]);
+        ])->id;
 
-        setcookie("userid", $newUser->id, time() + 86400, "/");
+        setcookie("userid", $newAccountId, time() + 86400, "/");
 
-        return User::create([
-            "id" => $newUser->id,
+        $newUser = User::create([
+            "account_id" => $newAccountId,
             "name" => $request["name"],
             "birthdate" => $request["birthdate"],
-            "passion" => $request["passion"],
+            "passion" => $request["passion"]
         ]);
+
+        return $newUser;
     }
 
     public function login(Request $request)
