@@ -25,7 +25,7 @@ class AccountController extends Controller
         setcookie("userid", $newAccountId, time() + 86400, "/");
 
         $newUser = User::create([
-            "account_id" => $newAccountId,
+            "id" => $newAccountId,
             "name" => $request["name"],
             "birthdate" => $request["birthdate"],
             "passion" => $request["passion"]
