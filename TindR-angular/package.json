@@ -23,7 +23,11 @@
     "ngx-build-plus": "^10.1.1",
     "postcss": "^8.1.7",
     "rxjs": "~6.6.0",
+<<<<<<< HEAD
     "tailwindcss": "^1.9.6",
+=======
+    "sweetalert2": "^10.10.1",
+>>>>>>> c7c39b5be7def84bbb13b2fc6aa3245d440ef854
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
