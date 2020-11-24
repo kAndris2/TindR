@@ -28,9 +28,9 @@ export class LoginComponent implements OnInit {
     formData.append("email", this.form.get('email').value);
     formData.append("password", this.form.get('password').value);
     console.log(this.form.value);
-    // this.http.post('http://localhost:4000/api/create-user', formData).subscribe(
-    //   (response) => console.log(response),
-    //   (error) => console.log(error)
-    // )
+    this.http.post('http://172.31.57:8000/api/login', formData).subscribe(
+      (response) => console.log(response),
+      (error) => console.log(error)
+    )
   }
 }
