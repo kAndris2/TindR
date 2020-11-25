@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\Account;
 use App\Models\User;
 
@@ -23,6 +24,8 @@ class AccountController extends Controller
         ])->id;
 
         //setcookie("userid", $newAccountId, time() + 86400, "/");
+        $response = new Response('Hello World');
+        $response->withCookie(cookie()->forever('userid', $newAccountId));
 
         $newUser = User::create([
             "id" => $newAccountId,
