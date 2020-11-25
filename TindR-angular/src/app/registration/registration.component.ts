@@ -38,7 +38,7 @@ export class RegistrationComponent implements OnInit {
     formData.append("birthdate", new Date(this.form.get('birthdate').value).getTime());
     formData.append("passion", this.form.get('passion').value);
   
-    this.http.post('http://172.31.1.57:8000/api/register', formData)
+    this.http.post('http://localhost:8000/api/register', formData)
     .subscribe((response) => console.log(response),
       (error) => console.log(error)
     )

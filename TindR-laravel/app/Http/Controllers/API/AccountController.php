@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cookie;
 use App\Models\Account;
 use App\Models\User;
 
@@ -24,8 +25,6 @@ class AccountController extends Controller
         ])->id;
 
         //setcookie("userid", $newAccountId, time() + 86400, "/");
-        $response = new Response('Hello World');
-        $response->withCookie(cookie()->forever('userid', $newAccountId));
 
         $newUser = User::create([
             "id" => $newAccountId,
@@ -34,7 +33,10 @@ class AccountController extends Controller
             "passion" => $request["passion"]
         ]);
 
-        return $newUser;
+        $response = new Response($newUser);
+        $response->withCookie(cookie()->forever('userid', $newAccountId));
+
+        return $response;
     }
 
     public function login(Request $request)
@@ -44,10 +46,8 @@ class AccountController extends Controller
         {
             if ($account->password == $request["password"])
             {
-                //setcookie("userid", $account->id, time() + 86400, "/");
-                $resp = new Response(User::find($account->id));
-                $resp = $resp->withCookie(cookie('userid', '2000', 3));
-                return $resp;
+                $response = new Response($account);
+                return $response->withCookie(cookie('userid',$account->id, time() + 86400));
             }
             // else return error model!
         }
