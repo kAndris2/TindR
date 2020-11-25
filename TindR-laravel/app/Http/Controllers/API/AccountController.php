@@ -42,16 +42,16 @@ class AccountController extends Controller
     public function login(Request $request)
     {
         $account = Account::where("email", "=", $request["email"])->first();
+
         if ($account != null)
         {
-            if ($account->password == $request["password"])
+            if ($account->password === $request["password"])
             {
-                $response = new Response($account);
-                return $response->withCookie(cookie('userid',$account->id, time() + 86400));
+                return User::find($account->id);
             }
             // else return error model!
         }
-
+    
         return null;
     }
 
