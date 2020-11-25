@@ -23,7 +23,9 @@ class AccountController extends Controller
             "phone_number" => $request["phone_number"]
         ])->id;
 
-        setcookie("userid", $newAccountId, time() + 86400, "/");
+        //setcookie("userid", $newAccountId, time() + 86400, "/");
+        $response = new Response('Hello World');
+        $response->withCookie(cookie()->forever('userid', $newAccountId));
 
         $newUser = User::create([
             "id" => $newAccountId,
