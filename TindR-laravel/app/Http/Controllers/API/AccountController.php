@@ -24,8 +24,6 @@ class AccountController extends Controller
         ])->id;
 
         //setcookie("userid", $newAccountId, time() + 86400, "/");
-        $response = new Response('Hello World');
-        $response->withCookie(cookie()->forever('userid', $newAccountId));
 
         $newUser = User::create([
             "id" => $newAccountId,
@@ -34,17 +32,21 @@ class AccountController extends Controller
             "passion" => $request["passion"]
         ]);
 
-        return $newUser;
+        $response = new Response($newUser);
+        $response->withCookie(cookie()->forever('userid', $newAccountId));
+
+        return $response;
     }
 
     public function login(Request $request)
     {
-        $account = Account::where("email", "=", $request["email"]);
+        $account = Account::where("email", "=", $request["email"])->first();
         if ($account != null)
         {
             if ($account->password == $request["password"])
             {
-                setcookie("userid", $account->id, time() + 86400, "/");
+                $response = new Response($newUser);
+                $response->withCookie(cookie()->forever('userid', $account->id));
                 return User::find($account->id);
             }
             // else return error model!
