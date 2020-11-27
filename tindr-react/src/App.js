@@ -29,15 +29,23 @@ class App extends Component {
 
             <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
               <a href="/login" 
-                  className="btn btn-primary">
-                  Log in
-              </a>
-              <a href="/registration" 
-                  className="btn btn-success">
-                  Sign up
+                  className="btn btn-success rounded-pill">
+                  LOG IN
               </a>
             </div>
           </nav>
+
+          <div className="container d-flex h-100 align-items-center">
+            <div className="mx-auto text-center">
+              <h1 className="mx-auto my-0" style={{fontSize:"800%"}}>
+                Swipe Right®
+              </h1>
+              <a className="btn btn-danger js-scroll-trigger rounded-pill" href="/">
+                CREATE ACCOUNT 
+              </a>
+            </div>
+          </div>
+
         </section>
       </>
     );
