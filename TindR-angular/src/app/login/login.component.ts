@@ -32,10 +32,10 @@ export class LoginComponent implements OnInit {
     formData.append("email", this.form.get('email').value);
     formData.append("password", this.form.get('password').value);
     //console.log(this.form.value);
-    this.http.post('http://localhost:8000/api/login', formData)
+    this.http.post('http://172.31.1.57:8000/api/login', formData)
     .subscribe((response) => {
-      this.user = response
-      this.router.navigate(["/main"], response)
+      this.user = response,
+      this.router.navigate(["/main"], this.user)
     },
       (error) => console.log(error)
     )
