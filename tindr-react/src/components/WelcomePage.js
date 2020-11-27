@@ -1,9 +1,39 @@
 import React, {Component} from 'react';
 import { Helmet } from 'react-helmet';
+import Swal from "sweetalert2";
 
 class WelcomePage extends Component {
     constructor() {
       super();
+
+      this.handleLogin = this.handleLogin.bind(this);
+    }
+
+    handleLogin() {
+      Swal.mixin({
+        input: 'text',
+        confirmButtonText: 'Next &rarr;',
+        showCancelButton: true,
+        progressSteps: ['1', '2', '3']
+      }).queue([
+        'Enter your username',
+        'Enter your e-mail address',
+        'Enter your phone number',
+        'Enter your password',
+        'Enter your confirm password'
+      ]).then((result) => {
+        if (result.value) {
+          const answers = JSON.stringify(result.value)
+          Swal.fire({
+            title: 'All done!',
+            html: `
+              Your answers:
+              <pre><code>${answers}</code></pre>
+            `,
+            confirmButtonText: 'Lovely!'
+          })
+        }
+      })
     }
   
     render() {
@@ -26,8 +56,9 @@ class WelcomePage extends Component {
               </div>   
   
               <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-                <a href="/login" 
-                    className="btn btn-success rounded-pill">
+                <a className="btn btn-success rounded-pill"
+                    onClick={this.handleLogin}
+                >
                     LOG IN
                 </a>
               </div>
