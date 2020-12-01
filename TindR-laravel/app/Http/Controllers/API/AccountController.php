@@ -69,4 +69,10 @@ class AccountController extends Controller
     {
         Account::find($id)->delete();
     }
+
+    public function isValidEmail($email) 
+    {
+        $account = Account::where("email", "=", $email)->first();
+        return $account;
+    }
 }
