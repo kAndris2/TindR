@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+<<<<<<< HEAD
 import './App.css';
 import Login from './components/auth/Login';
 import Test from './components/Test';
@@ -103,3 +104,57 @@ export default class App extends Component {
     )
   }
 }
+=======
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+import WelcomePage from "./components/WelcomePage";
+import SideBar from "./components/SideBar";
+
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      user: undefined
+    }
+
+    this.setUser = this.setUser.bind(this);
+    this.isLoggedIn = this. isLoggedIn.bind(this);
+  }
+
+  setUser(user) {
+    this.setState({user : user});
+  }
+
+  isLoggedIn() {
+    return this.state.user !== undefined;
+  }
+
+  render() {
+    return (
+      <>
+        <Router>
+          <Switch>
+
+            <Route exact path="/">
+              {this.isLoggedIn() === false &&
+                <WelcomePage
+                  setUser={this.setUser}
+                ></WelcomePage>
+              }
+              {this.isLoggedIn() === true &&
+                <SideBar
+                  user={this.state.user}
+                ></SideBar>
+              }
+            </Route>
+
+          </Switch>
+        </Router>
+      </>
+    );
+  }
+}
+
+export default App;
+>>>>>>> c800b0ccae1783f80447105b4a5a145a75a4a23c
