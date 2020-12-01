@@ -174,7 +174,7 @@ class WelcomePage extends Component {
     async regEnterPassions(error = "") {
       let { value: passions } = await Swal.fire({
         title: 'Registration step 6/6',
-        input: 'tel',
+        input: 'text',
         inputLabel: 'Enter minimum 3 passions comma separated \n\n' + error,
         inputPlaceholder: '(eg.: "reading,coding,walking")',
         confirmButtonText: `Registration`,
@@ -198,7 +198,7 @@ class WelcomePage extends Component {
         birthdate: birthDate,
         passion: passions
       }).then(response => {
-        console.log(response)
+        this.props.setUser(response.data);
       })
     }
   
