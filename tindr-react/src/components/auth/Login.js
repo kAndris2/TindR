@@ -9,7 +9,6 @@ export default class Login extends Component {
         this.state = {
             email: "",
             password: "",
-            username: "",
 
             regErrors:""
         }
@@ -28,18 +27,16 @@ export default class Login extends Component {
         //destruct tho
         const {
             email,
-            password,
-            username
+            password
         } = this.state;
 
         axios.post("http://172.31.1.57:8000/api/login", {
-                name: username,
                 email: email,
                 password: password
             },
             {withCredentials: true}
         ).then(response => {
-            if (response.data.state){
+            if (response.data.status){
                 this.handleSuccessfulAuth(response.data);
             }
             else {
@@ -62,13 +59,13 @@ export default class Login extends Component {
             <div className="container">
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
+                        <label>Email address</label>
                         <input onChange={this.handleChange} type="email" className="form-control" aria-describedby="emailHelp" value={this.state.email} name="email" placeholder="Enter email"/>
                         <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
                     </div>
 
                     <div className="form-group">
-                        <label for="exampleInputPassword1">Password</label>
+                        <label>Password</label>
                         <input onChange={this.handleChange} type="password" className="form-control" id="exampleInputPassword1" name="password" placeholder="Password"/>
                     </div>
                 

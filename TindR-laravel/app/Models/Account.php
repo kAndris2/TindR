@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model {
     public $timestamps = false;
+    
     protected $fillable = [
         'email',
         'password',
         'phone_number'
     ];
+
 }

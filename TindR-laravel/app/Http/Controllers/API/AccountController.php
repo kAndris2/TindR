@@ -47,7 +47,9 @@ class AccountController extends Controller
         {
             if ($account->password === $request["password"])
             {
-                return User::find($account->id);
+                $response = new Response(User::find($account->id)->append('status'));
+                $response->withCookie(cookie('id', $account->id, 60)); //,null,null,false,true,false,'none')
+                return $response;
             }
             // else return error model!
         }
