@@ -48,7 +48,9 @@ class WelcomePage extends Component {
         confirmButtonText: `Next`,
       })
 
-      if (username.length <= 3)
+      if (username == undefined || username == "")
+        this.regEnterUsername("You must be enter your username!");
+      else if (username.length <= 3)
         this.regEnterUsername("Username must have 4 characters long!");
       else {
         this.setState({userName : username});
@@ -65,8 +67,11 @@ class WelcomePage extends Component {
         confirmButtonText: `Next`,
       })
 
-      const check = await this.isValidEmail(email)
+      if (email == undefined )
+        return this.regEnterEmail("You must be enter your e-mail address!")
       
+      const check = await this.isValidEmail(email)
+
       if (check) {
         this.setState({email : email});
         this.regEnterPhoneNumber();
@@ -85,7 +90,7 @@ class WelcomePage extends Component {
     }
 
     async regEnterPhoneNumber(error = "") {
-      let { value: phone } = await Swal.fire({
+      const { value: phone } = await Swal.fire({
         title: 'Registration step 3/6',
         input: 'tel',
         inputLabel: 'Enter your phone number\n\n' + error,
@@ -93,7 +98,9 @@ class WelcomePage extends Component {
         confirmButtonText: `Next`,
       })
 
-      if (phone != undefined && this.isValidPhoneNumber(phone)) {
+      if (phone == undefined || phone == "")
+        this.regEnterPhoneNumber("You must be enter your phone number!");
+      else if (this.isValidPhoneNumber(phone)) {
         this.setState({phoneNumber : phone});
         this.regEnterPassword();
       } 
@@ -139,7 +146,9 @@ class WelcomePage extends Component {
         }
       })
       
-      if (formValues[0] === formValues[1]) {
+      if (formValues == undefined)
+        this.regEnterPassword("You must be enter your password and confirm it!");
+      else if (formValues[0] === formValues[1]) {
           this.setState({password : formValues[0]});
           this.regEnterBirthdate();
       }
@@ -163,7 +172,7 @@ class WelcomePage extends Component {
         }
       })
 
-      if (birthdate[0] !== "") {
+      if (birthdate !== undefined && birthdate[0] !== "") {
         this.setState({birthDate : moment(birthdate[0]).valueOf()});
         this.regEnterPassions();
       }
@@ -180,7 +189,7 @@ class WelcomePage extends Component {
         confirmButtonText: `Registration`,
       })
       
-      if (passions.split(',').length >= 3) {
+      if (passions !== undefined && passions.split(',').length >= 3) {
         this.setState({passions : passions});
         this.doRegistration();
       }
