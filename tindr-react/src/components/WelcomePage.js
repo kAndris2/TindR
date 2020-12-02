@@ -263,7 +263,8 @@ class WelcomePage extends Component {
   
           <section style={{ height:"100vh",
                             background: 'linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url("https://tinder.com/static/build/m/b07fe760ab4714aa3e932a15657494e5.webp")',
-                            backgroundRepeat:"no-repeat"}}
+                            backgroundRepeat:"no-repeat",
+                            backgroundSize:"cover"}}
           >
             <nav className="navbar navbar-light bg-transparent justify-content-between">
               <div className="flex justify-start lg:w-0 lg:flex-1">
@@ -284,7 +285,7 @@ class WelcomePage extends Component {
   
             <div className="container d-flex h-100 align-items-center">
               <div className="mx-auto text-center">
-                <h1 className="mx-auto my-0" style={{fontSize:"800%"}}>
+                <h1 className="mx-auto my-0 text-white" style={{fontSize:"800%"}}>
                   Swipe Right®
                 </h1>
                 <a  className="btn btn-danger js-scroll-trigger rounded-pill"
