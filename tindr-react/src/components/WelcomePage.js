@@ -116,7 +116,7 @@ class WelcomePage extends Component {
         html:
           '<p>Enter your e-mail address</p>' +
           `${error !== "" ? `\n\n<p style="color:red">${error}</p>` : ""}` +
-          '<input id="swal-input1" class="swal2-input" type="email" placeholder="somebody@example.com">',
+          '<input id="swal-input1" class="swal2-input" type="email" placeholder="(eg.: somebody@example.com)">',
         focusConfirm: false,
         confirmButtonText: `Next`,
         preConfirm: () => {
@@ -131,16 +131,16 @@ class WelcomePage extends Component {
           return this.regEnterEmail("You must be enter your e-mail address!")
         else if (email[0].includes("@") == false || email[0].includes(".") == false)
           return this.regEnterEmail("Invalid e-mail address!")
-      }
       
-      const check = await this.isValidEmail(email[0])
+        const check = await this.isValidEmail(email[0])
 
-      if (check) {
-        this.setState({email : email[0]});
-        this.regEnterPhoneNumber();
-      } 
-      else
-        this.regEnterEmail("This e-mail is already in use!")
+        if (check) {
+          this.setState({email : email[0]});
+          this.regEnterPhoneNumber();
+        } 
+        else
+          this.regEnterEmail("This e-mail is already in use!")
+      }
     }
 
     async isValidEmail(email) {
@@ -158,7 +158,7 @@ class WelcomePage extends Component {
         html:
           '<p>Enter your phone number</p>' +
           `${error !== "" ? `\n\n<p style="color:red">${error}</p>` : ""}` +
-          '<input id="swal-input1" class="swal2-input" type="tel" placeholder="30/123-4567">',
+          '<input id="swal-input1" class="swal2-input" type="tel" placeholder="(eg.: 30/123-4567)">',
         focusConfirm: false,
         confirmButtonText: `Next`,
         preConfirm: () => {
@@ -262,7 +262,7 @@ class WelcomePage extends Component {
         html: 
           '<p>Enter minimum 3 passions comma separated</p>' +
           `${error !== "" ? `<p style="color:red">${error}</p>` : ""}` +
-          '<input id="swal-input1" class="swal2-input" type="text">',
+          '<input id="swal-input1" class="swal2-input" type="text" placeholder="(eg.: reading,coding,walking)">',
         focusConfirm: false,
         confirmButtonText: `Registration`,
         preConfirm: () => {
