@@ -18,7 +18,9 @@ class WelcomePage extends Component {
         passions: undefined
       }
 
+      this.startLogin = this.startLogin.bind(this);
       this.handleLogin = this.handleLogin.bind(this);
+      this.doLogin = this.doLogin.bind(this);
       this.startRegister = this.startRegister.bind(this);
       this.regEnterUsername = this.regEnterUsername.bind(this);
       this.regEnterEmail = this.regEnterEmail.bind(this);
@@ -31,8 +33,49 @@ class WelcomePage extends Component {
       this.doRegistration = this.doRegistration.bind(this);
     }
 
-    handleLogin() {
-      console.log("nope");
+    async startLogin() {
+      await this.handleLogin();
+    }
+
+    async handleLogin(error = "") {
+      const { value: formValues } = await Swal.fire({
+        title: 'Sign in',
+        html:
+          `${error !== "" ? `<p style="color:red">${error}</p>\n\n` : ""}` +
+          '<p>Enter your email address</p>' +
+          '<input id="swal-input1" class="swal2-input" type="email">' +
+          '<p>Enter your email password</p>' +
+          '<input id="swal-input2" class="swal2-input" type="password">',
+        focusConfirm: false,
+        confirmButtonText: `Sign in`,
+        preConfirm: () => {
+          return [
+            document.getElementById('swal-input1').value,
+            document.getElementById('swal-input2').value
+          ]
+        }
+      })
+
+      if (formValues === undefined)
+        console.log("cancel login")
+      else if (formValues[0] == "" || formValues[1] == "") {
+        this.handleLogin("You must be enter your username and your password!");
+      }
+      else
+        this.doLogin(formValues[0], formValues[1]);
+    }
+
+    doLogin(email, password) {
+      axios.post("http://localhost:8000/api/login", {
+        email: email,
+        password: password
+      }).then(response => {
+        if (response.data.length !== 0) {
+          this.props.setUser(response.data);
+        }
+        else
+          this.handleLogin("Incorrect e-mail or password!")
+      })
     }
 
     async startRegister() {
@@ -134,7 +177,7 @@ class WelcomePage extends Component {
           '<p>Enter your password</p>' +
           `<input id="swal-input1" class="swal2-input" type="password" value="${pw}">` +
           '<p>Confirm your password</p>' +
-          `${error !== "" ? `<p>${error}</p>` : ""}` +
+          `${error !== "" ? `<p style="color:red">${error}</p>` : ""}` +
           '<input id="swal-input2" class="swal2-input" type="password">',
         focusConfirm: false,
         confirmButtonText: `Next`,
@@ -161,7 +204,7 @@ class WelcomePage extends Component {
         title: 'Registration step 5/6',
         html: 
           '<p>Enter your birthdate</p>' +
-          `${error !== "" ? `<p>${error}</p>` : ""}` +
+          `${error !== "" ? `<p style="color:red">${error}</p>` : ""}` +
           '<input id="swal-input1" class="swal1-input" type="date">',
           focusConfirm: false,
         confirmButtonText: `Next`,
@@ -232,7 +275,7 @@ class WelcomePage extends Component {
   
               <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
                 <a className="btn btn-success rounded-pill"
-                    onClick={this.handleLogin}
+                    onClick={this.startLogin}
                 >
                     LOG IN
                 </a>
