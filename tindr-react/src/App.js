@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Cookies from "js-cookie";
+import axios from 'axios';
 
 import WelcomePage from "./components/WelcomePage";
 import SideBar from "./components/SideBar";
-import axios from 'axios';
+import Recommendations from "./components/Recommendations";
 
 class App extends Component {
   constructor() {
@@ -71,6 +72,14 @@ class App extends Component {
                   <SideBar
                     user={user}
                   ></SideBar>
+                }
+              </Route>
+
+              <Route exact path="/recom">
+                {isLoggedIn === true &&
+                  <Recommendations
+                    userID={user.id}
+                  ></Recommendations>
                 }
               </Route>
 
