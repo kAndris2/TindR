@@ -7,7 +7,7 @@ class Recommendations extends Component {
       super();
 
       this.state = {
-          recommendations: undefined,
+          recommendations: [],
           isLoading: true
       }
 
@@ -35,9 +35,9 @@ class Recommendations extends Component {
             console.log(recommendations)
             return (
                 <>
-                    {recommendations.map((asd,i) => {
-                        <p>{i}</p>
-                    })}
+                    {recommendations.map(rec =>
+                        <p>{rec.name}</p>
+                    )}
                 </>
             );
         }
