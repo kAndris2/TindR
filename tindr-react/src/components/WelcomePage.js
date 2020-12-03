@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import Swal from "sweetalert2";
 import axios from 'axios';
 import moment from "moment";
+import Cookies from "js-cookie";
 
 class WelcomePage extends Component {
     constructor() {
@@ -31,6 +32,7 @@ class WelcomePage extends Component {
       this.regEnterBirthdate = this.regEnterBirthdate.bind(this);
       this.regEnterPassions = this.regEnterPassions.bind(this);
       this.doRegistration = this.doRegistration.bind(this);
+      this.setCookie = this.setCookie.bind(this);
     }
 
     async startLogin() {
@@ -66,12 +68,13 @@ class WelcomePage extends Component {
     }
 
     doLogin(email, password) {
-      axios.post("http://172.31.1.57:8000/api/login", {
+      axios.post("http://localhost:8000/api/login", {
         email: email,
         password: password
       }).then(response => {
         if (response.data.length !== 0) {
           this.props.setUser(response.data);
+          this.setCookie(response.data.id);
         }
         else
           this.handleLogin("Incorrect e-mail or password!")
@@ -145,7 +148,7 @@ class WelcomePage extends Component {
 
     async isValidEmail(email) {
       let temp = undefined;
-      await axios.get("http://172.31.1.57:8000/api/valid_email/" + email)
+      await axios.get("http://localhost:8000/api/valid_email/" + email)
       .then(response => {
           temp = response.data.length == 0
       })
@@ -284,7 +287,7 @@ class WelcomePage extends Component {
 
     doRegistration() {
       const {userName, email, phoneNumber, password, birthDate, passions} = this.state
-      axios.post("http://172.31.1.57:8000/api/register", {
+      axios.post("http://localhost:8000/api/register", {
         name: userName,
         email: email,
         phone_number: phoneNumber,
@@ -293,7 +296,12 @@ class WelcomePage extends Component {
         passion: passions
       }).then(response => {
         this.props.setUser(response.data);
+        this.setCookie(response.data.id);
       })
+    }
+
+    setCookie(id) {
+      Cookies.set('userid', id);
     }
   
     render() {
