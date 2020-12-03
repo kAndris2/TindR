@@ -10,23 +10,24 @@ use App\Models\Match;
 
 class LikeController extends Controller
 {
-    public function addLike($giver, $receiver)
+    public function addLike(Request $request)
     {
-        $like = Like::where("owner_id", "=", $receiver)->where("receiver_id", "=", $giver)->firstOrFail();
+        $like = Like::where("owner_id", "=", $request["receiverid"])->where("receiver_id", "=", $request["giverid"])->first();
+        var_dump($like);
         if ($like != null)
         {
             $like->delete();
             Match::create([
-                "user1_id" => $giver,
-                "user2_id" => $receiver,
+                "user1_id" => $request["giverid"],
+                "user2_id" => $request["receiverid"],
                 "date" => round(microtime(true) * 1000)
             ]);
         }
         else
         {
             Like::create([
-                "owner_id" => $giver,
-                "receiver_id" => $receiver
+                "owner_id" => $request["giverid"],
+                "receiver_id" => $request["receiverid"]
             ]);
         }
     }

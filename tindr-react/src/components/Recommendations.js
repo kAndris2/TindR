@@ -17,6 +17,7 @@ class Recommendations extends Component {
 
       this.getRecommendations = this.getRecommendations.bind(this);
       this.getNext = this.getNext.bind(this);
+      this.handleLike = this.handleLike.bind(this);
     }
 
     async componentDidMount() {
@@ -51,6 +52,16 @@ class Recommendations extends Component {
         }
     }
 
+    handleLike() {
+        const { current } = this.state;
+        axios.post("http://localhost:8000/api/add_like", {
+            giverid: this.props.userID,
+            receiverid: current.user.id
+        }).then(() => {
+            this.getNext();
+        })
+    }
+
     render() {
         const { isLoading, current } = this.state;
 
@@ -62,7 +73,7 @@ class Recommendations extends Component {
                             <h1 className="mx-auto my-0 text-red" style={{fontSize:"800%"}}>
                             {current.user.name}
                             </h1>
-                            <button onClick={this.getNext}>Next</button>
+                            <button onClick={this.handleLike}>Like</button>
                         </div>
                     </div>
                 </>
