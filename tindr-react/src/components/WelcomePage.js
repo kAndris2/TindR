@@ -85,42 +85,62 @@ class WelcomePage extends Component {
     async regEnterUsername(error = "") {
       const { value: username } = await Swal.fire({
         title: 'Registration step 1/6',
-        input: 'text',
-        inputLabel: 'Enter your username\n\n' + error,
-        inputPlaceholder: '....',
+        html:
+          '<p>Enter your username</p>' +
+          `${error !== "" ? `\n\n<p style="color:red">${error}</p>` : ""}` +
+          '<input id="swal-input1" class="swal2-input" type="text">',
+        focusConfirm: false,
         confirmButtonText: `Next`,
+        preConfirm: () => {
+          return [
+            document.getElementById('swal-input1').value
+          ]
+        }
       })
 
-      if (username == undefined || username == "")
-        this.regEnterUsername("You must be enter your username!");
-      else if (username.length <= 3)
-        this.regEnterUsername("Username must have 4 characters long!");
-      else {
-        this.setState({userName : username});
-        this.regEnterEmail();
+      if (username !== undefined) {
+        if (username[0] == "")
+          this.regEnterUsername("You must be enter your username!");
+        else if (username[0].length <= 3)
+          this.regEnterUsername("Username must have 4 characters long!");
+        else {
+            this.setState({userName : username});
+            this.regEnterEmail();
+        }
       }
     }
 
     async regEnterEmail(error = "") {
       const { value: email } = await Swal.fire({
         title: 'Registration step 2/6',
-        input: 'email',
-        inputLabel: 'Enter your email\n\n' + error,
-        inputPlaceholder: '....',
+        html:
+          '<p>Enter your e-mail address</p>' +
+          `${error !== "" ? `\n\n<p style="color:red">${error}</p>` : ""}` +
+          '<input id="swal-input1" class="swal2-input" type="email" placeholder="(eg.: somebody@example.com)">',
+        focusConfirm: false,
         confirmButtonText: `Next`,
+        preConfirm: () => {
+          return [
+            document.getElementById('swal-input1').value
+          ]
+        }
       })
 
-      if (email == undefined )
-        return this.regEnterEmail("You must be enter your e-mail address!")
+      if (email !== undefined) {
+        if (email[0] == "")
+          return this.regEnterEmail("You must be enter your e-mail address!")
+        else if (email[0].includes("@") == false || email[0].includes(".") == false)
+          return this.regEnterEmail("Invalid e-mail address!")
       
-      const check = await this.isValidEmail(email)
+        const check = await this.isValidEmail(email[0])
 
-      if (check) {
-        this.setState({email : email});
-        this.regEnterPhoneNumber();
-      } 
-      else
-        this.regEnterEmail("This e-mail is already in use!")
+        if (check) {
+          this.setState({email : email[0]});
+          this.regEnterPhoneNumber();
+        } 
+        else
+          this.regEnterEmail("This e-mail is already in use!")
+      }
     }
 
     async isValidEmail(email) {
@@ -135,20 +155,29 @@ class WelcomePage extends Component {
     async regEnterPhoneNumber(error = "") {
       const { value: phone } = await Swal.fire({
         title: 'Registration step 3/6',
-        input: 'tel',
-        inputLabel: 'Enter your phone number\n\n' + error,
-        inputPlaceholder: '(eg.: "30/123-4567")',
+        html:
+          '<p>Enter your phone number</p>' +
+          `${error !== "" ? `\n\n<p style="color:red">${error}</p>` : ""}` +
+          '<input id="swal-input1" class="swal2-input" type="tel" placeholder="(eg.: 30/123-4567)">',
+        focusConfirm: false,
         confirmButtonText: `Next`,
+        preConfirm: () => {
+          return [
+            document.getElementById('swal-input1').value
+          ]
+        }
       })
 
-      if (phone == undefined || phone == "")
-        this.regEnterPhoneNumber("You must be enter your phone number!");
-      else if (this.isValidPhoneNumber(phone)) {
-        this.setState({phoneNumber : phone});
-        this.regEnterPassword();
-      } 
-      else 
-        this.regEnterPhoneNumber(`Invalid phone number!\n'${phone}'`);
+      if (phone !== undefined) {
+        if (phone[0] == "")
+          this.regEnterPhoneNumber("You must be enter your phone number");
+        else if (this.isValidPhoneNumber(phone[0])) {
+          this.setState({phoneNumber : phone});
+          this.regEnterPassword();
+        } 
+        else 
+          this.regEnterPhoneNumber(`Invalid phone number!\n'${phone}'`);
+      }
     }
 
     isValidPhoneNumber(phone) {
@@ -175,9 +204,9 @@ class WelcomePage extends Component {
         title: 'Registration step 4/6',
         html:
           '<p>Enter your password</p>' +
+          `${error !== "" ? `<p style="color:red">${error}</p>` : ""}` +
           `<input id="swal-input1" class="swal2-input" type="password" value="${pw}">` +
           '<p>Confirm your password</p>' +
-          `${error !== "" ? `<p style="color:red">${error}</p>` : ""}` +
           '<input id="swal-input2" class="swal2-input" type="password">',
         focusConfirm: false,
         confirmButtonText: `Next`,
@@ -189,14 +218,16 @@ class WelcomePage extends Component {
         }
       })
       
-      if (formValues == undefined)
-        this.regEnterPassword("You must be enter your password and confirm it!");
-      else if (formValues[0] === formValues[1]) {
-          this.setState({password : formValues[0]});
-          this.regEnterBirthdate();
+      if (formValues !== undefined) {
+        if (formValues[0] == "" || formValues[1] == "")
+          this.regEnterPassword("You must be enter your password and confirm it!");
+        else if (formValues[0] === formValues[1]) {
+            this.setState({password : formValues[0]});
+            this.regEnterBirthdate();
+        }
+        else
+          this.regEnterPassword("Invalid confirm password!", formValues[0]);
       }
-      else
-        this.regEnterPassword("Invalid confirm password!", formValues[0]);
     }
 
     async regEnterBirthdate(error = "") {
@@ -205,8 +236,8 @@ class WelcomePage extends Component {
         html: 
           '<p>Enter your birthdate</p>' +
           `${error !== "" ? `<p style="color:red">${error}</p>` : ""}` +
-          '<input id="swal-input1" class="swal1-input" type="date">',
-          focusConfirm: false,
+          '<input id="swal-input1" class="swal2-input" type="date">',
+        focusConfirm: false,
         confirmButtonText: `Next`,
         preConfirm: () => {
           return [
@@ -215,29 +246,40 @@ class WelcomePage extends Component {
         }
       })
 
-      if (birthdate !== undefined && birthdate[0] !== "") {
-        this.setState({birthDate : moment(birthdate[0]).valueOf()});
-        this.regEnterPassions();
+      if (birthdate !== undefined) {
+        if (birthdate[0] == "")
+          this.regEnterBirthdate("You didn't enter your birthdate!");
+        else {
+          this.setState({birthDate : moment(birthdate[0]).valueOf()});
+          this.regEnterPassions();
+        }
       }
-      else
-        this.regEnterBirthdate("You didn't enter your birthdate!");
     }
 
     async regEnterPassions(error = "") {
-      let { value: passions } = await Swal.fire({
+      const { value: passions } = await Swal.fire({
         title: 'Registration step 6/6',
-        input: 'text',
-        inputLabel: 'Enter minimum 3 passions comma separated \n\n' + error,
-        inputPlaceholder: '(eg.: "reading,coding,walking")',
+        html: 
+          '<p>Enter minimum 3 passions comma separated</p>' +
+          `${error !== "" ? `<p style="color:red">${error}</p>` : ""}` +
+          '<input id="swal-input1" class="swal2-input" type="text" placeholder="(eg.: reading,coding,walking)">',
+        focusConfirm: false,
         confirmButtonText: `Registration`,
+        preConfirm: () => {
+          return [
+            document.getElementById('swal-input1').value
+          ]
+        }
       })
-      
-      if (passions !== undefined && passions.split(',').length >= 3) {
-        this.setState({passions : passions});
-        this.doRegistration();
+
+      if (passions !== undefined) {
+        if (passions[0].split(',').length >= 3) {
+          this.setState({passions : passions[0]});
+          this.doRegistration();
+        }
+        else
+          this.regEnterPassions("You have to enter minimum 3 passion!")
       }
-      else
-        this.regEnterPassions("You have to enter minimum 3 passion!")
     }
 
     doRegistration() {

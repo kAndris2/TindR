@@ -39,7 +39,7 @@ class AccountController extends Controller
         return $response;
     }
 
-    public function login(Request $request)
+    public function login(Request $request, Response $response)
     {
         $account = Account::where("email", "=", $request["email"])->first();
 
@@ -47,11 +47,10 @@ class AccountController extends Controller
         {
             if ($account->password === $request["password"])
             {
-                $response = new Response(User::find($account->id)->append('status'));
-                $response->withCookie(cookie('id', $account->id, 60)); //,null,null,false,true,false,'none')
+                $response = new Response(User::find($account->id));
+                $response->withCookie(cookie('userid', $account->id, time() + 86400));
                 return $response;
             }
-            // else return error model!
         }
     
         return null;
