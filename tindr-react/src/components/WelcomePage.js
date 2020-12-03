@@ -66,7 +66,7 @@ class WelcomePage extends Component {
     }
 
     doLogin(email, password) {
-      axios.post("http://172.31.1.57:8000/api/login", {
+      axios.post("http://localhost:8000/api/login", {
         email: email,
         password: password
       }).then(response => {
@@ -145,7 +145,7 @@ class WelcomePage extends Component {
 
     async isValidEmail(email) {
       let temp = undefined;
-      await axios.get("http://172.31.1.57:8000/api/valid_email/" + email)
+      await axios.get("http://localhost:8000/api/valid_email/" + email)
       .then(response => {
           temp = response.data.length == 0
       })
@@ -284,7 +284,7 @@ class WelcomePage extends Component {
 
     doRegistration() {
       const {userName, email, phoneNumber, password, birthDate, passions} = this.state
-      axios.post("http://172.31.1.57:8000/api/register", {
+      axios.post("http://localhost:8000/api/register", {
         name: userName,
         email: email,
         phone_number: phoneNumber,

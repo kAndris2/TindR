@@ -48,7 +48,7 @@ class AccountController extends Controller
             if ($account->password === $request["password"])
             {
                 $response = new Response(User::find($account->id));
-                $response->withCookie(cookie('userid', $account->id, time() + 86400));
+                $response->withCookie(cookie('userid', $account->id, time() + 86400,null,null,false,true,false,'none'));
                 return $response;
             }
         }
