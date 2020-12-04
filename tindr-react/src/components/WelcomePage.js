@@ -104,7 +104,7 @@ class WelcomePage extends Component {
         else if (username[0].length <= 3)
           this.regEnterUsername("Username must have 4 characters long!");
         else {
-            this.setState({userName : username});
+            this.setState({userName : username[0]});
             this.regEnterEmail();
         }
       }
@@ -172,7 +172,7 @@ class WelcomePage extends Component {
         if (phone[0] == "")
           this.regEnterPhoneNumber("You must be enter your phone number");
         else if (this.isValidPhoneNumber(phone[0])) {
-          this.setState({phoneNumber : phone});
+          this.setState({phoneNumber : phone[0]});
           this.regEnterPassword();
         } 
         else 
