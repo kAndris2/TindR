@@ -18,6 +18,7 @@ class Recommendations extends Component {
       this.getRecommendations = this.getRecommendations.bind(this);
       this.getNext = this.getNext.bind(this);
       this.handleLike = this.handleLike.bind(this);
+      this.handleDislike = this.handleDislike.bind(this);
     }
 
     async componentDidMount() {
@@ -62,6 +63,16 @@ class Recommendations extends Component {
         })
     }
 
+    handleDislike() {
+        const { current } = this.state;
+        axios.post("http://localhost:8000/api/add_dislike", {
+            giverid: this.props.userID,
+            receiverid: current.user.id
+        }).then(() => {
+            this.getNext();
+        })
+    }
+
     render() {
         const { isLoading, current } = this.state;
 
@@ -74,6 +85,7 @@ class Recommendations extends Component {
                             {current.user.name}
                             </h1>
                             <button onClick={this.handleLike}>Like</button>
+                            <button onClick={this.handleDislike}>Dislike</button>
                         </div>
                     </div>
                 </>

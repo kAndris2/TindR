@@ -32,11 +32,11 @@ class LikeController extends Controller
         }
     }
 
-    public function addDislike($giver, $receiver)
+    public function addDislike(Request $request)
     {
         Dislike::create([
-            "owner_id" => $giver,
-            "receiver_id" => $receiver,
+            "owner_id" => $request["giverid"],
+            "receiver_id" => $request["receiverid"],
             "date" => round(microtime(true) * 1000)
         ]);
     }

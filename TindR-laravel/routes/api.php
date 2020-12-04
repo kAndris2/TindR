@@ -39,4 +39,4 @@ Route::delete("delete_account/{id}", [AccountController::class, "deleteAccount"]
 Route::get("valid_email/{email}", [AccountController::class, "isValidEmail"]);
 
 Route::post("add_like", [LikeController::class, "addLike"]);
-Route::put("add_dislike/{giver}/{receiver}", [LikeController::class, "addDislike"]);
+Route::post("add_dislike", [LikeController::class, "addDislike"]);
