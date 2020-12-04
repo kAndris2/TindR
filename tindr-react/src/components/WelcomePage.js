@@ -56,13 +56,13 @@ class WelcomePage extends Component {
         }
       })
 
-      if (formValues === undefined)
-        console.log("cancel login")
-      else if (formValues[0] == "" || formValues[1] == "") {
-        this.handleLogin("You must be enter your username and your password!");
+      if (formValues !== undefined) {
+        if (formValues[0] == "" || formValues[1] == "") {
+          this.handleLogin("You must be enter your username and your password!");
+        }
+        else
+          this.doLogin(formValues[0], formValues[1]);
       }
-      else
-        this.doLogin(formValues[0], formValues[1]);
     }
 
     doLogin(email, password) {
