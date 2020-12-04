@@ -16,9 +16,11 @@ class Recommendations extends Component {
       }
 
       this.getRecommendations = this.getRecommendations.bind(this);
-      this.getNext = this.getNext.bind(this);
+      this.getNextProfile = this.getNextProfile.bind(this);
+      this.getCurrentData = this.getCurrentData.bind(this);
       this.handleLike = this.handleLike.bind(this);
       this.handleDislike = this.handleDislike.bind(this);
+      this.handleKeyDown = this.handleKeyDown.bind(this);
     }
 
     async componentDidMount() {
@@ -30,7 +32,7 @@ class Recommendations extends Component {
         .then(response => {
             let updCurrent = {
                 index: 0,
-                user: response.data[0]
+                user: response.data.length === undefined ? response.data : response.data[0]
             }
 
             this.setState({
@@ -41,7 +43,7 @@ class Recommendations extends Component {
         })
     }
 
-    getNext() {
+    getNextProfile() {
         const { recommendations, current } = this.state;
 
         if (recommendations[current.index + 1] !== undefined) {
@@ -51,6 +53,31 @@ class Recommendations extends Component {
             }
             this.setState({current : updCurrent})
         }
+        else
+            this.setState({current : undefined})
+    }
+
+    getCurrentData() {
+        const { current } = this.state;
+
+        if (current !== undefined) {
+            return(
+                <>
+                    <h1 className="mx-auto my-0 text-red" style={{fontSize:"800%"}}>
+                        {current.user.name}
+                    </h1>
+                    <button onClick={this.handleDislike}>Dislike</button>
+                    <button onClick={this.handleLike}>Like</button>
+                </>
+            );
+        }
+        else {
+            return(
+                <>
+                    No more!
+                </>
+            );
+        }
     }
 
     handleLike() {
@@ -59,7 +86,7 @@ class Recommendations extends Component {
             giverid: this.props.userID,
             receiverid: current.user.id
         }).then(() => {
-            this.getNext();
+            this.getNextProfile();
         })
     }
 
@@ -69,8 +96,22 @@ class Recommendations extends Component {
             giverid: this.props.userID,
             receiverid: current.user.id
         }).then(() => {
-            this.getNext();
+            this.getNextProfile();
         })
+    }
+
+    handleKeyDown(event) {
+        switch(event.key) {
+            case "ArrowRight": {
+                this.handleLike();
+                break;
+            }
+            case "ArrowLeft": {
+                this.handleDislike();
+                break;
+            }
+            default:
+        }
     }
 
     render() {
@@ -79,13 +120,9 @@ class Recommendations extends Component {
         if (!isLoading) {
             return (
                 <>
-                    <div className="container d-flex h-100 align-items-center">
+                    <div onKeyDown={this.handleKeyDown} tabIndex="0" className="container d-flex h-100 align-items-center">
                         <div className="mx-auto text-center">
-                            <h1 className="mx-auto my-0 text-red" style={{fontSize:"800%"}}>
-                            {current.user.name}
-                            </h1>
-                            <button onClick={this.handleLike}>Like</button>
-                            <button onClick={this.handleDislike}>Dislike</button>
+                            {this.getCurrentData()}
                         </div>
                     </div>
                 </>
