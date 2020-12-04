@@ -7,7 +7,7 @@ class Recommendations extends Component {
       super();
 
       this.state = {
-          recommendations: undefined,
+          recommendations: [],
           isLoading: true
       }
 
@@ -19,8 +19,9 @@ class Recommendations extends Component {
     }
 
     async getRecommendations() {
-        await axios.get("http://localhost:8000/api/recommendations/" + this.props.userID)
+        await axios.get("http://172.31.1.57:8000/api/recommendations/" + this.props.userID)
         .then(response => {
+            console.log(response);
             this.setState({
                 isLoading : false,
                 recommendations : response.data
@@ -35,9 +36,9 @@ class Recommendations extends Component {
             console.log(recommendations)
             return (
                 <>
-                    {recommendations.map((asd,i) => {
-                        <p>{i}</p>
-                    })}
+                    {recommendations.map((asd) => 
+                        <p>{asd.name}</p>
+                    )}
                 </>
             );
         }

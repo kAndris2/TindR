@@ -38,7 +38,7 @@ class App extends Component {
     const id = Cookies.get('userid');
     if (id !== undefined) {
       this.setState({isLoading : true})
-      await axios.get("http://localhost:8000/api/user/" + id)
+      await axios.get("http://172.31.1.57:8000/api/user/" + id)
       .then(response => {
         this.setState({
           user : response.data,
