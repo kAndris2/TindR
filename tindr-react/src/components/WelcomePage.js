@@ -30,6 +30,8 @@ class WelcomePage extends Component {
       this.regEnterPassword = this.regEnterPassword.bind(this);
       this.regEnterBirthdate = this.regEnterBirthdate.bind(this);
       this.regEnterPassions = this.regEnterPassions.bind(this);
+      this.regUploadImage = this.regUploadImage.bind(this);
+      this.showDetails = this.showDetails.bind(this);
       this.doRegistration = this.doRegistration.bind(this);
     }
 
@@ -44,7 +46,7 @@ class WelcomePage extends Component {
           `${error !== "" ? `<p style="color:red">${error}</p>\n\n` : ""}` +
           '<p>Enter your email address</p>' +
           '<input id="swal-input1" class="swal2-input" type="email">' +
-          '<p>Enter your email password</p>' +
+          '<p>Enter your password</p>' +
           '<input id="swal-input2" class="swal2-input" type="password">',
         focusConfirm: false,
         confirmButtonText: `Sign in`,
@@ -84,7 +86,7 @@ class WelcomePage extends Component {
 
     async regEnterUsername(error = "") {
       const { value: username } = await Swal.fire({
-        title: 'Registration step 1/6',
+        title: 'Registration step 1/7',
         html:
           '<p>Enter your username</p>' +
           `${error !== "" ? `\n\n<p style="color:red">${error}</p>` : ""}` +
@@ -112,7 +114,7 @@ class WelcomePage extends Component {
 
     async regEnterEmail(error = "") {
       const { value: email } = await Swal.fire({
-        title: 'Registration step 2/6',
+        title: 'Registration step 2/7',
         html:
           '<p>Enter your e-mail address</p>' +
           `${error !== "" ? `\n\n<p style="color:red">${error}</p>` : ""}` +
@@ -154,7 +156,7 @@ class WelcomePage extends Component {
 
     async regEnterPhoneNumber(error = "") {
       const { value: phone } = await Swal.fire({
-        title: 'Registration step 3/6',
+        title: 'Registration step 3/7',
         html:
           '<p>Enter your phone number</p>' +
           `${error !== "" ? `\n\n<p style="color:red">${error}</p>` : ""}` +
@@ -201,7 +203,7 @@ class WelcomePage extends Component {
 
     async regEnterPassword(error = "", pw = "") {
       const { value: formValues } = await Swal.fire({
-        title: 'Registration step 4/6',
+        title: 'Registration step 4/7',
         html:
           '<p>Enter your password</p>' +
           `${error !== "" ? `<p style="color:red">${error}</p>` : ""}` +
@@ -232,7 +234,7 @@ class WelcomePage extends Component {
 
     async regEnterBirthdate(error = "") {
       const { value: birthdate } = await Swal.fire({
-        title: 'Registration step 5/6',
+        title: 'Registration step 5/7',
         html: 
           '<p>Enter your birthdate</p>' +
           `${error !== "" ? `<p style="color:red">${error}</p>` : ""}` +
@@ -258,13 +260,13 @@ class WelcomePage extends Component {
 
     async regEnterPassions(error = "") {
       const { value: passions } = await Swal.fire({
-        title: 'Registration step 6/6',
+        title: 'Registration step 6/7',
         html: 
           '<p>Enter minimum 3 passions comma separated</p>' +
           `${error !== "" ? `<p style="color:red">${error}</p>` : ""}` +
           '<input id="swal-input1" class="swal2-input" type="text" placeholder="(eg.: reading,coding,walking)">',
         focusConfirm: false,
-        confirmButtonText: `Registration`,
+        confirmButtonText: `Next`,
         preConfirm: () => {
           return [
             document.getElementById('swal-input1').value
@@ -275,14 +277,64 @@ class WelcomePage extends Component {
       if (passions !== undefined) {
         if (passions[0].split(',').length >= 3) {
           this.setState({passions : passions[0]});
-          this.doRegistration();
+          this.regUploadImage();
         }
         else
           this.regEnterPassions("You have to enter minimum 3 passion!")
       }
     }
 
-    doRegistration() {
+    async regUploadImage(error = "") {
+      const { value: file } = await Swal.fire({
+        title: 'Registration step 7/7',
+        html:
+          '<p>Upload an image of yourself</p>' +
+          `${error !== "" ? `<p style="color:red">${error}</p>` : ""}`,
+        input: 'file',
+        confirmButtonText: `Upload`,
+        inputAttributes: {
+          'accept': 'image/*',
+          'aria-label': 'Upload your profile picture'
+        }
+      })
+      
+      if (file !== undefined) {
+        if (file) {
+          this.showDetails(file);
+        }
+        else
+          this.regUploadImage("You must be upload an image!");
+      }
+    }
+
+    showDetails(file, error = "") {
+      const reader = new FileReader()
+      const {userName, email, phoneNumber, birthDate, passions} = this.state
+
+      reader.onload = (e) => {
+        const { value: accept } = Swal.fire({
+          title: 'Your details',
+          input: 'checkbox',
+          inputValue: 0,
+          inputPlaceholder: 'I agree with the terms and conditions',
+          imageUrl: e.target.result,
+          html:
+            `<p>Name: ${userName}</p>` +
+            `<p>E-mail: ${email}</p>` +
+            `<p>Phone: ${phoneNumber}</p>` +
+            `<p>Birthdate: ${moment(birthDate).format("MMMM Do YYYY")}</p>` +
+            `<p>Passions: ${passions}</p>`,
+          imageAlt: 'The uploaded picture',
+          confirmButtonText: `Register`,
+          inputValidator: (result) => {
+            return !result ? 'You need to agree with T&C' : this.doRegistration(file);
+          }
+        })
+      }
+      reader.readAsDataURL(file)
+    }
+
+    doRegistration(file) {
       const {userName, email, phoneNumber, password, birthDate, passions} = this.state
       axios.post("http://localhost:8000/api/register", {
         name: userName,
@@ -290,7 +342,8 @@ class WelcomePage extends Component {
         phone_number: phoneNumber,
         password: password,
         birthdate: birthDate,
-        passion: passions
+        passion: passions,
+        image: file
       }).then(response => {
         this.props.setUser(response.data);
       })
