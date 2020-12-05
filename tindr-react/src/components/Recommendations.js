@@ -60,7 +60,7 @@ class Recommendations extends Component {
     getCurrentData() {
         const { current } = this.state;
 
-        if (current !== undefined) {
+        if (current.user !== undefined) {
             return(
                 <>
                     <h1 className="mx-auto my-0 text-red" style={{fontSize:"800%"}}>
