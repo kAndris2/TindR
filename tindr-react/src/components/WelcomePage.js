@@ -81,7 +81,8 @@ class WelcomePage extends Component {
     }
 
     async startRegister() {
-      await this.regEnterUsername();
+      //await this.regEnterUsername();
+      await this.regEnterBirthdate();
     }
 
     async regEnterUsername(error = "") {
@@ -248,11 +249,17 @@ class WelcomePage extends Component {
         }
       })
 
+      const bDate = moment(birthdate[0]).valueOf(),
+            now = moment().valueOf(),
+            minValue = 31556952000 * 18; //age 18
+
       if (birthdate !== undefined) {
         if (birthdate[0] == "")
           this.regEnterBirthdate("You didn't enter your birthdate!");
+        else if(now - bDate < minValue)
+          this.regEnterBirthdate("You cannot register under the age of 18!");
         else {
-          this.setState({birthDate : moment(birthdate[0]).valueOf()});
+          this.setState({birthDate : bDate});
           this.regEnterPassions();
         }
       }
