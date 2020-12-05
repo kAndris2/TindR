@@ -18,6 +18,8 @@ class AccountController extends Controller
 
     public function register(Request $request) 
     {
+        return $request;
+        /*
         $newAccountId = Account::create([
             "email" => $request["email"],
             "password" => $request["password"],
@@ -31,7 +33,20 @@ class AccountController extends Controller
             "passion" => $request["passion"]
         ]);
 
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $file = $request->filename;
+    
+            $hash = uniqid(rand(10000,99999), true);
+    
+            $directory = public_path('files/'.$hash);
+    
+            if(File::makeDirectory($directory, 0775, true)) {
+                $file->storeAs($directory, $file->getClientOriginalName());
+            }
+        }
+
         return $newUser;
+        */
     }
 
     public function login(Request $request, Response $response)
