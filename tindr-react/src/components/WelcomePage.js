@@ -81,8 +81,7 @@ class WelcomePage extends Component {
     }
 
     async startRegister() {
-      //await this.regEnterUsername();
-      await this.regEnterBirthdate();
+      await this.regEnterUsername();
     }
 
     async regEnterUsername(error = "") {

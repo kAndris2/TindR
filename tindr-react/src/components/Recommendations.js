@@ -54,7 +54,12 @@ class Recommendations extends Component {
             this.setState({current : updCurrent})
         }
         else
-            this.setState({current : undefined})
+            this.setState({
+                current : {
+                    index: 0,
+                    user: undefined
+                }
+            })
     }
 
     getCurrentData() {
