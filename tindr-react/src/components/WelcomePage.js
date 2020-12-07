@@ -313,7 +313,7 @@ class WelcomePage extends Component {
       }
     }
 
-    showDetails(file, error = "") {
+    showDetails(file) {
       const reader = new FileReader()
       const {userName, email, phoneNumber, birthDate, passions} = this.state
 
@@ -333,25 +333,30 @@ class WelcomePage extends Component {
           imageAlt: 'The uploaded picture',
           confirmButtonText: `Register`,
           inputValidator: (result) => {
-            return !result ? 'You need to agree with T&C' : this.doRegistration(file);
+            return !result ? 'You need to agree with T&C' : this.doRegistration(e.target.result);
           }
         })
       }
       reader.readAsDataURL(file)
     }
 
-    doRegistration(file) {
-      const {userName, email, phoneNumber, password, birthDate, passions} = this.state
-      axios.post("http://localhost:8000/api/register", {
+    async doRegistration(file) {
+      const {userName, email, phoneNumber, password, birthDate, passions} = this.state;
+
+      await axios.post("http://localhost:8000/api/register", {
         name: userName,
         email: email,
         phone_number: phoneNumber,
         password: password,
         birthdate: birthDate,
         passion: passions,
-        image: file
+        rawImage: file
       }).then(response => {
-        this.props.setUser(response.data);
+        if (response.data.length != 0) {
+          this.props.setUser(response.data);
+        }
+        else
+          console.log("reg fail")
       })
     }
   
