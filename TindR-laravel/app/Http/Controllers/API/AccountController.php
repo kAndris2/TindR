@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Account;
 use App\Models\User;
 use App\Models\Picture;
@@ -21,7 +22,7 @@ class AccountController extends Controller
     {
         $newAccountId = Account::create([
             "email" => $request["email"],
-            "password" => $request["password"],
+            "password" => Hash::make($request["password"]),
             "phone_number" => $request["phone_number"]
         ])->id;
 
@@ -41,13 +42,13 @@ class AccountController extends Controller
         return $newUser;
     }
 
-    public function login(Request $request, Response $response)
+    public function login(Request $request)
     {
         $account = Account::where("email", "=", $request["email"])->first();
 
         if ($account != null)
         {
-            if ($account->password === $request["password"])
+            if (Hash::check($request["password"], $account->password))
             {
                 return User::find($account->id);
             }
