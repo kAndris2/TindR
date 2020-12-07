@@ -355,8 +355,6 @@ class WelcomePage extends Component {
         if (response.data.length != 0) {
           this.props.setUser(response.data);
         }
-        else
-          console.log("reg fail")
       })
     }
   
