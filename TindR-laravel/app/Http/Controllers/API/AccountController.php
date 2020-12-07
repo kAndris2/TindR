@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Account;
 use App\Models\User;
+use App\Models\Picture;
 
 class AccountController extends Controller
 {
@@ -20,11 +22,9 @@ class AccountController extends Controller
     {
         $newAccountId = Account::create([
             "email" => $request["email"],
-            "password" => $request["password"],
+            "password" => Hash::make($request["password"]),
             "phone_number" => $request["phone_number"]
         ])->id;
-
-        //setcookie("userid", $newAccountId, time() + 86400, "/");
 
         $newUser = User::create([
             "id" => $newAccountId,
@@ -33,23 +33,24 @@ class AccountController extends Controller
             "passion" => $request["passion"]
         ]);
 
-        $response = new Response($newUser);
-        $response->withCookie(cookie()->forever('userid', $newAccountId));
+        Picture::create([
+            "id" => $newAccountId,
+            "upload_date" => round(microtime(true) * 1000),
+            "route" => $request["rawImage"]
+        ]);
 
-        return $response;
+        return $newUser;
     }
 
-    public function login(Request $request, Response $response)
+    public function login(Request $request)
     {
         $account = Account::where("email", "=", $request["email"])->first();
 
         if ($account != null)
         {
-            if ($account->password === $request["password"])
+            if (Hash::check($request["password"], $account->password))
             {
-                $response = new Response(User::find($account->id));
-                $response->withCookie(cookie('userid', $account->id, time() + 86400,null,null,false,true,false,'none'));
-                return $response;
+                return User::find($account->id);
             }
         }
     

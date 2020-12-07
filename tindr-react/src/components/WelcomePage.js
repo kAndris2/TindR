@@ -30,6 +30,8 @@ class WelcomePage extends Component {
       this.regEnterPassword = this.regEnterPassword.bind(this);
       this.regEnterBirthdate = this.regEnterBirthdate.bind(this);
       this.regEnterPassions = this.regEnterPassions.bind(this);
+      this.regUploadImage = this.regUploadImage.bind(this);
+      this.showDetails = this.showDetails.bind(this);
       this.doRegistration = this.doRegistration.bind(this);
     }
 
@@ -44,7 +46,7 @@ class WelcomePage extends Component {
           `${error !== "" ? `<p style="color:red">${error}</p>\n\n` : ""}` +
           '<p>Enter your email address</p>' +
           '<input id="swal-input1" class="swal2-input" type="email">' +
-          '<p>Enter your email password</p>' +
+          '<p>Enter your password</p>' +
           '<input id="swal-input2" class="swal2-input" type="password">',
         focusConfirm: false,
         confirmButtonText: `Sign in`,
@@ -56,13 +58,13 @@ class WelcomePage extends Component {
         }
       })
 
-      if (formValues === undefined)
-        console.log("cancel login")
-      else if (formValues[0] == "" || formValues[1] == "") {
-        this.handleLogin("You must be enter your username and your password!");
+      if (formValues !== undefined) {
+        if (formValues[0] == "" || formValues[1] == "") {
+          this.handleLogin("You must be enter your username and your password!");
+        }
+        else
+          this.doLogin(formValues[0], formValues[1]);
       }
-      else
-        this.doLogin(formValues[0], formValues[1]);
     }
 
     doLogin(email, password) {
@@ -84,7 +86,7 @@ class WelcomePage extends Component {
 
     async regEnterUsername(error = "") {
       const { value: username } = await Swal.fire({
-        title: 'Registration step 1/6',
+        title: 'Registration step 1/7',
         html:
           '<p>Enter your username</p>' +
           `${error !== "" ? `\n\n<p style="color:red">${error}</p>` : ""}` +
@@ -104,7 +106,7 @@ class WelcomePage extends Component {
         else if (username[0].length <= 3)
           this.regEnterUsername("Username must have 4 characters long!");
         else {
-            this.setState({userName : username});
+            this.setState({userName : username[0]});
             this.regEnterEmail();
         }
       }
@@ -112,7 +114,7 @@ class WelcomePage extends Component {
 
     async regEnterEmail(error = "") {
       const { value: email } = await Swal.fire({
-        title: 'Registration step 2/6',
+        title: 'Registration step 2/7',
         html:
           '<p>Enter your e-mail address</p>' +
           `${error !== "" ? `\n\n<p style="color:red">${error}</p>` : ""}` +
@@ -154,7 +156,7 @@ class WelcomePage extends Component {
 
     async regEnterPhoneNumber(error = "") {
       const { value: phone } = await Swal.fire({
-        title: 'Registration step 3/6',
+        title: 'Registration step 3/7',
         html:
           '<p>Enter your phone number</p>' +
           `${error !== "" ? `\n\n<p style="color:red">${error}</p>` : ""}` +
@@ -172,7 +174,7 @@ class WelcomePage extends Component {
         if (phone[0] == "")
           this.regEnterPhoneNumber("You must be enter your phone number");
         else if (this.isValidPhoneNumber(phone[0])) {
-          this.setState({phoneNumber : phone});
+          this.setState({phoneNumber : phone[0]});
           this.regEnterPassword();
         } 
         else 
@@ -201,7 +203,7 @@ class WelcomePage extends Component {
 
     async regEnterPassword(error = "", pw = "") {
       const { value: formValues } = await Swal.fire({
-        title: 'Registration step 4/6',
+        title: 'Registration step 4/7',
         html:
           '<p>Enter your password</p>' +
           `${error !== "" ? `<p style="color:red">${error}</p>` : ""}` +
@@ -232,7 +234,7 @@ class WelcomePage extends Component {
 
     async regEnterBirthdate(error = "") {
       const { value: birthdate } = await Swal.fire({
-        title: 'Registration step 5/6',
+        title: 'Registration step 5/7',
         html: 
           '<p>Enter your birthdate</p>' +
           `${error !== "" ? `<p style="color:red">${error}</p>` : ""}` +
@@ -246,11 +248,17 @@ class WelcomePage extends Component {
         }
       })
 
+      const bDate = moment(birthdate[0]).valueOf(),
+            now = moment().valueOf(),
+            minValue = 31556952000 * 18; //age 18
+
       if (birthdate !== undefined) {
         if (birthdate[0] == "")
           this.regEnterBirthdate("You didn't enter your birthdate!");
+        else if(now - bDate < minValue)
+          this.regEnterBirthdate("You cannot register under the age of 18!");
         else {
-          this.setState({birthDate : moment(birthdate[0]).valueOf()});
+          this.setState({birthDate : bDate});
           this.regEnterPassions();
         }
       }
@@ -258,13 +266,13 @@ class WelcomePage extends Component {
 
     async regEnterPassions(error = "") {
       const { value: passions } = await Swal.fire({
-        title: 'Registration step 6/6',
+        title: 'Registration step 6/7',
         html: 
           '<p>Enter minimum 3 passions comma separated</p>' +
           `${error !== "" ? `<p style="color:red">${error}</p>` : ""}` +
           '<input id="swal-input1" class="swal2-input" type="text" placeholder="(eg.: reading,coding,walking)">',
         focusConfirm: false,
-        confirmButtonText: `Registration`,
+        confirmButtonText: `Next`,
         preConfirm: () => {
           return [
             document.getElementById('swal-input1').value
@@ -275,24 +283,84 @@ class WelcomePage extends Component {
       if (passions !== undefined) {
         if (passions[0].split(',').length >= 3) {
           this.setState({passions : passions[0]});
-          this.doRegistration();
+          this.regUploadImage();
         }
         else
           this.regEnterPassions("You have to enter minimum 3 passion!")
       }
     }
 
+<<<<<<< HEAD
     doRegistration() {
       const {userName, email, phoneNumber, password, birthDate, passions} = this.state
       axios.post("http://172.31.1.57:8000/api/register", {
+=======
+    async regUploadImage(error = "") {
+      const { value: file } = await Swal.fire({
+        title: 'Registration step 7/7',
+        html:
+          '<p>Upload an image of yourself</p>' +
+          `${error !== "" ? `<p style="color:red">${error}</p>` : ""}`,
+        input: 'file',
+        confirmButtonText: `Upload`,
+        inputAttributes: {
+          'accept': 'image/*',
+          'aria-label': 'Upload your profile picture'
+        }
+      })
+      
+      if (file !== undefined) {
+        if (file) {
+          this.showDetails(file);
+        }
+        else
+          this.regUploadImage("You must be upload an image!");
+      }
+    }
+
+    showDetails(file) {
+      const reader = new FileReader()
+      const {userName, email, phoneNumber, birthDate, passions} = this.state
+
+      reader.onload = (e) => {
+        const { value: accept } = Swal.fire({
+          title: 'Your details',
+          input: 'checkbox',
+          inputValue: 0,
+          inputPlaceholder: 'I agree with the terms and conditions',
+          imageUrl: e.target.result,
+          html:
+            `<p>Name: ${userName}</p>` +
+            `<p>E-mail: ${email}</p>` +
+            `<p>Phone: ${phoneNumber}</p>` +
+            `<p>Birthdate: ${moment(birthDate).format("MMMM Do YYYY")}</p>` +
+            `<p>Passions: ${passions}</p>`,
+          imageAlt: 'The uploaded picture',
+          confirmButtonText: `Register`,
+          inputValidator: (result) => {
+            return !result ? 'You need to agree with T&C' : this.doRegistration(e.target.result);
+          }
+        })
+      }
+      reader.readAsDataURL(file)
+    }
+
+    async doRegistration(file) {
+      const {userName, email, phoneNumber, password, birthDate, passions} = this.state;
+
+      await axios.post("http://localhost:8000/api/register", {
+>>>>>>> 42a815fe166528b9caf9e929442d47911a3a93d8
         name: userName,
         email: email,
         phone_number: phoneNumber,
         password: password,
         birthdate: birthDate,
-        passion: passions
+        passion: passions,
+        rawImage: file
       }).then(response => {
-        this.props.setUser(response.data);
+        if (response.data.length != 0) {
+          this.props.setUser(response.data);
+        }
       })
     }
   

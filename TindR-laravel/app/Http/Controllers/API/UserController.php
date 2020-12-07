@@ -30,7 +30,7 @@ class UserController extends Controller
     public function getRecommendations($id)
     {
         //$recommendations = array();
-        $users = User::all();
+        $users = User::where("id", "!=", $id)->get();
         /*
         $searches = Search::all();
         $matches = Match::all();
