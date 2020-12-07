@@ -34,7 +34,7 @@ CREATE TABLE searches (
 CREATE TABLE public.pictures (
 	id int not null PRIMARY KEY,
 	upload_date bigint not null,
-	route character varying(300) not null,
+	route bytea not null,
 	FOREIGN KEY(id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
