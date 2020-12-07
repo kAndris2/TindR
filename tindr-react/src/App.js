@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import WelcomePage from "./components/WelcomePage";
 import SideBar from "./components/SideBar";
+import Asd from './components/Asd'
 import Recommendations from "./components/Recommendations";
 
 class App extends Component {
@@ -69,9 +70,9 @@ class App extends Component {
                   ></WelcomePage>
                 }
                 {isLoggedIn === true &&
-                  <SideBar
+                  <Asd
                     user={user}
-                  ></SideBar>
+                  ></Asd>
                 }
               </Route>
 

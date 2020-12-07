@@ -290,11 +290,6 @@ class WelcomePage extends Component {
       }
     }
 
-<<<<<<< HEAD
-    doRegistration() {
-      const {userName, email, phoneNumber, password, birthDate, passions} = this.state
-      axios.post("http://172.31.1.57:8000/api/register", {
-=======
     async regUploadImage(error = "") {
       const { value: file } = await Swal.fire({
         title: 'Registration step 7/7',
@@ -348,8 +343,7 @@ class WelcomePage extends Component {
     async doRegistration(file) {
       const {userName, email, phoneNumber, password, birthDate, passions} = this.state;
 
-      await axios.post("http://localhost:8000/api/register", {
->>>>>>> 42a815fe166528b9caf9e929442d47911a3a93d8
+      await axios.post("http://172.31.1.57:8000/api/register", {
         name: userName,
         email: email,
         phone_number: phoneNumber,

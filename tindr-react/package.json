@@ -12,6 +12,7 @@
     "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
+    "react-burger-menu": "2.7.1",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
     "react-keyboard-event-handler": "^1.5.4",
