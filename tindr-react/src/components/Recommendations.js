@@ -28,7 +28,7 @@ class Recommendations extends Component {
     }
 
     async getRecommendations() {
-        await axios.get("http://172.31.1.57:8000/api/recommendations/" + this.props.userID)
+        await axios.get("http://{process.env.REACT_APP_IP}:8000/api/recommendations/" + this.props.userID)
         .then(response => {
             let updCurrent = {
                 index: 0,
@@ -87,7 +87,7 @@ class Recommendations extends Component {
 
     handleLike() {
         const { current } = this.state;
-        axios.post("http://172.31.1.57:8000/api/add_like", {
+        axios.post("http://{process.env.REACT_APP_IP}:8000/api/add_like", {
             giverid: this.props.userID,
             receiverid: current.user.id
         }).then(() => {
@@ -97,7 +97,7 @@ class Recommendations extends Component {
 
     handleDislike() {
         const { current } = this.state;
-        axios.post("http://172.31.1.57:8000/api/add_dislike", {
+        axios.post("http://{process.env.REACT_APP_IP}:8000/api/add_dislike", {
             giverid: this.props.userID,
             receiverid: current.user.id
         }).then(() => {
