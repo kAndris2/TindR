@@ -132,6 +132,16 @@ class Recommendations extends Component {
                     <p>Gender: {user.gender !== null ? user.gender : "N/A"}</p>
                     <p>Passions: {user.passion !== null ? user.passion : "N/A"}</p>
                     <p>Sexual Orientation: {user.sexual_orientation !== null ? user.sexual_orientation : "N/A"}</p>
+
+                    {user.anthem !== null &&
+                        <iframe width="560" height="315" 
+                                src={`https://www.youtube.com/embed/${user.anthem}`}
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen
+                            >
+                        </iframe>
+                    }
                 </>
             );
         }
