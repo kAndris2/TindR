@@ -16,6 +16,7 @@ class Recommendations extends Component {
       }
 
       this.getRecommendations = this.getRecommendations.bind(this);
+      this.getProfilePictures = this.getProfilePictures.bind(this);
       this.getNextProfile = this.getNextProfile.bind(this);
       this.getCurrentData = this.getCurrentData.bind(this);
       this.handleLike = this.handleLike.bind(this);
@@ -28,7 +29,7 @@ class Recommendations extends Component {
     }
 
     async getRecommendations() {
-        await axios.get("http://{process.env.REACT_APP_IP}:8000/api/recommendations/" + this.props.userID)
+        await axios.get(`http://${process.env.REACT_APP_IP}:8000/api/recommendations/${this.props.userID}`)
         .then(response => {
             let updCurrent = {
                 index: 0,
@@ -36,10 +37,20 @@ class Recommendations extends Component {
             }
 
             this.setState({
-                isLoading : false,
+                //isLoading : false,
                 recommendations : response.data,
                 current : updCurrent
             });
+
+            if (response.data.length !== 0)
+                response.data.map(this.getProfilePictures);
+        })
+    }
+
+    getProfilePictures(user) {
+        axios.get(`http://${process.env.REACT_APP_IP}:8000/api/pictures/${user.id}`)
+        .then(response => {
+            console.log(response)
         })
     }
 
@@ -87,7 +98,7 @@ class Recommendations extends Component {
 
     handleLike() {
         const { current } = this.state;
-        axios.post("http://{process.env.REACT_APP_IP}:8000/api/add_like", {
+        axios.post(`http://${process.env.REACT_APP_IP}:8000/api/add_like`, {
             giverid: this.props.userID,
             receiverid: current.user.id
         }).then(() => {
@@ -97,7 +108,7 @@ class Recommendations extends Component {
 
     handleDislike() {
         const { current } = this.state;
-        axios.post("http://{process.env.REACT_APP_IP}:8000/api/add_dislike", {
+        axios.post(`http://${process.env.REACT_APP_IP}:8000/api/add_dislike`, {
             giverid: this.props.userID,
             receiverid: current.user.id
         }).then(() => {

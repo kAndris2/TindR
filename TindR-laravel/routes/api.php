@@ -42,4 +42,4 @@ Route::get("valid_email/{email}", [AccountController::class, "isValidEmail"]);
 Route::post("add_like", [LikeController::class, "addLike"]);
 Route::post("add_dislike", [LikeController::class, "addDislike"]);
 
-Route::post("pictures/{id}", [PictureController::class, "getPictures"]);
+Route::get("pictures/{id}", [PictureController::class, "getPictures"]);
