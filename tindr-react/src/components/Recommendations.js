@@ -172,6 +172,7 @@ class Recommendations extends Component {
         if (current.user !== undefined) {
             const route = this.getPictures(current.user.id)[currentPictureIndex].route;
             /*
+            //https://codepen.io/RobVermeer/pen/japZpY?editors=1000
             return (
                 <>
                     <div class={styles["tinder"]}>
