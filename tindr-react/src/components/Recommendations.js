@@ -26,6 +26,7 @@ class Recommendations extends Component {
       this.handleKeyDown = this.handleKeyDown.bind(this);
       this.getPictures = this.getPictures.bind(this);
       this.setNextPicture = this.setNextPicture.bind(this);
+      this.setPreviousPicture = this.setPreviousPicture.bind(this);
     }
 
     async componentDidMount() {
@@ -93,13 +94,24 @@ class Recommendations extends Component {
 
     setNextPicture(id) {
         const { currentPictureIndex } = this.state;
-        const userPictures = this.getPictures(id);
-        const max = userPictures.length -1;
+        const max = this.getPictures(id).length -1;
+        const next = currentPictureIndex + 1;
         
-        if (currentPictureIndex != max)
-            this.setState({currentPictureIndex: currentPictureIndex + 1})
+        if (next <= max)
+            this.setState({currentPictureIndex: next})
         else
             this.setState({currentPictureIndex: 0});
+    }
+
+    setPreviousPicture(id) {
+        const { currentPictureIndex } = this.state;
+        const max = this.getPictures(id).length -1;
+        const previous = currentPictureIndex - 1;
+
+        if (previous < 0) 
+            this.setState({currentPictureIndex : max});
+        else
+            this.setState({currentPictureIndex : previous});
     }
 
     getCurrentData() {
@@ -148,7 +160,7 @@ class Recommendations extends Component {
     }
 
     handleKeyDown(event) {
-        const { curent } = this.state;
+        const { current } = this.state;
 
         switch(event.key) {
             case "ArrowRight": {
@@ -160,7 +172,11 @@ class Recommendations extends Component {
                 break;
             }
             case " ": { //Space
-                this.setNextPicture(curent.user.id);
+                this.setNextPicture(current.user.id);
+                break;
+            }
+            case "Backspace": {
+                this.setPreviousPicture(current.user.id);
                 break;
             }
             default:
