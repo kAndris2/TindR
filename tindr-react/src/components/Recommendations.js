@@ -8,6 +8,7 @@ class Recommendations extends Component {
 
       this.state = {
           recommendations: [],
+          pictures: [],
           isLoading: true,
           current: {
               index: undefined,
@@ -22,6 +23,7 @@ class Recommendations extends Component {
       this.handleLike = this.handleLike.bind(this);
       this.handleDislike = this.handleDislike.bind(this);
       this.handleKeyDown = this.handleKeyDown.bind(this);
+      this.getPicture = this.getPicture.bind(this);
     }
 
     async componentDidMount() {
@@ -37,7 +39,6 @@ class Recommendations extends Component {
             }
 
             this.setState({
-                //isLoading : false,
                 recommendations : response.data,
                 current : updCurrent
             });
@@ -50,7 +51,10 @@ class Recommendations extends Component {
     getProfilePictures(user) {
         axios.get(`http://${process.env.REACT_APP_IP}:8000/api/pictures/${user.id}`)
         .then(response => {
-            console.log(response)
+            this.setState({
+                pictures: response.data,
+                isLoading: false
+            });
         })
     }
 
@@ -73,15 +77,28 @@ class Recommendations extends Component {
             })
     }
 
+    getPicture(id) {
+        const { pictures } = this.state;
+        let result = [];
+
+        pictures.forEach(p => {
+            if (p.id === id) {
+                result.push(p);
+            }
+        })
+        return result;
+    }
+
     getCurrentData() {
         const { current } = this.state;
 
         if (current.user !== undefined) {
             return(
                 <>
-                    <h1 className="mx-auto my-0 text-red" style={{fontSize:"800%"}}>
+                    <img src={this.getPicture(current.user.id)[0].route} />
+                    <h6 className="mx-auto my-0 text-red" style={{fontSize:"800%"}}>
                         {current.user.name}
-                    </h1>
+                    </h6>
                     <button onClick={this.handleDislike}>Dislike</button>
                     <button onClick={this.handleLike}>Like</button>
                 </>
