@@ -1,12 +1,18 @@
-import React from 'react';
+
 import { slide as Menu } from 'react-burger-menu';
 
-export default props => {
-  
-  return (
-    <Menu>
+import React, { Component } from 'react'
+
+export default class SideBar extends Component {
+  constructor(props){
+    super(props);
+
+  }
+  render() {
+    return (
+      <Menu>
       <a className="menu-item" href="/">
-        {props.user.name}
+        {this.props.user.name}
       </a>
       <a class="navbar-brand" href="#">
         <img src="" width="30" height="30" alt=""/>
@@ -20,14 +26,10 @@ export default props => {
       <a className="menu-item" href="#">
         Asd
       </a>
-      <a className="menu-item" href="/" onClick={
-        document.cookie.split(";").forEach((c) => {
-          document.cookie = c
-            .replace(/^ +/, "")
-            .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-        })}>
+      <a className="menu-item" href="/" >
         Logout
       </a>
     </Menu>
-  );
-};
+    )
+  }
+}
