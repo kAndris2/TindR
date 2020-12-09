@@ -1,20 +1,44 @@
-import { slide as Menu } from 'react-burger-menu';
-import React, { Component } from 'react'
+import { bubble as Menu } from 'react-burger-menu';
+import React, { Component } from 'react';
+import axios from 'axios';
 
 export default class SideBar extends Component {
   constructor(props){
     super(props);
+
+    this.state={
+      profilePath:'',
+      isLoading:true
+    }
+
   }
 
+  getProfilePictures(user) {
+    axios.get(`http://${process.env.REACT_APP_IP}:8000/api/pictures/${user.id}`)
+    .then(response => {
+        this.setState({
+            profilePath: response.data,
+            isLoading: false
+        });
+    })
+  }
+
+  componentDidMount(){
+    this.getProfilePictures(this.props.user);
+  }
 
   render() {
+    const {isLoading, profilePath} = this.state;
+    if(isLoading){
+      return(<p>Loading...</p>)
+    }
     return (
-      <Menu>
-      <a className="menu-item" href="/">
+    <Menu>
+      <div className="menu-item" href="/">
         {this.props.user.name}
-      </a>
-      <a class="navbar-brand" href="#">
-        <img src="" width="30" height="30" alt=""/>
+      </div>
+      <a className="navbar-brand text-center" href="#">
+        <img src={profilePath[0].route} height="80" alt=""/>
       </a>
       <a className="menu-item" href="/">
         Home
