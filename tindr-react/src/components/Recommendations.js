@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
+import moment from "moment";
 
 class Recommendations extends Component {
     constructor() {
@@ -11,6 +12,7 @@ class Recommendations extends Component {
           pictures: [],
           currentPictureIndex: 0,
           isLoading: true,
+          showProfile: false,
           current: {
               index: undefined,
               user: undefined
@@ -27,6 +29,7 @@ class Recommendations extends Component {
       this.getPictures = this.getPictures.bind(this);
       this.setNextPicture = this.setNextPicture.bind(this);
       this.setPreviousPicture = this.setPreviousPicture.bind(this);
+      this.showProfile = this.showProfile.bind(this);
     }
 
     async componentDidMount() {
@@ -114,6 +117,26 @@ class Recommendations extends Component {
             this.setState({currentPictureIndex : previous});
     }
 
+    showProfile() {
+        const { current, showProfile } = this.state;
+        const user = current.user;
+
+        if(showProfile) {
+            return (
+                <>
+                    <p>Description: {user.description !== null ? user.description : "N/A"}</p>
+                    <p>Birthdate: {user.birthdate !== null ? moment(user.birthdate).format('MMMM Do YYYY') : "N/A"}</p>
+                    <p>School: {user.school !== null ? user.school : "N/A"}</p>
+                    <p>Works at: {user.company !== null ? user.company : "N/A"}</p>
+                    <p>Position: {user.job_title !== null ? user.job_title : "N/A"}</p>
+                    <p>Gender: {user.gender !== null ? user.gender : "N/A"}</p>
+                    <p>Passions: {user.passion !== null ? user.passion : "N/A"}</p>
+                    <p>Sexual Orientation: {user.sexual_orientation !== null ? user.sexual_orientation : "N/A"}</p>
+                </>
+            );
+        }
+    }
+
     getCurrentData() {
         const { current, currentPictureIndex } = this.state;
 
@@ -127,6 +150,7 @@ class Recommendations extends Component {
                     </h1>
                     <button onClick={this.handleDislike}>Dislike</button>
                     <button onClick={this.handleLike}>Like</button>
+                    {this.showProfile()}
                 </>
             );
         }
@@ -177,6 +201,14 @@ class Recommendations extends Component {
             }
             case "Backspace": {
                 this.setPreviousPicture(current.user.id);
+                break;
+            }
+            case "ArrowUp": {
+                this.setState({showProfile : true});
+                break;
+            }
+            case "ArrowDown": {
+                this.setState({showProfile : false});
                 break;
             }
             default:
