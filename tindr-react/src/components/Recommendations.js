@@ -9,6 +9,7 @@ class Recommendations extends Component {
       this.state = {
           recommendations: [],
           pictures: [],
+          currentPictureIndex: 0,
           isLoading: true,
           current: {
               index: undefined,
@@ -23,7 +24,8 @@ class Recommendations extends Component {
       this.handleLike = this.handleLike.bind(this);
       this.handleDislike = this.handleDislike.bind(this);
       this.handleKeyDown = this.handleKeyDown.bind(this);
-      this.getPicture = this.getPicture.bind(this);
+      this.getPictures = this.getPictures.bind(this);
+      this.setNextPicture = this.setNextPicture.bind(this);
     }
 
     async componentDidMount() {
@@ -77,7 +79,7 @@ class Recommendations extends Component {
             })
     }
 
-    getPicture(id) {
+    getPictures(id) {
         const { pictures } = this.state;
         let result = [];
 
@@ -89,16 +91,28 @@ class Recommendations extends Component {
         return result;
     }
 
+    setNextPicture(id) {
+        const { currentPictureIndex } = this.state;
+        const userPictures = this.getPictures(id);
+        const max = userPictures.length -1;
+        
+        if (currentPictureIndex != max)
+            this.setState({currentPictureIndex: currentPictureIndex + 1})
+        else
+            this.setState({currentPictureIndex: 0});
+    }
+
     getCurrentData() {
-        const { current } = this.state;
+        const { current, currentPictureIndex } = this.state;
 
         if (current.user !== undefined) {
+            const route = this.getPictures(current.user.id)[currentPictureIndex].route;
             return(
                 <>
-                    <img src={this.getPicture(current.user.id)[0].route} />
-                    <h6 className="mx-auto my-0 text-red" style={{fontSize:"800%"}}>
+                    <img src={route} />
+                    <h1 className="mx-auto my-0 text-red">
                         {current.user.name}
-                    </h6>
+                    </h1>
                     <button onClick={this.handleDislike}>Dislike</button>
                     <button onClick={this.handleLike}>Like</button>
                 </>
@@ -134,6 +148,8 @@ class Recommendations extends Component {
     }
 
     handleKeyDown(event) {
+        const { curent } = this.state;
+
         switch(event.key) {
             case "ArrowRight": {
                 this.handleLike();
@@ -141,6 +157,10 @@ class Recommendations extends Component {
             }
             case "ArrowLeft": {
                 this.handleDislike();
+                break;
+            }
+            case " ": { //Space
+                this.setNextPicture(curent.user.id);
                 break;
             }
             default:
