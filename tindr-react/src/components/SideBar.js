@@ -1,13 +1,12 @@
-
 import { slide as Menu } from 'react-burger-menu';
-
 import React, { Component } from 'react'
 
 export default class SideBar extends Component {
   constructor(props){
     super(props);
-
   }
+
+
   render() {
     return (
       <Menu>
@@ -26,7 +25,7 @@ export default class SideBar extends Component {
       <a className="menu-item" href="#">
         Asd
       </a>
-      <a className="menu-item" href="/" >
+      <a className="menu-item" href="/" onClick={this.props.removeCookie} >
         Logout
       </a>
     </Menu>
