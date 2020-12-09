@@ -7,6 +7,7 @@ use App\Http\Controllers\API\AccountController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\LikeController;
 use App\Http\Controllers\API\PictureController;
+use App\Http\Controllers\API\PinController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,3 +44,6 @@ Route::post("add_like", [LikeController::class, "addLike"]);
 Route::post("add_dislike", [LikeController::class, "addDislike"]);
 
 Route::get("pictures/{id}", [PictureController::class, "getPictures"]);
+
+Route::post("getpin", [PinController::class, "getPin"]);
+Route::post("validatecode", [PinController::class, "validateCode"]);

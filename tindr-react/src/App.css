@@ -28,6 +28,18 @@
   color: #61dafb;
 }
 
+@font-face {
+  font-family: 'TindrFont';
+  src: url('./components/css/proximanova-regular-webfont.woff2') format('woff2'),
+       url('./components/css/proximanova-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+body{
+  font-family: 'TindrFont' !important;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -4,11 +4,26 @@ import Swal from "sweetalert2";
 import axios from 'axios';
 import moment from "moment";
 
+// -- Request a PIN --
+
+  // curl -X "POST" "https://api.ringcaptcha.com/APP_KEY/code/sms" \
+  // -d "api_key=API_KEY" \
+  // -d "phone=TO_NUMBER"
+
+  // -- Verify Phone Number --
+
+  // curl -X "POST" "https://api.ringcaptcha.com/APP_KEY/verify" \
+  // -d "api_key=API_KEY" \
+  // -d "phone=TO_NUMBER" \
+  // -d "code=PIN"
+
 class WelcomePage extends Component {
     constructor() {
       super();
 
       this.state = {
+        apikey:'6259e30396ee22afa1b50ed0d8468bd7be1204de',
+        appkey:'a1yqe5e4o6a6eborahy7',
         userName: undefined,
         email: undefined,
         phoneNumber: undefined,
@@ -33,6 +48,8 @@ class WelcomePage extends Component {
       this.regUploadImage = this.regUploadImage.bind(this);
       this.showDetails = this.showDetails.bind(this);
       this.doRegistration = this.doRegistration.bind(this);
+      this.requestPin = this.requestPin.bind(this);
+      this.validatePin = this.validatePin.bind(this);
     }
 
     async startLogin() {
@@ -154,6 +171,17 @@ class WelcomePage extends Component {
       return temp;
     }
 
+    async requestPin(number){
+      await axios.post("http://"+process.env.REACT_APP_IP+":8000/api/getpin",{
+        appkey:this.state.appkey,
+        apikey:this.state.apikey,
+        phone:number
+      })
+      .then(resp =>{
+        console.log(resp.data);
+      })
+    }
+
     async regEnterPhoneNumber(error = "") {
       const { value: phone } = await Swal.fire({
         title: 'Registration step 3/7',
@@ -172,14 +200,63 @@ class WelcomePage extends Component {
 
       if (phone !== undefined) {
         if (phone[0] == "")
-          this.regEnterPhoneNumber("You must be enter your phone number");
+          this.regEnterPhoneNumber("You must enter your phone number");
         else if (this.isValidPhoneNumber(phone[0])) {
+          let pinnumber = "+36" + phone[0].replace("/","").replace("-","");
+          this.requestPin(pinnumber);
+          this.validatePin(pinnumber);
           this.setState({phoneNumber : phone[0]});
-          this.regEnterPassword();
+          
         } 
         else 
           this.regEnterPhoneNumber(`Invalid phone number!\n'${phone}'`);
       }
+    }
+    
+    async validatePin(pinnumber){
+      console.log("mehhívott");
+      await Swal.fire({
+        title: 'Enter the verification code',
+        input: 'text',
+        inputAttributes: {
+          autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Validate',
+        showLoaderOnConfirm: true,
+        preConfirm: (verifycode) => {
+          return axios.post("http://"+process.env.REACT_APP_IP+":8000/api/validatecode",{
+            appkey:this.state.appkey,
+            apikey:this.state.apikey,
+            phone:pinnumber,
+            code:verifycode
+          })
+          .then(response => {
+            if (response.data.status !== "SUCCESS") {
+              throw new Error(response.statusText)
+            }
+            return response.data;
+          })
+          .catch(error => {
+            Swal.showValidationMessage(
+              `Request failed: ${error}`
+            )
+          })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+      }).then((result) => {
+        console.log(result);
+        if (result.isConfirmed) {
+          Swal.fire({
+            confirmButtonText:'OK',
+            title: `${result.value.status}`,
+            preConfirm: (ok) =>{
+              this.regEnterPassword();
+            }
+          })
+        }
+      })
+      //
     }
 
     isValidPhoneNumber(phone) {
@@ -399,7 +476,8 @@ class WelcomePage extends Component {
                 </a>
               </div>
             </div>
-  
+            
+            <button onClick={() => this.requestPin(this.state.phoneNumber)}>TEEEEEST</button>
           </section>
         </>
       );
