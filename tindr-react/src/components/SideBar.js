@@ -20,7 +20,12 @@ export default props => {
       <a className="menu-item" href="#">
         Asd
       </a>
-      <a className="menu-item" href="#">
+      <a className="menu-item" href="/" onClick={
+        document.cookie.split(";").forEach((c) => {
+          document.cookie = c
+            .replace(/^ +/, "")
+            .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+        })}>
         Logout
       </a>
     </Menu>
