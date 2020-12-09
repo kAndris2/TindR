@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import moment from "moment";
+import styles from "./css/Recommendations.module.css"
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMinusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faHeartbeat } from '@fortawesome/free-solid-svg-icons'
 
 class Recommendations extends Component {
     constructor() {
@@ -30,6 +35,7 @@ class Recommendations extends Component {
       this.setNextPicture = this.setNextPicture.bind(this);
       this.setPreviousPicture = this.setPreviousPicture.bind(this);
       this.showProfile = this.showProfile.bind(this);
+      this.ageCalculation = this.ageCalculation.bind(this);
     }
 
     async componentDidMount() {
@@ -124,7 +130,12 @@ class Recommendations extends Component {
         if(showProfile) {
             return (
                 <>
-                    <p>Description: {user.description !== null ? user.description : "N/A"}</p>
+                    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous"></link>
+                    
+                    <p>
+                        <span className="fa fa-info-circle" /> 
+                        Description: {user.description !== null ? user.description : "N/A"}
+                    </p>
                     <p>Birthdate: {user.birthdate !== null ? moment(user.birthdate).format('MMMM Do YYYY') : "N/A"}</p>
                     <p>School: {user.school !== null ? user.school : "N/A"}</p>
                     <p>Works at: {user.company !== null ? user.company : "N/A"}</p>
@@ -147,22 +158,61 @@ class Recommendations extends Component {
         }
     }
 
+    ageCalculation(date) {
+        const now = new Date();
+        const birthdate = new Date(date);
+
+        let diff = now.getTime() - birthdate.getTime();
+        return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+    }
+
     getCurrentData() {
         const { current, currentPictureIndex } = this.state;
 
         if (current.user !== undefined) {
             const route = this.getPictures(current.user.id)[currentPictureIndex].route;
+            /*
+            return (
+                <>
+                    <div class={styles["tinder"]}>
+
+                        <div className={styles["tinder--status"]}>
+                            <FontAwesomeIcon icon={faMinusCircle} />
+                            <FontAwesomeIcon icon={faHeartbeat} />
+                        </div>
+
+                        <div className={styles["tinder--cards"]}>
+                            <div className={styles["tinder--card"]}>
+                                <img src={route} />
+                                <h3>{current.user.name} {this.ageCalculation(current.user.birthdate)}</h3>
+                            </div>
+                        </div>
+
+                        <div className={styles["tinder--buttons"]}>
+                            <button id="nope"><FontAwesomeIcon icon={faMinusCircle} /></button>
+                            <button id="love"><FontAwesomeIcon icon={faHeartbeat} /></button>
+                        </div>
+
+                    </div>
+                </>
+            );
+            */
+            
             return(
                 <>
                     <img src={route} />
-                    <h1 className="mx-auto my-0 text-red">
-                        {current.user.name}
-                    </h1>
-                    <button onClick={this.handleDislike}>Dislike</button>
-                    <button onClick={this.handleLike}>Like</button>
+
+                    <div className="mx-auto my-0 text-red">
+                        <button onClick={this.handleDislike}>Dislike</button>
+                        <button onClick={this.handleLike}>Like</button>
+
+                        <h1>{current.user.name} {this.ageCalculation(current.user.birthdate)}</h1>
+                    </div>
+                    
                     {this.showProfile()}
                 </>
             );
+            
         }
         else {
             return(
