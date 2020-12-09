@@ -26,7 +26,9 @@ class App extends Component {
   setCookie(id) {
     Cookies.set('userid', id);
   }
-
+  removeCookie(){
+    Cookies.remove('userid');
+  }
   setUser(user) {
     this.setCookie(user.id);
     this.setState({
@@ -72,6 +74,7 @@ class App extends Component {
                 {isLoggedIn === true &&
                   <Asd
                     user={user}
+                    removeCookie={this.removeCookie}
                   ></Asd>
                 }
               </Route>
