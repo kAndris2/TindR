@@ -32,10 +32,11 @@ CREATE TABLE searches (
 );
 
 CREATE TABLE public.pictures (
-	id int not null PRIMARY KEY,
+	id serial not null PRIMARY KEY,
+	user_id int not null,
 	upload_date bigint not null,
-	route bytea not null,
-	FOREIGN KEY(id) REFERENCES accounts(id) ON DELETE CASCADE
+	route character varying(10485760) not null,
+	FOREIGN KEY(user_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
 CREATE TABLE public.matches (
