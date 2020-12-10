@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet';
 import Swal from "sweetalert2";
 import axios from 'axios';
 import moment from "moment";
+import ReactCodeInput from 'react-code-input';
+import withReactContent from 'sweetalert2-react-content'
 
 // -- Request a PIN --
 
@@ -30,7 +32,7 @@ class WelcomePage extends Component {
         password: undefined,
         confirmPass: undefined,
         birthDate: undefined,
-        passions: undefined
+        passions: undefined,
       }
 
       this.startLogin = this.startLogin.bind(this);
@@ -214,22 +216,25 @@ class WelcomePage extends Component {
     }
     
     async validatePin(pinnumber){
-      console.log("mehhívott");
-      await Swal.fire({
+      const mySwal = withReactContent(Swal);
+      let pin = 0;
+      let pinHtml = <ReactCodeInput type="number" onChange={(e) => pin = e} fields={4}/>;
+      await mySwal.fire({
         title: 'Enter the verification code',
-        input: 'text',
+        html:pinHtml,
+        //input: 'text',
         inputAttributes: {
           autocapitalize: 'off'
         },
         showCancelButton: true,
         confirmButtonText: 'Validate',
         showLoaderOnConfirm: true,
-        preConfirm: (verifycode) => {
+        preConfirm: (usuallytrue) => {
           return axios.post("http://"+process.env.REACT_APP_IP+":8000/api/validatecode",{
             appkey:this.state.appkey,
             apikey:this.state.apikey,
             phone:pinnumber,
-            code:verifycode
+            code:pin
           })
           .then(response => {
             if (response.data.status !== "SUCCESS") {
@@ -256,7 +261,6 @@ class WelcomePage extends Component {
           })
         }
       })
-      //
     }
 
     isValidPhoneNumber(phone) {
