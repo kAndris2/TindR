@@ -13,18 +13,26 @@ export default class SideBar extends Component {
 
   }
 
-  getProfilePictures(user) {
-    axios.get(`http://${process.env.REACT_APP_IP}:8000/api/pictures/${user.id}`)
+  async getProfilePictures(user) {
+    await axios.get(`http://${process.env.REACT_APP_IP}:8000/api/pictures/${user.id}`)
     .then(response => {
+      Promise.all(response.data.map(p => {
+        this.setState({
+          profilePath: p,
+          isLoading: false
+      });
+      }))
+      /*
         this.setState({
             profilePath: response.data,
             isLoading: false
         });
+        */
     })
   }
 
-  componentDidMount(){
-    this.getProfilePictures(this.props.user);
+  async componentDidMount(){
+    await this.getProfilePictures(this.props.user);
   }
 
   render() {
