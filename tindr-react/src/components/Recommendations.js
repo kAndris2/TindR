@@ -25,21 +25,21 @@ class Recommendations extends Component {
       }
 
       this.getRecommendations = this.getRecommendations.bind(this);
-      this.getProfilePictures = this.getProfilePictures.bind(this);
       this.getNextProfile = this.getNextProfile.bind(this);
       this.getCurrentData = this.getCurrentData.bind(this);
       this.handleLike = this.handleLike.bind(this);
       this.handleDislike = this.handleDislike.bind(this);
       this.handleKeyDown = this.handleKeyDown.bind(this);
-      this.getPictures = this.getPictures.bind(this);
       this.setNextPicture = this.setNextPicture.bind(this);
       this.setPreviousPicture = this.setPreviousPicture.bind(this);
       this.showProfile = this.showProfile.bind(this);
       this.ageCalculation = this.ageCalculation.bind(this);
+      this.getCurrentPictures = this.getCurrentPictures.bind(this);
     }
 
     async componentDidMount() {
         await this.getRecommendations();
+        await this.getCurrentPictures();
     }
 
     async getRecommendations() {
@@ -54,56 +54,53 @@ class Recommendations extends Component {
                 recommendations : response.data,
                 current : updCurrent
             });
-
-            if (response.data.length !== 0)
-                response.data.map(this.getProfilePictures);
         })
     }
 
-    getProfilePictures(user) {
-        axios.get(`http://${process.env.REACT_APP_IP}:8000/api/pictures/${user.id}`)
-        .then(response => {
-            this.setState({
-                pictures: response.data,
-                isLoading: false
+   async getCurrentPictures() {
+       const { current } = this.state;
+
+        await axios.get(`http://${process.env.REACT_APP_IP}:8000/api/pictures/${current.user.id}`)
+            .then(response => {
+                Promise.all(response.data.map(p => {
+                    this.setState({
+                        pictures: p,
+                        isLoading: false
+                    });
+                }))
             });
-        })
-    }
+   }
 
-    getNextProfile() {
+    async getNextProfile() {
         const { recommendations, current } = this.state;
+        console.log(recommendations[current.index + 1])
 
         if (recommendations[current.index + 1] !== undefined) {
             let updCurrent = {
                 index: current.index + 1,
                 user: recommendations[current.index + 1]
             }
-            this.setState({current : updCurrent})
+            await this.setState({
+                current : updCurrent,
+                isLoading : true
+            })
+            this.getCurrentPictures();
         }
-        else
+        else {
             this.setState({
                 current : {
                     index: 0,
                     user: undefined
-                }
+                },
+                isLoading : false
             })
+        }
     }
 
-    getPictures(id) {
-        const { pictures } = this.state;
-        let result = [];
+    setNextPicture() {
+        const { currentPictureIndex, pictures } = this.state;
 
-        pictures.forEach(p => {
-            if (p.id === id) {
-                result.push(p);
-            }
-        })
-        return result;
-    }
-
-    setNextPicture(id) {
-        const { currentPictureIndex } = this.state;
-        const max = this.getPictures(id).length -1;
+        const max = pictures.length -1;
         const next = currentPictureIndex + 1;
         
         if (next <= max)
@@ -112,9 +109,10 @@ class Recommendations extends Component {
             this.setState({currentPictureIndex: 0});
     }
 
-    setPreviousPicture(id) {
-        const { currentPictureIndex } = this.state;
-        const max = this.getPictures(id).length -1;
+    setPreviousPicture() {
+        const { currentPictureIndex, pictures } = this.state;
+
+        const max = pictures.length -1;
         const previous = currentPictureIndex - 1;
 
         if (previous < 0) 
@@ -167,10 +165,10 @@ class Recommendations extends Component {
     }
 
     getCurrentData() {
-        const { current, currentPictureIndex } = this.state;
+        const { current, pictures, currentPictureIndex } = this.state;
 
         if (current.user !== undefined) {
-            const route = this.getPictures(current.user.id)[currentPictureIndex].route;
+            const route = pictures.length === undefined ? pictures.route : pictures[currentPictureIndex].route;
             /*
             //https://codepen.io/RobVermeer/pen/japZpY?editors=1000
             return (
@@ -213,7 +211,6 @@ class Recommendations extends Component {
                     {this.showProfile()}
                 </>
             );
-            
         }
         else {
             return(
@@ -224,29 +221,27 @@ class Recommendations extends Component {
         }
     }
 
-    handleLike() {
+    async handleLike() {
         const { current } = this.state;
-        axios.post(`http://${process.env.REACT_APP_IP}:8000/api/add_like`, {
+
+        await axios.post(`http://${process.env.REACT_APP_IP}:8000/api/add_like`, {
             giverid: this.props.userID,
             receiverid: current.user.id
-        }).then(() => {
-            this.getNextProfile();
-        })
+        });
+        this.getNextProfile();
     }
 
-    handleDislike() {
+    async handleDislike() {
         const { current } = this.state;
-        axios.post(`http://${process.env.REACT_APP_IP}:8000/api/add_dislike`, {
+
+        await axios.post(`http://${process.env.REACT_APP_IP}:8000/api/add_dislike`, {
             giverid: this.props.userID,
             receiverid: current.user.id
-        }).then(() => {
-            this.getNextProfile();
-        })
+        });
+        this.getNextProfile();
     }
 
     handleKeyDown(event) {
-        const { current } = this.state;
-
         switch(event.key) {
             case "ArrowRight": {
                 this.handleLike();
@@ -257,11 +252,11 @@ class Recommendations extends Component {
                 break;
             }
             case " ": { //Space
-                this.setNextPicture(current.user.id);
+                this.setNextPicture();
                 break;
             }
             case "Backspace": {
-                this.setPreviousPicture(current.user.id);
+                this.setPreviousPicture();
                 break;
             }
             case "ArrowUp": {
@@ -277,7 +272,7 @@ class Recommendations extends Component {
     }
 
     render() {
-        const { isLoading, current } = this.state;
+        const { isLoading } = this.state;
 
         if (!isLoading) {
             return (
