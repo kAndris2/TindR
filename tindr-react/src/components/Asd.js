@@ -27,15 +27,26 @@ export default class Asd extends Component {
   render() {
     
       return (
-        <>
-       
-        <div className="App" id="outer-container">
-          <SideBar removeCookie={this.props.removeCookie} user={this.props.user} pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
-        <div id="page-wrap">
-          <h1>Huzogass</h1>
-          <h2>Jobbrabalra stb</h2>
+      <>
+        <SideBar removeCookie={this.props.removeCookie} user={this.props.user} pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
+        <div className="container" id="outer-container">
+          <div class="row">
+            <div class="col-sm-12 text-center">
+                <h1>Main maybe?</h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <h2>Left Col</h2>
+            </div>
+            <div class="col-sm-4">
+              <h2>Mid Col</h2>
+            </div>
+            <div class="col-sm-4">
+              <h2>Right Col</h2>
+            </div>
+          </div>
         </div>
-      </div>
       </>
       );
   }

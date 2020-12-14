@@ -7,6 +7,7 @@ import WelcomePage from "./components/WelcomePage";
 import Settings from "./components/Settings";
 import Asd from './components/Asd'
 import Recommendations from "./components/Recommendations";
+import SideBar from "./components/SideBar";
 
 class App extends Component {
   constructor() {
@@ -86,17 +87,6 @@ class App extends Component {
                   ></Recommendations>
                 }
               </Route>
-
-              
-              <Route exact path="/settings">
-                {isLoggedIn === true &&
-                  <Settings></Settings>
-                }
-                {!isLoggedIn &&
-                  <WelcomePage></WelcomePage>
-                }
-              </Route>
-              
 
             </Switch>
           </Router>
