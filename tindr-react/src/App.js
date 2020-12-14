@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import axios from 'axios';
 
 import WelcomePage from "./components/WelcomePage";
-import SideBar from "./components/SideBar";
+import Settings from "./components/Settings";
 import Asd from './components/Asd'
 import Recommendations from "./components/Recommendations";
 
@@ -86,6 +86,17 @@ class App extends Component {
                   ></Recommendations>
                 }
               </Route>
+
+              
+              <Route exact path="/settings">
+                {isLoggedIn === true &&
+                  <Settings></Settings>
+                }
+                {!isLoggedIn &&
+                  <WelcomePage></WelcomePage>
+                }
+              </Route>
+              
 
             </Switch>
           </Router>

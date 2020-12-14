@@ -10,9 +10,9 @@ export default class Asd extends Component {
   }
 
   
-// -- Request a PIN --
-//apikey1 = 6259e30396ee22afa1b50ed0d8468bd7be1204de
-//appkey1 = a1yqe5e4o6a6eborahy7
+  // -- Request a PIN --
+  //apikey1 = 6259e30396ee22afa1b50ed0d8468bd7be1204de
+  //appkey1 = a1yqe5e4o6a6eborahy7
   // curl -X "POST" "https://api.ringcaptcha.com/APP_KEY/code/sms" \
   // -d "api_key=API_KEY" \
   // -d "phone=TO_NUMBER"
@@ -26,7 +26,6 @@ export default class Asd extends Component {
 
   render() {
     
-    let asd = <ReactCodeInput type="number" fields={4}/>;
       return (
         <>
        
@@ -35,7 +34,6 @@ export default class Asd extends Component {
         <div id="page-wrap">
           <h1>Huzogass</h1>
           <h2>Jobbrabalra stb</h2>
-          {asd}
         </div>
       </div>
       </>

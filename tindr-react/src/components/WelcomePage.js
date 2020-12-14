@@ -6,19 +6,6 @@ import moment from "moment";
 import ReactCodeInput from 'react-code-input';
 import withReactContent from 'sweetalert2-react-content'
 
-// -- Request a PIN --
-
-  // curl -X "POST" "https://api.ringcaptcha.com/APP_KEY/code/sms" \
-  // -d "api_key=API_KEY" \
-  // -d "phone=TO_NUMBER"
-
-  // -- Verify Phone Number --
-
-  // curl -X "POST" "https://api.ringcaptcha.com/APP_KEY/verify" \
-  // -d "api_key=API_KEY" \
-  // -d "phone=TO_NUMBER" \
-  // -d "code=PIN"
-
 class WelcomePage extends Component {
     constructor() {
       super();
