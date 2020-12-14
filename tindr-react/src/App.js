@@ -4,9 +4,10 @@ import Cookies from "js-cookie";
 import axios from 'axios';
 
 import WelcomePage from "./components/WelcomePage";
-import SideBar from "./components/SideBar";
+import Settings from "./components/Settings";
 import Asd from './components/Asd'
 import Recommendations from "./components/Recommendations";
+import SideBar from "./components/SideBar";
 
 class App extends Component {
   constructor() {

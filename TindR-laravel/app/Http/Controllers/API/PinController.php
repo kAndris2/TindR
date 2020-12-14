@@ -32,12 +32,14 @@ class PinController extends Controller
         
         $phnum=urlencode($request["phone"]);
         $aikey=urlencode($request["apikey"]);
+
 		$ch = curl_init("http://api.ringcaptcha.com/v2/apps/".$request['appkey']."/captcha/sms");
 		
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS,"phone=".$phnum."&api_key=".$aikey."");
 		$response = curl_exec($ch);
-    	curl_close($ch);
+        curl_close($ch);
+        
         return $response;
     }
 
@@ -46,15 +48,18 @@ class PinController extends Controller
             $e = json_encode(array("error"=>"phone cannot be empty"));
             return $e;
         }
+        
         $phnum=urlencode($request["phone"]);
         $code=urlencode($request["code"]);
         $aikey=urlencode($request["apikey"]);
+
 		$ch = curl_init("http://api.ringcaptcha.com/".$request['appkey']."/verify");
 		
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS,"phone=".$phnum."&api_key=".$aikey."&code=".$code."");
 		$response = curl_exec($ch);
-    	curl_close($ch);
+        curl_close($ch);
+        
         return $response;
     }
 
