@@ -2,11 +2,7 @@ import React, {Component} from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import moment from "moment";
-import styles from "./css/Recommendations.module.css"
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMinusCircle } from '@fortawesome/free-solid-svg-icons'
-import { faHeartbeat } from '@fortawesome/free-solid-svg-icons'
+import TinderCard from 'react-tinder-card';
 
 class Recommendations extends Component {
     constructor() {
@@ -35,6 +31,9 @@ class Recommendations extends Component {
       this.showProfile = this.showProfile.bind(this);
       this.ageCalculation = this.ageCalculation.bind(this);
       this.getCurrentPictures = this.getCurrentPictures.bind(this);
+
+      this.onCardLeftScreen = this.onCardLeftScreen.bind(this);
+      this.onSwipe = this.onSwipe.bind(this);
     }
 
     async componentDidMount() {
@@ -169,34 +168,6 @@ class Recommendations extends Component {
 
         if (current.user !== undefined) {
             const route = pictures.length === undefined ? pictures.route : pictures[currentPictureIndex].route;
-            /*
-            //https://codepen.io/RobVermeer/pen/japZpY?editors=1000
-            return (
-                <>
-                    <div class={styles["tinder"]}>
-
-                        <div className={styles["tinder--status"]}>
-                            <FontAwesomeIcon icon={faMinusCircle} />
-                            <FontAwesomeIcon icon={faHeartbeat} />
-                        </div>
-
-                        <div className={styles["tinder--cards"]}>
-                            <div className={styles["tinder--card"]}>
-                                <img src={route} />
-                                <h3>{current.user.name} {this.ageCalculation(current.user.birthdate)}</h3>
-                            </div>
-                        </div>
-
-                        <div className={styles["tinder--buttons"]}>
-                            <button id="nope"><FontAwesomeIcon icon={faMinusCircle} /></button>
-                            <button id="love"><FontAwesomeIcon icon={faHeartbeat} /></button>
-                        </div>
-
-                    </div>
-                </>
-            );
-            */
-            
             return(
                 <>
                     <img src={route} />
@@ -271,15 +242,32 @@ class Recommendations extends Component {
         }
     }
 
+    onSwipe(direction) {
+        console.log(direction)
+    }
+
+    onCardLeftScreen(id) {
+        console.log(id)
+    }
+
     render() {
         const { isLoading } = this.state;
 
         if (!isLoading) {
+            /*
+            <div onKeyDown={this.handleKeyDown} tabIndex="0" className="container d-flex h-100 align-items-center">
+                        <div className="mx-auto text-center">
+                            {this.getCurrentData()}
+                        </div>
+                    </div>
+            */
             return (
                 <>
                     <div onKeyDown={this.handleKeyDown} tabIndex="0" className="container d-flex h-100 align-items-center">
                         <div className="mx-auto text-center">
-                            {this.getCurrentData()}
+                            <TinderCard onSwipe={this.onSwipe} onCardLeftScreen={() => this.onCardLeftScreen('fooBar')} preventSwipe={['right', 'left']}>
+                                {this.getCurrentData()}
+                            </TinderCard>
                         </div>
                     </div>
                 </>
