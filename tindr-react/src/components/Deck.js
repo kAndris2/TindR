@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useSprings } from "react-spring/hooks";
+import { useSprings } from "react-spring";
 import { useGesture } from "react-with-gesture";
 
 import Card from "./Card";
 import data from "../data.js";
 
-import "../styles/Deck.css";
+import "./css/deck.css";
 
 const to = i => ({
   x: 0,

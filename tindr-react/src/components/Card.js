@@ -1,6 +1,6 @@
 import React from "react";
 import { string, number, array } from "prop-types";
-import { animated, interpolate } from "react-spring/hooks";
+import { animated, interpolate } from "react-spring";
 import Carousel from "nuka-carousel";
 
 const Card = ({ i, x, y, rot, scale, trans, bind, data }) => {

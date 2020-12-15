@@ -9,6 +9,8 @@ import Asd from './components/Asd'
 import Recommendations from "./components/Recommendations";
 import SideBar from "./components/SideBar";
 
+import Deck from './components/Deck';
+
 class App extends Component {
   constructor() {
     super();
@@ -85,6 +87,16 @@ class App extends Component {
                   <Recommendations
                     userID={user.id}
                   ></Recommendations>
+                }
+              </Route>
+
+              <Route exact path="/recom2">
+                {isLoggedIn === true &&
+                <div id="recommendations">
+                  <Deck
+                    userID={user.id}
+                  ></Deck>
+                </div>
                 }
               </Route>
 
