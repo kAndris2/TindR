@@ -7,20 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model
 {
-    public $Id;
-    public $Name;
-    public $Age;
-    public $Distance;
-    public $Description;
+    public $id;
+    public $name;
+    public $age;
+    public $distance;
+    public $description;
     //public $Img_routes = array();
 
     public function __construct($Id, $Name, $Age, $Distance, $Description)//, $Img_routes)
     {
-        $this->Id = $Id;
-        $this->Name = $Name;
-        $this->Age = $Age;
-        $this->Distance = $Distance;
-        $this->Description = $Description;
+        $id = $Id;
+        $name = $Name;
+        $age = $Age;
+        $distance = $Distance;
+        $description = $Description;
         //$this->Img_routes = $Img_routes;
     }
 }
