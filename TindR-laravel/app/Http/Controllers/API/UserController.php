@@ -51,22 +51,23 @@ class UserController extends Controller
 
         foreach($users as $u)
         {
-            $u_temp = array();
             $img_temp = array();
             foreach($imgs as $img)
             {
                 array_push($img_temp, $img->route);
             }
+            array_push($recoms,
+                array(
+                    'id' => 4,
+                    'name' => "valaki",
+                    'pics' => $img_temp,
+                    'age' => 27,
+                    'distance' => '3 miles away',
+                    'text' => 'bla bla bla...'
+                )
+            );
         }
 
-        return array(
-            'id' => $users->id,
-            'name' => $users->name,
-            'pics' => ["fakk", "gdfgsdfg"],
-            'age' => 27,
-            'distance' => '3 miles away',
-            'text' => 'bla bla bla...'
-            //'img' => $img_arr
-        );
+        return $recoms;
     }
 }

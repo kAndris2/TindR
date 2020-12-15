@@ -80,7 +80,7 @@ class AccountController extends Controller
 
     public function getDetails($id)
     {
-        $account = Account::find($id)->firs();
+        $account = Account::find($id)->first();
 
         return array(
             'email' => $account->email,
