@@ -47,3 +47,5 @@ Route::get("pictures/{id}", [PictureController::class, "getPictures"]);
 
 Route::post("getpin", [PinController::class, "getPin"]);
 Route::post("validatecode", [PinController::class, "validateCode"]);
+
+Route::get("profiles/{id}", [UserController::class, 'getRecom2']);

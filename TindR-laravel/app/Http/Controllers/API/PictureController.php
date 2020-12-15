@@ -10,6 +10,6 @@ class PictureController extends Controller
 {
     public function getPictures($id)
     {
-        return Picture::where("id", "=", $id)->get();      
+        return Picture::where("user_id", "=", $id)->get();      
     }
 }

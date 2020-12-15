@@ -34,7 +34,7 @@ class AccountController extends Controller
         ]);
 
         Picture::create([
-            "id" => $newAccountId,
+            "user_id" => $newAccountId,
             "upload_date" => round(microtime(true) * 1000),
             "route" => $request["rawImage"]
         ]);

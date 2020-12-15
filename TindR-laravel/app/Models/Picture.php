@@ -8,7 +8,7 @@ class Picture extends Model {
     public $timestamps = false;
 
     protected $fillable = [
-        'id',
+        'user_id',
         'upload_date',
         'route'
     ];
