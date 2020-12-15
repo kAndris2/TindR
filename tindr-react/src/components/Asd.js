@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import SideBar from './SideBar'
 import './css/side.css'
-import Helmet from 'react-helmet';
-import ReactCodeInput from 'react-code-input';
 export default class Asd extends Component {
   constructor(props){
     super(props);

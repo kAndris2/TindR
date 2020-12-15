@@ -1,7 +1,10 @@
-import { bubble as Menu } from 'react-burger-menu';
+import { slide as Menu } from 'react-burger-menu';
 import React, { Component } from 'react';
 import axios from 'axios';
+import {Badge} from 'react-bootstrap';
 import {SettingsPane, SettingsPage, SettingsContent, SettingsMenu} from 'react-settings-pane';
+import { InputTags } from 'react-bootstrap-tagsinput';
+import 'react-bootstrap-tagsinput/dist/index.css';
 export default class SideBar extends Component {
   constructor(props){
     super(props);
@@ -9,16 +12,32 @@ export default class SideBar extends Component {
     this.state={
       profilePath:'',
       isLoading:true,
-      details:''
+      details:'',
+      formData: '',
+      tags:this.props.user.passion.split(","),
+      finalTags:[]
     }
 
      // Save settings after close
      this._leavePaneHandler = (wasSaved, newSettings, oldSettings) => {
     // "wasSaved" indicates wheather the pane was just closed or the save button was clicked.
 
-      if (wasSaved && newSettings !== oldSettings) {
+      if (wasSaved && (newSettings !== oldSettings)) {
         // do something with the settings, e.g. save via ajax.
-        this.setState(newSettings);
+        //this.setState({formData:newSettings});
+        axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_user/"+this.props.user.id,{
+          name:newSettings.name,
+          description:newSettings.description
+        });
+        axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_account/"+this.props.user.id,{
+          email:newSettings.email,
+          phone_number:newSettings.phone_number
+        });
+        if (this.state.finalTags.length >= 1){
+          axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_user/"+this.props.user.id,{
+            passion:newSettings.finalTags.join()
+          });
+        }
       }
 
       this.hidePrefs();
@@ -78,7 +97,7 @@ export default class SideBar extends Component {
   async getDetails(userid){
     await axios.get("http://"+process.env.REACT_APP_IP+":8000/api/details/"+userid)
     .then(resp => {
-      console.log(resp);
+      this.setState({details:resp.data})
     })
   }
 
@@ -88,11 +107,12 @@ export default class SideBar extends Component {
   }
 
   render() {
-    const {isLoading, profilePath} = this.state;
+    const {isLoading, profilePath,details,tags} = this.state;
     let settings = this.state;
     if(isLoading){
       return(<p>Loading...</p>)
     }
+    
     return (
       <>
         <Menu>
@@ -133,7 +153,7 @@ export default class SideBar extends Component {
                       <div className="input-group">
                         <input
                           type="text"
-                          name={this.props.user.name}
+                          name="name"
                           className="form-control"
                           placeholder="Username"
                           aria-describedby="basic-addon1"
@@ -147,74 +167,64 @@ export default class SideBar extends Component {
                       <input
                         type="text"
                         className="form-control"
-                        name="mysettings.general.email"
+                        name="email"
                         placeholder="E-Mail Address"
                         id="generalMail"
                         onChange={this._settingsChanged}
-                        defaultValue={settings["mysettings.general.email"]}
+                        defaultValue={details.email}
                       />
                     </fieldset>
                     <fieldset className="form-group">
-                      <label htmlFor="generalPic">Picture: </label>
+                      <label htmlFor="generalPic">Mobile number: </label>
                       <input
                         type="text"
                         className="form-control"
-                        name="mysettings.general.picture"
-                        placeholder="Picture"
+                        name="phone_number"
+                        placeholder="Mobile number"
                         id="generalPic"
                         onChange={this._settingsChanged}
-                        defaultValue={settings["mysettings.general.picture"]}
+                        defaultValue={details.phone_number}
                       />
-                    </fieldset>
-                    <fieldset className="form-group">
-                      <label htmlFor="profileColor">Color-Theme: </label>
-                      <select
-                        name="mysettings.general.color-theme"
-                        id="profileColor"
-                        className="form-control"
-                        defaultValue={settings["mysettings.general.color-theme"]}
-                      >
-                        <option value="blue">Blue</option>
-                        <option value="red">Red</option>
-                        <option value="purple">Purple</option>
-                        <option value="orange">Orange</option>
-                      </select>
                     </fieldset>
                   </SettingsPage>
                   <SettingsPage handler="/settings/profile">
-                    <fieldset className="form-group">
-                      <label htmlFor="profileFirstname">Firstname: </label>
+                  <fieldset className="form-group">
+                      <label htmlFor="profileFirstname">Company: </label>
                       <input
                         type="text"
                         className="form-control"
                         name="mysettings.profile.firstname"
-                        placeholder="Firstname"
+                        placeholder="Add a company"
+                        id="profileFirstname"
+                        onChange={this._settingsChanged}
+                        defaultValue={this.props.user.copmany}
+                      />
+                    </fieldset>
+                    <fieldset className="form-group">
+                      <label htmlFor="profileFirstname">Job Title: </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="mysettings.profile.firstname"
+                        placeholder="Job title"
                         id="profileFirstname"
                         onChange={this._settingsChanged}
                         defaultValue={settings["mysettings.profile.firstname"]}
                       />
                     </fieldset>
                     <fieldset className="form-group">
-                      <label htmlFor="profileLastname">Lastname: </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="mysettings.profile.lastname"
-                        placeholder="Lastname"
-                        id="profileLastname"
-                        onChange={this._settingsChanged}
-                        defaultValue={settings["mysettings.profile.lastname"]}
-                      />
+                      <label htmlFor="profileLastname">Your passions: </label>
+                      <InputTags values={tags} onTags={(value) => this.setState({finalTags:value.values})} />
                     </fieldset>
                     <fieldset className="form-group">
-                      <label htmlFor="profileBiography">Biography: </label>
+                      <label htmlFor="profileBiography">Details: </label>
                       <textarea
                         className="form-control"
-                        name="mysettings.profile.biography"
-                        placeholder="Biography"
+                        name="description"
+                        placeholder="Tell us something about yourself"
                         id="profileBiography"
                         onChange={this._settingsChanged}
-                        defaultValue={settings["mysettings.profile.biography"]}
+                        defaultValue={this.props.user.description}
                       />
                     </fieldset>
                   </SettingsPage>
