@@ -8,8 +8,7 @@ export default [
     distance: "3 miles away",
     text:
       "I keep calling the plumber round, and he keeps fixing stuff. Where am I going wrong?"
-  }
-  /*,
+  },
   {
     pics: [
       "https://images.unsplash.com/photo-1456885284447-7dd4bb8720bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80",
@@ -41,5 +40,4 @@ export default [
     text:
       "Respiratory Therapy Student. Cute enough to take your breath away, smart enough to bring it back"
   }
-  */
 ];

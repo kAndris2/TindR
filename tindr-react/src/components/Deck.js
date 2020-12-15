@@ -4,7 +4,7 @@ import { useGesture } from "react-with-gesture";
 import axios from 'axios';
 
 import Card from "./Card";
-import data from "../data.js";
+//import data from "../data.js";
 
 import "./css/deck.css";
 
@@ -28,8 +28,8 @@ async function getData(props) {
   })
 }
 
-const Deck = () => {
-  /*
+const Deck = (props) => {
+
   const [data, setData] = useState([]);
 
   useEffect(async () => {
@@ -45,10 +45,10 @@ const Deck = () => {
         console.log(err);
       });
   }, []);
-  */
+
 
   const [gone] = useState(() => new Set());
-
+  console.log(data.length);
   const [props1, set] = useSprings(data.length, i => ({
     ...to(i),
     from: from(i)
