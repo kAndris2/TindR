@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSprings } from "react-spring";
 import { useGesture } from "react-with-gesture";
+import axios from 'axios';
 
 import Card from "./Card";
 import data from "../data.js";
@@ -20,13 +21,40 @@ const trans = (r, s) =>
   `perspective(1500px) rotateX(30deg) rotateY(${r /
   10}deg) rotateZ(${r}deg) scale(${s})`;
 
-function Deck() {
+async function getData(props) {
+  await axios.get(`http://${process.env.REACT_APP_IP}:8000/api/profiles/${props.userID}`)
+  .then(reponse => {
+    console.log(reponse)
+  })
+}
+
+const Deck = () => {
+  /*
+  const [data, setData] = useState([]);
+
+  useEffect(async () => {
+    await fetch(`http://${process.env.REACT_APP_IP}:8000/api/profiles/${props.userID}`)
+      .then(response => {
+        console.log(response)
+        return response.json();
+      })
+      .then(response => {
+        setData(response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
+  */
+
   const [gone] = useState(() => new Set());
 
-  const [props, set] = useSprings(data.length, i => ({
+  const [props1, set] = useSprings(data.length, i => ({
     ...to(i),
     from: from(i)
   }));
+
+  console.log(props1)
 
   const bind = useGesture(
     ({
@@ -66,7 +94,7 @@ function Deck() {
     }
   );
 
-  return props.map(({ x, y, rot, scale }, i) => (
+  return props1.map(({ x, y, rot, scale }, i) => (
     <Card
       key={i}
       i={i}

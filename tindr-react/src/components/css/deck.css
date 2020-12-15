@@ -16,7 +16,7 @@ body {
 }
 
 #recommendations {
-  background: salmon;
+  filter:blur(0px);
   position: fixed;
   overflow: hidden;
   width: 100%;
