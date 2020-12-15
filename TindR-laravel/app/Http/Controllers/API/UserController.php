@@ -58,12 +58,12 @@ class UserController extends Controller
             }
             array_push($recoms,
                 array(
-                    'id' => 4,
-                    'name' => "valaki",
-                    'pics' => $img_temp,
-                    'age' => 27,
+                    //'id' => $u->id,
+                    'name' => $u->name,
+                    'age' => $u->birthdate,
                     'distance' => '3 miles away',
-                    'text' => 'bla bla bla...'
+                    'text' => $u->description,
+                    'pics' => $img_temp
                 )
             );
         }
