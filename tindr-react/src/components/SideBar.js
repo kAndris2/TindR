@@ -9,18 +9,12 @@ export default class SideBar extends Component {
     this.state={
       profilePath:'',
       isLoading:true,
-      "mysettings.general.name": "Dennis Stücken",
-      "mysettings.general.username": "dstuecken",
-      "mysettings.general.color-theme": "purple",
-      "mysettings.general.email": "dstuecken@react-settings-pane.com",
-      "mysettings.general.picture": "earth",
-      "mysettings.profile.firstname": "Dennis",
-      "mysettings.profile.lastname": "Stücken"
+      details:''
     }
 
      // Save settings after close
      this._leavePaneHandler = (wasSaved, newSettings, oldSettings) => {
-      // "wasSaved" indicates wheather the pane was just closed or the save button was clicked.
+    // "wasSaved" indicates wheather the pane was just closed or the save button was clicked.
 
       if (wasSaved && newSettings !== oldSettings) {
         // do something with the settings, e.g. save via ajax.
@@ -31,7 +25,9 @@ export default class SideBar extends Component {
     };
 
     // React if a single setting changed
-    this._settingsChanged = ev => {};
+    this._settingsChanged = ev => {
+
+    };
 
     // Settings menu definition
     this._menu = [
@@ -44,24 +40,8 @@ export default class SideBar extends Component {
         url: "/settings/profile"
       },
       {
-        title: "Notifications",
-        url: "/settings/notifications"
-      },
-      {
-        title: "Language",
-        url: "/settings/language"
-      },
-      {
-        title: "Appearance",
-        url: "/settings/appearance"
-      },
-      {
-        title: "Plugins",
-        url: "/settings/plugins"
-      },
-      {
-        title: "About",
-        url: "/settings/about"
+        title: "Pictures",
+        url: "/settings/pictures"
       }
     ];
 
@@ -95,14 +75,21 @@ export default class SideBar extends Component {
     })
   }
 
+  async getDetails(userid){
+    await axios.get("http://"+process.env.REACT_APP_IP+":8000/api/details/"+userid)
+    .then(resp => {
+      console.log(resp);
+    })
+  }
+
   async componentDidMount(){
     await this.getProfilePictures(this.props.user);
+    await this.getDetails(this.props.user.id);
   }
 
   render() {
     const {isLoading, profilePath} = this.state;
     let settings = this.state;
-    let user = this.props;
     if(isLoading){
       return(<p>Loading...</p>)
     }
@@ -110,7 +97,7 @@ export default class SideBar extends Component {
       <>
         <Menu>
           <div className="menu-item" href="/">
-            {user.name}
+            {this.props.user.name}
           </div>
           <a className="navbar-brand text-center" href="#">
             <img src={profilePath[0].route} height="80" alt=""/>
@@ -140,29 +127,18 @@ export default class SideBar extends Component {
                 <SettingsMenu headline="General Settings" />
                 <SettingsContent header>
                   <SettingsPage handler="/settings/general">
-                    <fieldset className="form-group">
-                      <label htmlFor="generalName">Name: </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name={this.props.user.name}
-                        placeholder="Name"
-                        id="generalName"
-                        onChange={this._settingsChanged}
-                        defaultValue={this.props.user.name}
-                      />
-                    </fieldset>
+                    
                     <fieldset className="form-group">
                       <label htmlFor="generalUsername">Username: </label>
                       <div className="input-group">
                         <input
                           type="text"
-                          name="mysettings.general.username"
+                          name={this.props.user.name}
                           className="form-control"
                           placeholder="Username"
                           aria-describedby="basic-addon1"
                           onChange={this._settingsChanged}
-                          defaultValue={settings["mysettings.general.username"]}
+                          defaultValue={this.props.user.name}
                         />
                       </div>
                     </fieldset>
@@ -241,6 +217,9 @@ export default class SideBar extends Component {
                         defaultValue={settings["mysettings.profile.biography"]}
                       />
                     </fieldset>
+                  </SettingsPage>
+                  <SettingsPage handler="/settings/pictures">
+                    <h1>Uploaded pics</h1>
                   </SettingsPage>
                 </SettingsContent>
               </SettingsPane>
