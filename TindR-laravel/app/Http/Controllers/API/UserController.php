@@ -45,7 +45,7 @@ class UserController extends Controller
 
     public function getRecom2($id)
     {
-        $users = User::where("id", "!=", $id)->first();
+        $users = User::where("id", "!=", $id)->get();
         $imgs = Picture::where("user_id", "!=", $id)->get();
         $recoms = array();
 
