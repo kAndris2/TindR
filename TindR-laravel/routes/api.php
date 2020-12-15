@@ -39,6 +39,7 @@ Route::post("logout", [AccountController::class, "logout"]);
 Route::put("update_account/{id}", [AccountController::class, "updateAccount"]);
 Route::delete("delete_account/{id}", [AccountController::class, "deleteAccount"]);
 Route::get("valid_email/{email}", [AccountController::class, "isValidEmail"]);
+Route::get("details/{id}", [AccountController::class, "getDetails"]);
 
 Route::post("add_like", [LikeController::class, "addLike"]);
 Route::post("add_dislike", [LikeController::class, "addDislike"]);

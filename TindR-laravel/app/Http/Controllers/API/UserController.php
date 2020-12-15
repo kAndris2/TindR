@@ -11,6 +11,7 @@ use App\Models\Like;
 use App\Models\Dislike;
 
 use App\Models\Picture;
+use App\Models\Profile;
 
 class UserController extends Controller
 {
@@ -44,46 +45,28 @@ class UserController extends Controller
 
     public function getRecom2($id)
     {
-        $users = User::where("id", "!=", $id)->get();
-        //$imgs = Picture::where("user_id", "!=", $id)->get();
-
+        $users = User::where("id", "!=", $id)->first();
+        $imgs = Picture::where("user_id", "!=", $id)->get();
         $recoms = array();
 
-        foreach($users as $user)
+        foreach($users as $u)
         {
-            /*
-            $img_arr = array();
+            $u_temp = array();
+            $img_temp = array();
             foreach($imgs as $img)
             {
-                if ($img->user_id == $user->id)
-                {
-                    array_push($img_arr, $img->route);
-                }
+                array_push($img_temp, $img->route);
             }
-            */
-            $temp = array(
-                'id' => $user->id,
-                'name' => $user->name,
-                'age' => 27,
-                'distance' => '3 miles away',
-                'text' => 'bla bla bla...'
-                //'img' => $img_arr
-            );
-            var_dump( json_encode($temp) );
-            //array_push($recoms, json_encode($temp));
         }
 
-        /*
-        $recoms = array(
+        return array(
             'id' => $users->id,
             'name' => $users->name,
+            'pics' => ["fakk", "gdfgsdfg"],
             'age' => 27,
             'distance' => '3 miles away',
-            'text' => 'bla bla bla...',
-            'img' => $img_arr
+            'text' => 'bla bla bla...'
+            //'img' => $img_arr
         );
-        */
-
-        //return json_encode($recoms);
     }
 }

@@ -77,4 +77,14 @@ class AccountController extends Controller
         $account = Account::where("email", "=", $email)->first();
         return $account;
     }
+
+    public function getDetails($id)
+    {
+        $account = Account::find($id)->firs();
+
+        return array(
+            'email' => $account->email,
+            'phone_number' => $account->phone_number
+        );
+    }
 }
