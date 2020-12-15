@@ -33,7 +33,7 @@ export default class SideBar extends Component {
     // React if a single setting changed
     this._settingsChanged = ev => {};
 
-    // Define your menu
+    // Settings menu definition
     this._menu = [
       {
         title: "General", // Title that is displayed as text in the menu
@@ -102,6 +102,7 @@ export default class SideBar extends Component {
   render() {
     const {isLoading, profilePath} = this.state;
     let settings = this.state;
+    let user = this.props;
     if(isLoading){
       return(<p>Loading...</p>)
     }
@@ -109,7 +110,7 @@ export default class SideBar extends Component {
       <>
         <Menu>
           <div className="menu-item" href="/">
-            {this.props.user.name}
+            {user.name}
           </div>
           <a className="navbar-brand text-center" href="#">
             <img src={profilePath[0].route} height="80" alt=""/>
