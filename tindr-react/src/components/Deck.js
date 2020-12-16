@@ -31,14 +31,19 @@ async function getData(props) {
 const Deck = (props) => {
 
   const [data, setData] = useState([]);
+  console.log("data: " + data)
 
-  useEffect(async () => {
-    await fetch(`http://${process.env.REACT_APP_IP}:8000/api/profiles/${props.userID}`)
+  //if (data !== null) {
+
+  useEffect(() => {
+    console.log("1")
+    fetch(`http://${process.env.REACT_APP_IP}:8000/api/profiles/${props.userID}`)
       .then(response => {
         console.log(response)
         return response.json();
       })
       .then(response => {
+        console.log(response)
         setData(response);
       })
       .catch(err => {
@@ -46,67 +51,82 @@ const Deck = (props) => {
       });
   }, []);
 
+    console.log("2")
 
-  const [gone] = useState(() => new Set());
-  console.log(data.length);
-  const [props1, set] = useSprings(data.length, i => ({
-    ...to(i),
-    from: from(i)
-  }));
+    const [gone] = useState(() => new Set());
 
-  console.log(props1)
+    const [cardState, set] = useSprings(data.length, i => ({
+      ...to(i),
+      from: from(i)
+    }));
 
-  const bind = useGesture(
-    ({
-      args: [index],
-      down,
-      delta: [xDelta],
-      distance,
-      direction: [xDir],
-      velocity
-    }) => {
-      const trigger = velocity > 0.2;
+    console.log(data.length);
 
-      const dir = xDir < 0 ? -1 : 1;
+    const bind = useGesture(
+      ({
+        args: [index],
+        down,
+        delta: [xDelta],
+        distance,
+        direction: [xDir],
+        velocity
+      }) => {
+        const trigger = velocity > 0.2;
 
-      if (!down && trigger) gone.add(index);
+        const dir = xDir < 0 ? -1 : 1;
 
-      set(i => {
-        if (index !== i) return;
-        const isGone = gone.has(index);
+        if (!down && trigger) {
+          gone.add(index);
 
-        const x = isGone ? (200 + window.innerWidth) * dir : down ? xDelta : 0;
+          console.log(data)
+        }
 
-        const rot = xDelta / 100 + (isGone ? dir * 10 * velocity : 0);
+        set(i => {
+          if (index !== i) return;
+          const isGone = gone.has(index);
 
-        const scale = down ? 1.1 : 1;
-        return {
-          x,
-          rot,
-          scale,
-          delay: undefined,
-          config: { friction: 50, tension: down ? 800 : isGone ? 200 : 500 }
-        };
-      });
+          const x = isGone ? (200 + window.innerWidth) * dir : down ? xDelta : 0;
 
-      if (!down && gone.size === data.length)
-        setTimeout(() => gone.clear() || set(i => to(i)), 600);
-    }
-  );
+          const rot = xDelta / 100 + (isGone ? dir * 10 * velocity : 0);
 
-  return props1.map(({ x, y, rot, scale }, i) => (
-    <Card
-      key={i}
-      i={i}
-      x={x}
-      y={y}
-      rot={rot}
-      scale={scale}
-      trans={trans}
-      data={data}
-      bind={bind}
-    />
-  ));
+          const scale = down ? 1.1 : 1;
+          return {
+            x,
+            rot,
+            scale,
+            delay: undefined,
+            config: { friction: 50, tension: down ? 800 : isGone ? 200 : 500 }
+          };
+        });
+
+        if (!down && gone.size === data.length) {
+          console.log("hossz: " + data.length)
+          setTimeout(() => gone.clear() || set(i => to(i)), 600);
+        }
+      }
+    );
+
+    return cardState.map(({ x, y, rot, scale }, i) => (
+      <Card
+        key={i}
+        i={i}
+        x={x}
+        y={y}
+        rot={rot}
+        scale={scale}
+        trans={trans}
+        data={data}
+        bind={bind}
+      />
+    ));
+  /*
+  }
+  if (data === null) {
+    return (
+      <h1>...</h1>
+    );
+  }
+  */
 }
 
 export default Deck;
