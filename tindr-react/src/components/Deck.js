@@ -33,8 +33,6 @@ const Deck = (props) => {
   const [data, setData] = useState([]);
   console.log("data: " + data)
 
-  //if (data !== null) {
-
   useEffect(() => {
     console.log("1")
     fetch(`http://${process.env.REACT_APP_IP}:8000/api/profiles/${props.userID}`)
@@ -119,14 +117,6 @@ const Deck = (props) => {
         bind={bind}
       />
     ));
-  /*
-  }
-  if (data === null) {
-    return (
-      <h1>...</h1>
-    );
-  }
-  */
 }
 
 export default Deck;
