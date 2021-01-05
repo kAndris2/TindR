@@ -74,14 +74,16 @@ const Deck = (props) => {
         if (!down && trigger) {
           gone.add(index);
           
+          const send = {
+            "index": index,
+             "giverid": props.userID,
+             "direction": dir
+          }
+
           fetch(`http://${process.env.REACT_APP_IP}:8000/api/give_vote`, {
             method: 'post',
             headers: {'Content-Type':'application/json'},
-            body: {
-             "index": index,
-             "giverid": props.userID,
-             "direction": dir
-            }
+            body: JSON.stringify(send)
            });
         }
 

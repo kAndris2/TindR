@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Picture;
 use App\Models\Profile;
+use App\Models\User;
 
 class RecommendationService
 {
@@ -25,7 +26,7 @@ class RecommendationService
             }
             array_push($recoms,
                 array(
-                    //'id' => $u->id,
+                    'id' => $u->id,
                     'name' => $u->name,
                     'age' => $u->birthdate,
                     'distance' => '3 miles away',

@@ -17,8 +17,9 @@ class VoteService
 
     public function manageVote($index, $giverID, $direction) 
     {
-        $profiles = $recomService->getRecommendations($id);
-        $receiverID = $profiles[$index]->id;
+        $profiles = $this->recomService->getRecommendations($giverID);
+
+        $receiverID = $profiles[$index]["id"];
 
         $direction == 1 ? $this->createLike($receiverID, $giverID) : $this->createDislike($receiverID, $giverID);
     }

@@ -46,6 +46,6 @@ class UserController extends Controller
 
     public function getRecom2($id)
     {
-        return $recomService->getRecommendations($id);
+        return $this->recomService->getRecommendations($id);
     }
 }
