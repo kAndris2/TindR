@@ -10,6 +10,9 @@ import Recommendations from "./components/Recommendations";
 import SideBar from "./components/SideBar";
 
 import Deck from './components/Deck';
+import Test from './components/Test';
+import Callback from './components/Callb'
+
 
 class App extends Component {
   constructor() {
@@ -99,7 +102,9 @@ class App extends Component {
                 </div>
                 }
               </Route>
-
+              <Route exact path="/test">
+                <Test></Test>
+              </Route>
             </Switch>
           </Router>
         </>

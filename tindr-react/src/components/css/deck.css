@@ -52,7 +52,7 @@ body {
     0 10px 10px -10px rgba(50, 50, 73, 0.3);
 }
 
-img {
+#di > img {
   height: 380px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -83,11 +83,11 @@ h5:last-of-type {
   color: darkgray;
 }
 
-.card > div {
+#dc > div {
   height: 380px !important;
 }
 
-.card {
+#dc {
   height: 500px !important;
 }
 

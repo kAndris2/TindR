@@ -63,7 +63,8 @@ class UserController extends Controller
                     'age' => $u->birthdate,
                     'distance' => '3 miles away',
                     'text' => $u->description,
-                    'pics' => $img_temp
+                    'pics' => $img_temp,
+                    'anthem' => $u->anthem
                 )
             );
         }

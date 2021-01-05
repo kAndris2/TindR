@@ -24,10 +24,19 @@ export default class SideBar extends Component {
 
       if (wasSaved && (newSettings !== oldSettings)) {
         // do something with the settings, e.g. save via ajax.
+
         //this.setState({formData:newSettings});
+        //https://open.spotify.com/track/0vWUhCPxpJOJR5urYbZypB
+
+        let songID='';
+        if ((newSettings.anthem) && newSettings.anthem.length > 22){
+          songID = newSettings.anthem.split("track/")[1];
+        }
+        else songID = oldSettings.anthem;
         axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_user/"+this.props.user.id,{
           name:newSettings.name,
-          description:newSettings.description
+          description:newSettings.description,
+          anthem:songID
         });
         axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_account/"+this.props.user.id,{
           email:newSettings.email,
@@ -45,7 +54,7 @@ export default class SideBar extends Component {
 
     // React if a single setting changed
     this._settingsChanged = ev => {
-
+      
     };
 
     // Settings menu definition
@@ -227,6 +236,17 @@ export default class SideBar extends Component {
                         defaultValue={this.props.user.description}
                       />
                     </fieldset>
+                    <fieldset className="form-group">
+                      <label htmlFor="profileLastname">Anthem: </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="anthem"
+                        placeholder="ex.: https://open.spotify.com/track/0vWUhCPxpJOJR5urYbZypB"
+                        onChange={this._settingsChanged}
+                        
+                      />
+                    </fieldset>
                   </SettingsPage>
                   <SettingsPage handler="/settings/pictures">
                     <h1>Uploaded pics</h1>
@@ -234,7 +254,6 @@ export default class SideBar extends Component {
                 </SettingsContent>
               </SettingsPane>
             </div>
-
       </>
     )
   }

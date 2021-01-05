@@ -31,11 +31,11 @@ async function getData(props) {
 const Deck = (props) => {
 
   const [data, setData] = useState([]);
-
+  
   useEffect(async () => {
     await fetch(`http://${process.env.REACT_APP_IP}:8000/api/profiles/${props.userID}`)
       .then(response => {
-        console.log(response)
+        console.log(response);
         return response.json();
       })
       .then(response => {
@@ -88,7 +88,7 @@ const Deck = (props) => {
           config: { friction: 50, tension: down ? 800 : isGone ? 200 : 500 }
         };
       });
-
+      
       if (!down && gone.size === data.length)
         setTimeout(() => gone.clear() || set(i => to(i)), 600);
     }
