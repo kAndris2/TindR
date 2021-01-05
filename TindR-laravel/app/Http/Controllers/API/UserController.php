@@ -54,7 +54,10 @@ class UserController extends Controller
             $img_temp = array();
             foreach($imgs as $img)
             {
-                array_push($img_temp, $img->route);
+                if($img->user_id == $u->id)
+                {
+                    array_push($img_temp, $img->route);
+                }
             }
             array_push($recoms,
                 array(
