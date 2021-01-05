@@ -31,13 +31,11 @@ async function getData(props) {
 const Deck = (props) => {
 
   const [data, setData] = useState([]);
-  console.log("data: " + data)
 
   useEffect(() => {
     console.log("1")
     fetch(`http://${process.env.REACT_APP_IP}:8000/api/profiles/${props.userID}`)
       .then(response => {
-        console.log(response);
         return response.json();
       })
       .then(response => {
@@ -75,8 +73,16 @@ const Deck = (props) => {
 
         if (!down && trigger) {
           gone.add(index);
-
-          console.log(data)
+          
+          fetch(`http://${process.env.REACT_APP_IP}:8000/api/give_vote`, {
+            method: 'post',
+            headers: {'Content-Type':'application/json'},
+            body: {
+             "index": index,
+             "giverid": props.userID,
+             "direction": dir
+            }
+           });
         }
 
         set(i => {
