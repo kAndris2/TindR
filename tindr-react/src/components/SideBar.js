@@ -5,6 +5,16 @@ import {Badge} from 'react-bootstrap';
 import {SettingsPane, SettingsPage, SettingsContent, SettingsMenu} from 'react-settings-pane';
 import { InputTags } from 'react-bootstrap-tagsinput';
 import 'react-bootstrap-tagsinput/dist/index.css';
+import InputRange from 'react-input-range';
+import 'react-input-range/lib/css/index.css';
+import Select from 'react-select';
+
+const options = [
+  { value: 'Men', label: 'Men' },
+  { value: 'Women', label: 'Women' },
+  { value: 'Everyone', label: 'Everyone' },
+];
+
 export default class SideBar extends Component {
   constructor(props){
     super(props);
@@ -15,7 +25,9 @@ export default class SideBar extends Component {
       details:'',
       formData: '',
       tags:this.props.user.passion.split(","),
-      finalTags:[]
+      finalTags:[],
+      distanceValue: { min: 2, max: 10 },
+      ageValue: { min: 18, max: 27 }
     }
 
      // Save settings after close
@@ -33,6 +45,9 @@ export default class SideBar extends Component {
           songID = newSettings.anthem.split("track/")[1];
         }
         else songID = oldSettings.anthem;
+
+        console.log(oldSettings)
+
         axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_user/"+this.props.user.id,{
           name:newSettings.name,
           description:newSettings.description,
@@ -70,6 +85,10 @@ export default class SideBar extends Component {
       {
         title: "Pictures",
         url: "/settings/pictures"
+      },
+      {
+        title: "Search",
+        url: "/settings/search"
       }
     ];
 
@@ -251,6 +270,42 @@ export default class SideBar extends Component {
                   <SettingsPage handler="/settings/pictures">
                     <h1>Uploaded pics</h1>
                   </SettingsPage>
+
+                  <SettingsPage handler="/settings/search">
+                  <fieldset className="form-group">
+                    <label>Looking for:</label>
+                      <Select
+                        //value={selectedOption}
+                        //onChange={this.handleChange}
+                        options={options}
+                      />
+                    </fieldset>
+                    <fieldset className="form-group">
+                      <label>Max distance (km):</label><br /><br />
+                      <InputRange
+                        maxValue={200}
+                        minValue={0}
+                        value={this.state.distanceValue}
+                        onChange={value => {
+                          this.setState({ distanceValue : value });
+                          //this._settingsChanged();
+                        }} 
+                      />
+                    </fieldset><br />
+                    <fieldset className="form-group">
+                      <label>Min/Max age:</label><br /><br />
+                      <InputRange
+                        maxValue={100}
+                        minValue={18}
+                        value={this.state.ageValue}
+                        onChange={value => {
+                          this.setState({ ageValue : value });
+                          //this._settingsChanged();
+                        }} 
+                      />
+                    </fieldset>
+                  </SettingsPage>
+
                 </SettingsContent>
               </SettingsPane>
             </div>
