@@ -3,14 +3,14 @@
 namespace App\Services;
 
 use App\Models\Picture;
-use App\Models\Profile;
 use App\Models\User;
+use App\Models\Search;
 
 class RecommendationService
 {
     public function getRecommendations($id)
     {
-        $users = User::where("id", "!=", $id)->get();
+        $users = $this->getUsersWhoMeetsSearchCondition($id);
         $imgs = Picture::where("user_id", "!=", $id)->get();
         $recoms = array();
 
@@ -36,7 +36,34 @@ class RecommendationService
                 )
             );
         }
+        return json_encode($recoms);
+    }
 
-        return $recoms;
+    private function getUsersWhoMeetsSearchCondition($id)
+    {
+        $search = Search::find($id);
+        $users = User::where("id", "!=", $id)->get();
+        $result = array();
+        $MAX_SCORE = 2;
+
+        foreach($users as $u)
+        {
+            $score = 0;
+            $age = $this->ageCalculate($u->birthdate);
+
+            if ($u->gender == $search->looking_for || $u->gender == null) $score++;
+            if ($age >= $search->min_age && $age <= $search->max_age) $score++;
+
+            if($score == $MAX_SCORE)
+            {
+                array_push($result, $u);
+            }
+        }
+        return $result;
+    }
+
+    private function ageCalculate($milli) 
+    {
+        return date('Y') - date('Y', $milli / 1000);
     }
 }
