@@ -399,3 +399,6 @@ ul.settings-menu li.menu-item.active a:before {
   text-shadow: 1px 1px #fff;
   color: #3f3f3f;
 }
+.swal2-container {
+  z-index: 10600;
+}

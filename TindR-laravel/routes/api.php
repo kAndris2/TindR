@@ -44,6 +44,7 @@ Route::get("details/{id}", [AccountController::class, "getDetails"]);
 Route::post("give_vote", [LikeController::class, "manageLikes"]);
 
 Route::get("pictures/{id}", [PictureController::class, "getPictures"]);
+Route::post("pictures/upload/{id}", [PictureController::class, "addPicture"]);
 
 Route::post("getpin", [PinController::class, "getPin"]);
 Route::post("validatecode", [PinController::class, "validateCode"]);
