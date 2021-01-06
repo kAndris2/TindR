@@ -19,7 +19,7 @@ class VoteService
     {
         $profiles = $this->recomService->getRecommendations($giverID);
 
-        $receiverID = $profiles[$index]["id"];
+        $receiverID = json_decode($profiles, true)[$index]["id"];
 
         $direction == 1 ? $this->createLike($receiverID, $giverID) : $this->createDislike($receiverID, $giverID);
     }
