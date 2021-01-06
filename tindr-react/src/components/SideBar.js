@@ -5,6 +5,7 @@ import {Badge} from 'react-bootstrap';
 import {SettingsPane, SettingsPage, SettingsContent, SettingsMenu} from 'react-settings-pane';
 import { InputTags } from 'react-bootstrap-tagsinput';
 import 'react-bootstrap-tagsinput/dist/index.css';
+import Picture_upload from './Picture_upload';
 export default class SideBar extends Component {
   constructor(props){
     super(props);
@@ -249,7 +250,7 @@ export default class SideBar extends Component {
                     </fieldset>
                   </SettingsPage>
                   <SettingsPage handler="/settings/pictures">
-                    <h1>Uploaded pics</h1>
+                    <Picture_upload images={profilePath} user={this.props.user}></Picture_upload>
                   </SettingsPage>
                 </SettingsContent>
               </SettingsPane>
