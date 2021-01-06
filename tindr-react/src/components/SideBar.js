@@ -5,10 +5,10 @@ import {Badge} from 'react-bootstrap';
 import {SettingsPane, SettingsPage, SettingsContent, SettingsMenu} from 'react-settings-pane';
 import { InputTags } from 'react-bootstrap-tagsinput';
 import 'react-bootstrap-tagsinput/dist/index.css';
-<<<<<<< HEAD
 import InputRange from 'react-input-range';
 import 'react-input-range/lib/css/index.css';
 import Select from 'react-select';
+import Picture_upload from './Picture_upload';
 
 const options = [
   { value: 'Men', label: 'Men' },
@@ -16,9 +16,6 @@ const options = [
   { value: 'Everyone', label: 'Everyone' },
 ];
 
-=======
-import Picture_upload from './Picture_upload';
->>>>>>> e431a688170c3b76aa76c8018a6d70f639b1e8b3
 export default class SideBar extends Component {
   constructor(props){
     super(props);
