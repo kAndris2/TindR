@@ -4,6 +4,14 @@ import { animated, interpolate } from "react-spring";
 import Carousel from "nuka-carousel";
 import Test from './Test';
 
+const ageCalculation = (date) => {
+  const now = new Date();
+  const birthdate = new Date(date);
+
+  let diff = now.getTime() - birthdate.getTime();
+  return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+}
+
 const Card = ({ i, x, y, rot, scale, trans, bind, data }) => {
   const { name, age, distance, text, pics, anthem } = data[i];
 
@@ -27,7 +35,7 @@ const Card = ({ i, x, y, rot, scale, trans, bind, data }) => {
             ))}
           </Carousel>
           <h2>{name},</h2>
-          <h2>{age}</h2>
+          <h2>{ageCalculation(age)}</h2>
           <h5>{distance}</h5>
           <h5>{text}</h5>
           <div><Test songID={anthem}></Test></div>
