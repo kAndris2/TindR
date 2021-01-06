@@ -5,16 +5,17 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Search;
-use App\Models\Match;
-use App\Models\Like;
-use App\Models\Dislike;
-
-use App\Models\Picture;
-use App\Models\Profile;
+use App\Services\RecommendationService;
 
 class UserController extends Controller
 {
+
+    public $recomService;
+
+    public function __construct() {
+        $this->recomService = new RecommendationService();
+    }
+
     public function getUsers() 
     {
         return User::all();
@@ -45,33 +46,6 @@ class UserController extends Controller
 
     public function getRecom2($id)
     {
-        $users = User::where("id", "!=", $id)->get();
-        $imgs = Picture::where("user_id", "!=", $id)->get();
-        $recoms = array();
-
-        foreach($users as $u)
-        {
-            $img_temp = array();
-            foreach($imgs as $img)
-            {
-                if($img->user_id == $u->id)
-                {
-                    array_push($img_temp, $img->route);
-                }
-            }
-            array_push($recoms,
-                array(
-                    //'id' => $u->id,
-                    'name' => $u->name,
-                    'age' => $u->birthdate,
-                    'distance' => '3 miles away',
-                    'text' => $u->description,
-                    'pics' => $img_temp,
-                    'anthem' => $u->anthem
-                )
-            );
-        }
-
-        return $recoms;
+        return $this->recomService->getRecommendations($id);
     }
 }
