@@ -19,7 +19,7 @@ const options = [
 export default class SideBar extends Component {
   constructor(props){
     super(props);
-
+    this.picupload = React.createRef();
     this.state={
       profilePath:'',
       isLoading:true,
@@ -28,16 +28,20 @@ export default class SideBar extends Component {
       tags:this.props.user.passion.split(","),
       finalTags:[],
       distanceValue: { min: 2, max: 10 },
-      ageValue: { min: 18, max: 27 }
+      ageValue: { min: 18, max: 27 },
+      tocompsave:false,
     }
 
      // Save settings after close
      this._leavePaneHandler = (wasSaved, newSettings, oldSettings) => {
     // "wasSaved" indicates wheather the pane was just closed or the save button was clicked.
-
+      if (wasSaved) {
+        this.setState({tocompsave:true});
+        this.saveToPic();
+      }
       if (wasSaved && (newSettings !== oldSettings)) {
         // do something with the settings, e.g. save via ajax.
-
+        
         //this.setState({formData:newSettings});
         //https://open.spotify.com/track/0vWUhCPxpJOJR5urYbZypB
 
@@ -93,6 +97,10 @@ export default class SideBar extends Component {
       }
     ];
 
+  }
+
+  saveToPic(){
+    this.picupload.current.sendd();
   }
 
   hidePrefs() {
@@ -269,7 +277,7 @@ export default class SideBar extends Component {
                     </fieldset>
                   </SettingsPage>
                   <SettingsPage handler="/settings/pictures">
-                    <Picture_upload images={profilePath} user={this.props.user}></Picture_upload>
+                    <Picture_upload ref={this.picupload} saved={this.state.tocompsave} images={profilePath} user={this.props.user}></Picture_upload>
                   </SettingsPage>
 
                   <SettingsPage handler="/settings/search">
