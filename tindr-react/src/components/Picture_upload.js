@@ -28,6 +28,10 @@ export default class Picture_upload extends Component {
         this.showFile();
     }
 
+    getCheckedid(){
+        return this.state.checkedid;
+    }
+
     convertBase64 = (file) => {
         return new Promise((resolve, reject) => {
           const fileReader = new FileReader();
