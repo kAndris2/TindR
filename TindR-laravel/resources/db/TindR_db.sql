@@ -2,7 +2,9 @@ CREATE TABLE accounts (
 	id serial not null PRIMARY KEY,
 	email character varying(30) not null,
 	password character varying(256) not null,
-	phone_number character varying(20)
+	phone_number character varying(20),
+	latitude double precision not null,
+	longitude double precision not null
 );
 
 CREATE TABLE users (

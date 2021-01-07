@@ -10,7 +10,9 @@ class Account extends Model {
     protected $fillable = [
         'email',
         'password',
-        'phone_number'
+        'phone_number',
+        'latitude',
+        'longitude'
     ];
 
 }
