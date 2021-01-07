@@ -33,21 +33,16 @@ const Deck = (props) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    console.log("1")
     fetch(`http://${process.env.REACT_APP_IP}:8000/api/profiles/${props.userID}`)
       .then(response => {
         return response.json();
       })
       .then(response => {
-        console.log(response)
         setData(response);
       })
       .catch(err => {
-        console.log(err);
       });
   }, []);
-
-    console.log("2")
 
     const [gone] = useState(() => new Set());
 
@@ -55,8 +50,6 @@ const Deck = (props) => {
       ...to(i),
       from: from(i)
     }));
-
-    console.log(data.length);
 
     const bind = useGesture(
       ({
@@ -106,7 +99,6 @@ const Deck = (props) => {
         });
 
         if (!down && gone.size === data.length) {
-          console.log("hossz: " + data.length)
           setTimeout(() => gone.clear() || set(i => to(i)), 600);
         }
       }

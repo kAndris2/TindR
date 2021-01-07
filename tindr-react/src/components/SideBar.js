@@ -283,11 +283,15 @@ export default class SideBar extends Component {
                       />
                     </fieldset>
                   </SettingsPage>
-                  <SettingsPage handler="/settings/pictures">
+                  <SettingsPage 
+                    handler="/settings/pictures"
+                  >
                     <Picture_upload images={profilePath} user={this.props.user}></Picture_upload>
                   </SettingsPage>
 
-                  <SettingsPage handler="/settings/search">
+                  <SettingsPage 
+                    handler="/settings/search"
+                  >
                   <fieldset className="form-group">
                     <label>Looking for:</label>
                       <Select
