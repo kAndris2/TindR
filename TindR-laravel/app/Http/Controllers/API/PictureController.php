@@ -51,4 +51,40 @@ class PictureController extends Controller
         }
         
     }
+
+    public function deletePicture(Request $request, $id){
+        try {
+            $user = User::findOrFail($id);
+            $encoded = $request["del_data"];
+            if ($encoded == '' ){
+                throw new NoImageException("No Image Found, cannot proceed");
+            }
+            
+            Picture::where([
+                ['user_id', '=', $id],
+                ['route', '=', $encoded],
+            ])->delete();
+            
+            $toObj = array(
+                "status" => "success",
+                "details" => array("user" => $user)
+            );
+            return json_encode($toObj);
+        }
+        catch (ModelNotFoundException $e){
+            $toObj = array(
+                "status" => "error",
+                "message" => array("readable" => "No user with the given ID!","exception" => $e->getMessage())
+            );
+            return json_encode($toObj);
+        }
+        catch (NoImageException $c){
+            $toObj = array(
+                "status" => "imaerror",
+                "message" => $c
+            );
+            return json_encode($toObj);
+        }
+        
+    }
 }

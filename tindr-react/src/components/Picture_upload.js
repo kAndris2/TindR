@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Swal from 'sweetalert2'
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
 export default class Picture_upload extends Component {
     constructor(props){
@@ -78,6 +80,34 @@ export default class Picture_upload extends Component {
         });
     }
 
+    deletePic(data){
+        if (this.state.images.length === 1){
+            Swal.fire('You must have at least 1 image uploaded!')
+        }
+        else {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.post("http://"+process.env.REACT_APP_IP+":8000/api/pictures/delete/"+this.props.user.id,{
+                        del_data: data
+                    });
+                    Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                    );
+                }
+            })
+        }
+    }
+
     render() {
         const {isLoading, images} = this.state;
         if (isLoading){
@@ -93,13 +123,15 @@ export default class Picture_upload extends Component {
             <div className="container-fluid">
                 <div className="">
                 {images.map((image,i) =>
-                    <div key={i} className="card" style={{width:"8rem"}}>
+                    <div key={i} className="card" style={{width:"8rem", display:"inline-block",margin:"1em", border:"none"}}>
                         <img className="card-img-top" src={image.route} alt="Card image cap"></img>
+                        <a href="/#" onClick={() => this.deletePic(image.route)}><FontAwesomeIcon style={{position: "absolute",bottom:"85%",left:"5%"}} icon={faTimesCircle} color="grey" size="lg" /></a>
                     </div>
                 )}
                 </div>
-                <div className="">
-                    <input onChange={this.getFile} name="file" type="file" accept="image/*" className="btn btn-success" ></input>
+                <div className="custom-file">
+                    <input onChange={this.getFile} id="customFile" name="file" type="file" accept="image/*" className="custom-file-input" ></input>
+                    <label class="custom-file-label" for="customFile">Choose file</label>
                 </div>
             </div>
         )
