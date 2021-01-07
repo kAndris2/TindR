@@ -9,6 +9,7 @@ import InputRange from 'react-input-range';
 import 'react-input-range/lib/css/index.css';
 import Select from 'react-select';
 import Picture_upload from './Picture_upload';
+import Test from './Test';
 
 const options = [
   { value: 'Men', label: 'Men' },
@@ -27,9 +28,13 @@ export default class SideBar extends Component {
       formData: '',
       tags:this.props.user.passion.split(","),
       finalTags:[],
-      distanceValue: { min: 2, max: 10 },
-      ageValue: { min: 18, max: 27 },
       tocompsave:false,
+      distanceValue: this.props.searchData.max_distance,
+      ageValue: { 
+        min: this.props.searchData.min_age, 
+        max: this.props.searchData.max_age 
+      },
+      lookingFor: this.props.searchData.looking_for
     }
 
      // Save settings after close
@@ -51,8 +56,6 @@ export default class SideBar extends Component {
         }
         else songID = oldSettings.anthem;
 
-        console.log(oldSettings)
-
         axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_user/"+this.props.user.id,{
           name:newSettings.name,
           description:newSettings.description,
@@ -61,6 +64,14 @@ export default class SideBar extends Component {
         axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_account/"+this.props.user.id,{
           email:newSettings.email,
           phone_number:newSettings.phone_number
+        });
+        axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_search/"+this.props.user.id,{
+          max_distance: newSettings.distanceValue,
+          looking_for: newSettings.lookingFor.value,
+          min_age: newSettings.ageValue.min,
+          max_age: newSettings.ageValue.max,
+          status: newSettings.status,
+          global: newSettings.global
         });
         if (this.state.finalTags.length >= 1){
           axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_user/"+this.props.user.id,{
@@ -144,7 +155,8 @@ export default class SideBar extends Component {
   }
 
   render() {
-    const {isLoading, profilePath,details,tags} = this.state;
+    const {isLoading, profilePath, details, tags, lookingFor} = this.state;
+
     let settings = this.state;
     if(isLoading){
       return(<p>Loading...</p>)
@@ -183,7 +195,9 @@ export default class SideBar extends Component {
               >
                 <SettingsMenu headline="General Settings" />
                 <SettingsContent header>
-                  <SettingsPage handler="/settings/general">
+                  <SettingsPage 
+                    handler="/settings/general"
+                  >
                     
                     <fieldset className="form-group">
                       <label htmlFor="generalUsername">Username: </label>
@@ -224,7 +238,9 @@ export default class SideBar extends Component {
                       />
                     </fieldset>
                   </SettingsPage>
-                  <SettingsPage handler="/settings/profile">
+                  <SettingsPage 
+                    handler="/settings/profile"
+                  >
                   <fieldset className="form-group">
                       <label htmlFor="profileFirstname">Company: </label>
                       <input
@@ -275,25 +291,38 @@ export default class SideBar extends Component {
                         
                       />
                     </fieldset>
+                    {this.props.user.anthem !== null &&
+                      <fieldset className="form-group">
+                        <label>Current:</label>
+                        <div><Test songID={this.props.user.anthem}></Test></div>
+                      </fieldset>
+                    }
                   </SettingsPage>
                   <SettingsPage handler="/settings/pictures">
                     <Picture_upload ref={this.picupload} saved={this.state.tocompsave} images={profilePath} user={this.props.user}></Picture_upload>
                   </SettingsPage>
 
-                  <SettingsPage handler="/settings/search">
+                  <SettingsPage 
+                    handler="/settings/search"
+                  >
                   <fieldset className="form-group">
                     <label>Looking for:</label>
                       <Select
-                        //value={selectedOption}
-                        //onChange={this.handleChange}
+                        value={lookingFor}
+                        placeholder={lookingFor}
                         options={options}
+                        onChange={value => {
+                          this.setState({ lookingFor : value });
+                          //this._settingsChanged();
+                        }} 
                       />
                     </fieldset>
                     <fieldset className="form-group">
-                      <label>Max distance (km):</label><br /><br />
+                      <label>Max distance:</label><br /><br />
                       <InputRange
-                        maxValue={200}
+                        maxValue={150}
                         minValue={0}
+                        formatLabel={value => `${value} km`}
                         value={this.state.distanceValue}
                         onChange={value => {
                           this.setState({ distanceValue : value });
@@ -302,7 +331,7 @@ export default class SideBar extends Component {
                       />
                     </fieldset><br />
                     <fieldset className="form-group">
-                      <label>Min/Max age:</label><br /><br />
+                      <label>Age range:</label><br /><br />
                       <InputRange
                         maxValue={100}
                         minValue={18}
@@ -312,6 +341,28 @@ export default class SideBar extends Component {
                           //this._settingsChanged();
                         }} 
                       />
+                    </fieldset><br />
+                    <fieldset className="form-group">
+                      <input 
+                        type="checkbox" 
+                        id="status" 
+                        name="status" 
+                        value="true"
+                        checked = {this.props.searchData.status}
+                        onChange={this._settingsChanged} 
+                      />
+                      <label for="status">Show me on TindR</label><br />
+                    </fieldset>
+                    <fieldset className="form-group">
+                      <input 
+                        type="checkbox" 
+                        id="global" 
+                        name="global" 
+                        value="true" 
+                        checked = {this.props.searchData.global}
+                        onChange={this._settingsChanged}
+                      />
+                      <label for="global">Global mode</label><br />
                     </fieldset>
                   </SettingsPage>
 
