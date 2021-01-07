@@ -9,6 +9,7 @@ import InputRange from 'react-input-range';
 import 'react-input-range/lib/css/index.css';
 import Select from 'react-select';
 import Picture_upload from './Picture_upload';
+import Test from './Test';
 
 const options = [
   { value: 'Men', label: 'Men' },
@@ -282,6 +283,12 @@ export default class SideBar extends Component {
                         
                       />
                     </fieldset>
+                    {this.props.user.anthem !== null &&
+                      <fieldset className="form-group">
+                        <label>Current:</label>
+                        <div><Test songID={this.props.user.anthem}></Test></div>
+                      </fieldset>
+                    }
                   </SettingsPage>
                   <SettingsPage 
                     handler="/settings/pictures"
