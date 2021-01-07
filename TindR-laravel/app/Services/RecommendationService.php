@@ -15,7 +15,7 @@ class RecommendationService
     public function getRecommendations($id)
     {
         $users = $this->getUsersWhoMeetsSearchCondition($id);
-        $imgs = Picture::where("user_id", "!=", $id)->get();
+        $imgs = Picture::where("user_id", "!=", $id)->orderBy('upload_date', 'asc')->get();
         $recoms = array();
 
         foreach($users as $u)
