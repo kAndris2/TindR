@@ -22,7 +22,7 @@ CREATE TABLE users (
 
 CREATE TABLE searches (
 	id int not null PRIMARY KEY,
-	max_distance int CHECK (max_distance <= 161),
+	max_distance int CHECK (max_distance <= 150),
 	looking_for character varying(15),
 	min_age int CHECK(min_age >= 18),
 	max_age int CHECK((max_age != min_age) AND (max_age > min_age)),
