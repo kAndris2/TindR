@@ -67,7 +67,9 @@ CREATE TABLE public.dislikes (
 
 CREATE FUNCTION create_searches() RETURNS TRIGGER AS $$
 	BEGIN
-		INSERT INTO searches (id, min_age, max_age) VALUES (NEW.id, 18, 100);
+		INSERT INTO searches (id, max_distance, looking_for, min_age, max_age, global, status) 
+		VALUES 
+		(NEW.id, 50, 'Everyone', 18, 100, false, true);
 		RETURN NEW;
 			
 	END;

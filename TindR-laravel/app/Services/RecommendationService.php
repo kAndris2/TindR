@@ -52,17 +52,20 @@ class RecommendationService
 
         foreach($users as $u)
         {
-            if ($this->isNotVoted($id, $u->id))
+            if($this->isUserStatusPublic($u->id))
             {
-                $score = 0;
-                $age = $this->ageCalculate($u->birthdate);
-
-                if ($u->gender == $search->looking_for || $u->gender == null) $score++;
-                if ($age >= $search->min_age && $age <= $search->max_age) $score++;
-
-                if($score == $MAX_SCORE)
+                if ($this->isNotVoted($id, $u->id))
                 {
-                    array_push($result, $u);
+                    $score = 0;
+                    $age = $this->ageCalculate($u->birthdate);
+
+                    if ($u->gender == $search->looking_for || $u->gender == null) $score++;
+                    if ($age >= $search->min_age && $age <= $search->max_age) $score++;
+
+                    if($score == $MAX_SCORE)
+                    {
+                        array_push($result, $u);
+                    }
                 }
             }
         }
@@ -72,6 +75,12 @@ class RecommendationService
     private function ageCalculate($milli) 
     {
         return date('Y') - date('Y', $milli / 1000);
+    }
+
+    private function isUserStatusPublic($id)
+    {
+        $search = Search::find($id);
+        return $search->status == true;
     }
 
     private function isNotVoted($id, $currentUserID)
