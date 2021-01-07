@@ -28,7 +28,10 @@ export default class SideBar extends Component {
       tags:this.props.user.passion.split(","),
       finalTags:[],
       distanceValue: this.props.searchData.max_distance,
-      ageValue: { min: this.props.searchData.min_age, max: this.props.searchData.max_age },
+      ageValue: { 
+        min: this.props.searchData.min_age, 
+        max: this.props.searchData.max_age 
+      },
       lookingFor: this.props.searchData.looking_for
     }
 
@@ -183,7 +186,9 @@ export default class SideBar extends Component {
               >
                 <SettingsMenu headline="General Settings" />
                 <SettingsContent header>
-                  <SettingsPage handler="/settings/general">
+                  <SettingsPage 
+                    handler="/settings/general"
+                  >
                     
                     <fieldset className="form-group">
                       <label htmlFor="generalUsername">Username: </label>
@@ -224,7 +229,9 @@ export default class SideBar extends Component {
                       />
                     </fieldset>
                   </SettingsPage>
-                  <SettingsPage handler="/settings/profile">
+                  <SettingsPage 
+                    handler="/settings/profile"
+                  >
                   <fieldset className="form-group">
                       <label htmlFor="profileFirstname">Company: </label>
                       <input
