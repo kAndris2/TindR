@@ -36,6 +36,7 @@ Route::put("account/{id}", [AccountController::class, "getAccountById"]);
 Route::post("register", [AccountController::class, "register"]);
 Route::post("login", [AccountController::class, "login"]);
 Route::post("logout", [AccountController::class, "logout"]);
+Route::post("save_position/{id}", [AccountController::class, "savePosition"]);
 Route::put("update_account/{id}", [AccountController::class, "updateAccount"]);
 Route::delete("delete_account/{id}", [AccountController::class, "deleteAccount"]);
 Route::get("valid_email/{email}", [AccountController::class, "isValidEmail"]);

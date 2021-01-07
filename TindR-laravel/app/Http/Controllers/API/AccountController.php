@@ -87,4 +87,9 @@ class AccountController extends Controller
             'phone_number' => $account->phone_number
         );
     }
+
+    public function savePosition($id, Request $request) 
+    {
+        Account::find($id)->update($request->all());
+    }
 }

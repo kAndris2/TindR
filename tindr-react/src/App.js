@@ -26,7 +26,8 @@ class App extends Component {
 
     this.setCookie = this.setCookie.bind(this);
     this.setUser = this.setUser.bind(this);
-    this.checkLoginStatus = this. checkLoginStatus.bind(this);
+    this.checkLoginStatus = this.checkLoginStatus.bind(this);
+    this.saveCoordinates = this.saveCoordinates.bind(this);
   }
 
   setCookie(id) {
@@ -41,6 +42,16 @@ class App extends Component {
       user : user,
       isLoggedIn : true
     });
+    this.saveCoordinates(user.id);
+  }
+
+  saveCoordinates(id) {
+    navigator.geolocation.getCurrentPosition(response => {
+      axios.post(`http://${process.env.REACT_APP_IP}:8000/api/save_position/${id}`,{
+        latitude: response.coords.latitude,
+        longitude: response.coords.longitude
+    });
+    })
   }
 
   async checkLoginStatus() {
