@@ -34,7 +34,7 @@
 
 }
 body{
-  font-family: 'TindrFont' !important;
+  font-family: 'TindrFont',sans-serif !important;
 }
 
 @keyframes App-logo-spin {

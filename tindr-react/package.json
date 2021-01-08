@@ -28,6 +28,7 @@
     "react-helmet": "^6.1.0",
     "react-input-range": "^1.3.0",
     "react-keyboard-event-handler": "^1.5.4",
+    "react-notification-timeline": "^0.0.9",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "react-select": "^3.1.1",

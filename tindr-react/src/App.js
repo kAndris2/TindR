@@ -11,7 +11,6 @@ import SideBar from "./components/SideBar";
 
 import Deck from './components/Deck';
 import Test from './components/Test';
-import Callback from './components/Callb'
 
 
 class App extends Component {
