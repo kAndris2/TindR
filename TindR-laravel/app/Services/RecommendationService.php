@@ -8,7 +8,7 @@ use App\Models\Search;
 use App\Models\Like;
 use App\Models\Dislike;
 use App\Models\Match;
-
+use App\Models\Account;
 
 class RecommendationService
 {
@@ -33,7 +33,7 @@ class RecommendationService
                     'id' => $u->id,
                     'name' => $u->name,
                     'age' => $u->birthdate,
-                    'distance' => '3 miles away',
+                    'distance' => $this->calculateDistance($id, $u->id) . ' kilometres away',
                     'text' => $u->description,
                     'pics' => $img_temp,
                     'anthem' => $u->anthem
@@ -43,12 +43,33 @@ class RecommendationService
         return json_encode($recoms);
     }
 
+    private function calculateDistance($from_id, $to_id)
+    {
+       $user1 = Account::find($from_id);
+       $user2 = Account::find($to_id); 
+       $earthRadius = 6371000;
+
+       // convert from degrees to radians
+        $latFrom = deg2rad($user1->latitude);
+        $lonFrom = deg2rad($user1->longitude);
+
+        $latTo = deg2rad($user2->latitude);
+        $lonTo = deg2rad($user2->longitude);
+
+        $latDelta = $latTo - $latFrom;
+        $lonDelta = $lonTo - $lonFrom;
+
+        $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+            cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+        return round( ($angle * $earthRadius) / 1000, 0);
+    }
+
     private function getUsersWhoMeetsSearchCondition($id)
     {
         $search = Search::find($id);
         $users = User::where("id", "!=", $id)->get();
         $result = array();
-        $MAX_SCORE = 2;
+        $MAX_SCORE = 3;
 
         foreach($users as $u)
         {
@@ -59,6 +80,7 @@ class RecommendationService
                     $score = 0;
                     $age = $this->ageCalculate($u->birthdate);
 
+                    if($this->calculateDistance($id, $u->id) <= $search->max_distance) $score++;
                     if ($u->gender == $search->looking_for || $u->gender == null) $score++;
                     if ($age >= $search->min_age && $age <= $search->max_age) $score++;
 
