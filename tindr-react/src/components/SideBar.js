@@ -39,11 +39,16 @@ export default class SideBar extends Component {
     }
 
      // Save settings after close
+    
      this._leavePaneHandler = (wasSaved, newSettings, oldSettings) => {
     // "wasSaved" indicates wheather the pane was just closed or the save button was clicked.
-      if (wasSaved) {
-        this.setState({tocompsave:true});
-        this.saveToPic();
+      if (wasSaved){
+        try {
+          this.setState({tocompsave:true});
+          this.saveToPic();
+        } catch (error) {
+          
+        }
       }
       if (wasSaved && (newSettings !== oldSettings)) {
         // do something with the settings, e.g. save via ajax.
