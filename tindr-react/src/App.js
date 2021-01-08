@@ -39,7 +39,8 @@ class App extends Component {
     this.setCookie(user.id);
     this.setState({
       user : user,
-      isLoggedIn : true
+      isLoggedIn : true,
+      isLoading: true
     });
     this.saveCoordinates(user.id);
   }
@@ -49,6 +50,11 @@ class App extends Component {
       axios.post(`http://${process.env.REACT_APP_IP}:8000/api/save_position/${id}`,{
         latitude: response.coords.latitude,
         longitude: response.coords.longitude
+    })
+    .then(() => {
+      this.setState({
+        isLoading: false
+      });
     });
     })
   }
