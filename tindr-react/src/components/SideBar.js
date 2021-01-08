@@ -10,6 +10,7 @@ import 'react-input-range/lib/css/index.css';
 import Select from 'react-select';
 import Picture_upload from './Picture_upload';
 import Test from './Test';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const options = [
   { value: 'Men', label: 'Men' },
@@ -156,6 +157,7 @@ export default class SideBar extends Component {
 
   render() {
     const {isLoading, profilePath, details, tags, lookingFor} = this.state;
+    const { searchData } = this.props;
 
     let settings = this.state;
     if(isLoading){
@@ -348,7 +350,7 @@ export default class SideBar extends Component {
                         id="status" 
                         name="status" 
                         value="true"
-                        checked = {this.props.searchData.status}
+                        defaultChecked={this.props.searchData.status}
                         onChange={this._settingsChanged} 
                       />
                       <label for="status">Show me on TindR</label><br />
@@ -358,8 +360,8 @@ export default class SideBar extends Component {
                         type="checkbox" 
                         id="global" 
                         name="global" 
-                        value="true" 
-                        checked = {this.props.searchData.global}
+                        value="true"
+                        defaultChecked={this.props.searchData.global}
                         onChange={this._settingsChanged}
                       />
                       <label for="global">Global mode</label><br />
