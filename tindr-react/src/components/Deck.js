@@ -32,6 +32,7 @@ async function getData(props) {
 const Deck = (props) => {
 
   const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`http://${process.env.REACT_APP_IP}:8000/api/profiles/${props.userID}`)
@@ -40,6 +41,7 @@ const Deck = (props) => {
       })
       .then(response => {
         setData(response);
+        setLoading(false);
       })
       .catch(err => {
       });
@@ -105,19 +107,26 @@ const Deck = (props) => {
       }
     );
 
-    return cardState.map(({ x, y, rot, scale }, i) => (
-      <Card
-        key={i}
-        i={i}
-        x={x}
-        y={y}
-        rot={rot}
-        scale={scale}
-        trans={trans}
-        data={data}
-        bind={bind}
-      />
-    ));
+    if (!isLoading) {
+      return cardState.map(({ x, y, rot, scale }, i) => (
+        <Card
+          key={i}
+          i={i}
+          x={x}
+          y={y}
+          rot={rot}
+          scale={scale}
+          trans={trans}
+          data={data}
+          bind={bind}
+        />
+      ));
+    }
+    else {
+      return (
+        <h1>Cards are loading...</h1>
+      );
+    }
 }
 
 export default Deck;

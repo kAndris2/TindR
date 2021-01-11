@@ -15,6 +15,7 @@ export default class Asd extends Component {
 
     this.getSearchData = this.getSearchData.bind(this);
     this.handleSearchData = this.handleSearchData.bind(this);
+    this.forceRender = this.forceRender.bind(this);
   }
 
   // -- Request a PIN --
@@ -47,6 +48,10 @@ export default class Asd extends Component {
     this.getSearchData();
   }
 
+  forceRender() {
+    this.forceUpdate();
+  }
+
   render() {
     const { isLoading, searchData } = this.state;
 
@@ -59,6 +64,7 @@ export default class Asd extends Component {
             pageWrapId={'page-wrap'} 
             outerContainerId={'outer-container'} 
             searchData={searchData}
+            forceRender={this.forceRender}
           />
 
           <div id="recommendations">

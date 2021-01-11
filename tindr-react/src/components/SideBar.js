@@ -85,6 +85,7 @@ export default class SideBar extends Component {
             passion:newSettings.finalTags.join()
           });
         }
+        this.props.forceRender();
       }
 
       this.hidePrefs();
