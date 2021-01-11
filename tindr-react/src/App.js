@@ -40,9 +40,9 @@ class App extends Component {
     this.setState({
       user : user,
       isLoggedIn : true,
-      isLoading: true
+      isLoading: false
     });
-    this.saveCoordinates(user.id);
+    //this.saveCoordinates(user.id);
   }
 
   saveCoordinates(id) {
