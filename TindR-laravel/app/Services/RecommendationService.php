@@ -36,7 +36,8 @@ class RecommendationService
                     'distance' => $this->calculateDistance($id, $u->id) . ' kilometres away',
                     'text' => $u->description,
                     'pics' => $img_temp,
-                    'anthem' => $u->anthem
+                    'anthem' => $u->anthem,
+                    'user' => User::find($u->id)
                 )
             );
         }
