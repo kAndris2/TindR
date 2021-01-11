@@ -148,7 +148,7 @@ form.settings {
   position: relative;
   -webkit-box-flex: 1;
   -o-box-flex: 1;
-  box-flex: 1;
+  -moz-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
   flex-basis: 650px;
@@ -195,7 +195,7 @@ form.settings {
   display: flex;
   -webkit-box-flex: 1;
   -o-box-flex: 1;
-  box-flex: 1;
+  -moz-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
@@ -227,7 +227,7 @@ form.settings {
   -ms-flex-direction: column;
   -webkit-box-flex: 1;
   -o-box-flex: 1;
-  box-flex: 1;
+  -moz-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
   flex-direction: column;
@@ -269,7 +269,7 @@ form .settings-close {
   min-height: 1px;
   -webkit-box-flex: 1;
   -o-box-flex: 1;
-  box-flex: 1;
+  -moz-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
@@ -283,14 +283,14 @@ ul.settings-menu {
   -ms-flex-direction: column;
   flex-direction: column;
   overflow-y: auto;
-  margin-right: -15px;
   -webkit-box-flex: 1;
   -o-box-flex: 1;
-  box-flex: 1;
+  -moz-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
   list-style: none;
   margin: 0;
+  margin-right: -15px;
   padding: 0;
 }
 
@@ -401,4 +401,7 @@ ul.settings-menu li.menu-item.active a:before {
 }
 .swal2-container {
   z-index: 10600;
+}
+.notification {
+  font-size: 1em !important; 
 }

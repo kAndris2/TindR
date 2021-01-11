@@ -10,6 +10,7 @@ import 'react-input-range/lib/css/index.css';
 import Select from 'react-select';
 import Picture_upload from './Picture_upload';
 import Test from './Test';
+import NotifyMe from 'react-notification-timeline';
 import Checkbox from '@material-ui/core/Checkbox';
 
 const options = [
@@ -174,6 +175,25 @@ export default class SideBar extends Component {
         <Menu>
           <div className="menu-item" href="/">
             {this.props.user.name}
+            {/* <span className="btn pull-right">
+              <NotifyMe
+                data={[
+                  {
+                    "update":"70 new employees are shifted",
+                    "timestamp":Date()
+                  },
+                ]}
+                storageKey='notific_key'
+                notific_key='timestamp'
+                notific_value='update'
+                heading='Notification Alerts'
+                sortedByKey={false}
+                showDate={true}
+                size={36}
+                color="yellow"
+                markAsReadFn={(e) => console.log(e)}
+              />
+            </span> */}
           </div>
           <a className="navbar-brand text-center" href="#">
             <img src={profilePath[0].route} height="80" alt=""/>
