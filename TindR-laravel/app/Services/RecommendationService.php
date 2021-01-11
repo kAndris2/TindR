@@ -82,8 +82,14 @@ class RecommendationService
                     $age = $this->ageCalculate($u->birthdate);
 
                     if($this->calculateDistance($id, $u->id) <= $search->max_distance) $score++;
-                    if ($u->gender == $search->looking_for || $u->gender == null) $score++;
                     if ($age >= $search->min_age && $age <= $search->max_age) $score++;
+                    if($search->looking_for == "Everyone") {
+                        $score++;
+                    }
+                    else
+                    {
+                        if ($u->gender == $search->looking_for || $u->gender == null) $score++;
+                    }
 
                     if($score == $MAX_SCORE)
                     {

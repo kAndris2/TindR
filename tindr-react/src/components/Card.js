@@ -4,7 +4,6 @@ import { animated, interpolate } from "react-spring";
 import Carousel from "nuka-carousel";
 import Test from './Test';
 import { InputTags } from 'react-bootstrap-tagsinput';
-import "./css/info.css";
 
 const ageCalculation = (date) => {
   const now = new Date();
@@ -73,25 +72,12 @@ const Card = ({ i, x, y, rot, scale, trans, bind, data }) => {
           <div id="dc" >
             <Carousel>
               {pics.map((pic, index) => (
-                <>
-                  <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet" />
-                  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"></link>
                 <img id="di" src={pic} key={index} alt="profilePicture" />
-                <div class="col-md-12" onClick={handleClick}>
-                  <div class="info">
-                    <i class="icon-info-sign"></i>
-
-                    <span class="extra-info">
-                      Click me to see more infos!
-                    </span>
-                  </div><br />
-              </div>
-                </>
               ))}
             </Carousel>
-            <h2>{name},</h2>
+            <h2 onClick={handleClick}>{name},</h2>
             <h2>{ageCalculation(age)}</h2>
-            <h5>{distance}</h5>
+            <h5>{distance}</h5><br />
             <h5>{text}</h5>
           </div>
         </animated.div>
