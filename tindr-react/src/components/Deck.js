@@ -7,6 +7,7 @@ import Card from "./Card";
 //import data from "../data.js";
 
 import "./css/deck.css";
+import './css/loading_heart.css';
 
 const to = i => ({
   x: 0,
@@ -108,23 +109,44 @@ const Deck = (props) => {
     );
 
     if (!isLoading) {
-      return cardState.map(({ x, y, rot, scale }, i) => (
-        <Card
-          key={i}
-          i={i}
-          x={x}
-          y={y}
-          rot={rot}
-          scale={scale}
-          trans={trans}
-          data={data}
-          bind={bind}
-        />
-      ));
+      return (
+        <div id='recommendations'>
+          {cardState.map(({ x, y, rot, scale }, i) => (
+            <Card
+              key={i}
+              i={i}
+              x={x}
+              y={y}
+              rot={rot}
+              scale={scale}
+              trans={trans}
+              data={data}
+              bind={bind}
+            />
+          ))}
+        </div>
+      );
     }
     else {
       return (
-        <h1>Cards are loading...</h1>
+        <div className="container" style={{height: '100vh'}}>
+        <div class="flex-container">
+          <div class="unit">
+            <div class="heart">
+              <div class="heart-piece-0"></div>
+              <div class="heart-piece-1"></div>
+              <div class="heart-piece-2"></div>
+              <div class="heart-piece-3"></div>
+              <div class="heart-piece-4"></div>
+              <div class="heart-piece-5"></div>
+              <div class="heart-piece-6"></div>
+              <div class="heart-piece-7"></div>
+              <div class="heart-piece-8"></div>
+            </div>
+            <p>love is love</p>
+          </div>
+        </div>
+        </div>
       );
     }
 }

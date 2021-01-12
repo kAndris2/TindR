@@ -69,11 +69,9 @@ export default class Asd extends Component {
             forceRender={this.forceRender}
           />
 
-          <div id="recommendations">
-            <Deck 
-              userID={this.props.user.id}
-            />
-          </div>
+          <Deck 
+            userID={this.props.user.id}
+          />
         </>
       );
     }
