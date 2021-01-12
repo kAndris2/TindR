@@ -38,6 +38,7 @@ export default class Asd extends Component {
   }  
 
   handleSearchData(response) {
+    console.log('yep')
     this.setState({
       searchData: response.data,
       isLoading: false
@@ -49,7 +50,8 @@ export default class Asd extends Component {
   }
 
   forceRender() {
-    this.forceUpdate();
+    this.setState({isLoading : true});
+    this.componentDidMount();
   }
 
   render() {
@@ -68,7 +70,9 @@ export default class Asd extends Component {
           />
 
           <div id="recommendations">
-            <Deck userID={this.props.user.id}></Deck>
+            <Deck 
+              userID={this.props.user.id}
+            />
           </div>
         </>
       );
