@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import SideBar from './SideBar'
+import Loading from './Loading'
 import './css/side.css'
 import Deck from './Deck';
 import axios from 'axios';
@@ -38,7 +39,6 @@ export default class Asd extends Component {
   }  
 
   handleSearchData(response) {
-    console.log('yep')
     this.setState({
       searchData: response.data,
       isLoading: false
@@ -77,7 +77,7 @@ export default class Asd extends Component {
     }
     else {
       return (
-        <h1>Loading...</h1>
+        <Loading />
       );
     }
   }

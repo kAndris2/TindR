@@ -4,7 +4,6 @@ import { useGesture } from "react-with-gesture";
 import axios from 'axios';
 
 import Card from "./Card";
-//import data from "../data.js";
 
 import "./css/deck.css";
 import './css/loading_heart.css';
@@ -22,13 +21,6 @@ const from = i => ({ rot: 0, scale: 1.5, y: -1000 });
 const trans = (r, s) =>
   `perspective(1500px) rotateX(30deg) rotateY(${r /
   10}deg) rotateZ(${r}deg) scale(${s})`;
-
-async function getData(props) {
-  await axios.get(`http://${process.env.REACT_APP_IP}:8000/api/profiles/${props.userID}`)
-  .then(reponse => {
-    console.log(reponse)
-  })
-}
 
 const Deck = (props) => {
 
