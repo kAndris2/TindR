@@ -27,4 +27,9 @@ RUN sed -i -e 's/dbse/'"$(printenv DB_DATABASE)"'/' .env
 RUN sed -i -e 's/user/'"$(printenv DB_USERNAME)"'/' .env
 RUN sed -i -e 's/pass/'"$(printenv DB_PASSWORD)"'/' .env
 RUN php artisan key:generate
-CMD php artisan serve --host=0.0.0.0 --port=8000
+RUN mv a2.conf apache2.conf
+RUN cp apache2.conf /etc/apache2
+RUN mv 000.conf 000-default.conf && mv defssl.conf default-ssl.conf
+RUN a2dissite 000-default.conf
+RUN cp 000-default.conf default-ssl.conf /etc/apache2/sites-available
+RUN a2ensite default-ssl.conf
