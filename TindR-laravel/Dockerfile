@@ -1,4 +1,4 @@
-FROM php:7.4.3-fpm
+FROM php:7.4-cli-buster
 ARG DB_CON
 ENV DB_CONNECTION=$DB_CON
 ARG DB_H
