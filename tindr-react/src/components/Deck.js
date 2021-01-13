@@ -50,7 +50,7 @@ function Deck({userID, data}) {
       const dir = xDir < 0 ? -1 : 1;
 
       if (!down && trigger) {
-        const temp = gone;
+        const temp = new Set(gone, index);
         temp.add(index);
         setGone(temp);
         
@@ -60,11 +60,13 @@ function Deck({userID, data}) {
             "direction": dir
         }
 
+        /*
         fetch(`${process.env.REACT_APP_IP}/api/give_vote`, {
           method: 'post',
           headers: {'Content-Type':'application/json'},
           body: JSON.stringify(send)
           });
+        */
       }
 
       set(i => {
@@ -85,10 +87,12 @@ function Deck({userID, data}) {
         };
       });
 
+      /*
       if (!down && gone.size === data.length) {
         console.log('yeyp')
         setTimeout(() => gone.clear() || set(i => to(i)), 600);
       }
+      */
     }
   );
 
