@@ -38,5 +38,5 @@ RUN mkdir /var/www/html/TindR-laravel
 RUN cp -r . /var/www/html/TindR-laravel
 RUN chown -R www-data:www-data /var/www
 RUN openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=api.mradmin.hu" -keyout /etc/ssl/certs/selfsigned.key  -out /etc/ssl/private/selfsigned.pem
-RUN a2enmod ssl
+RUN a2enmod ssl rewrite
 RUN service apache2 restart
