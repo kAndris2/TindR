@@ -33,10 +33,9 @@ RUN mv 000.conf 000-default.conf && mv defssl.conf default-ssl.conf
 RUN a2dissite 000-default.conf
 RUN cp 000-default.conf default-ssl.conf /etc/apache2/sites-available
 RUN a2ensite default-ssl.conf
-RUN a2enmod ssl
-RUN service apache2 restart
 RUN rm -rf /var/www/html/index.html
 RUN mkdir /var/www/html/TindR-laravel
 RUN cp -r . /var/www/html/TindR-laravel
 RUN chown -R www-data:www-data /var/www
-
+RUN a2enmod ssl
+RUN service apache2 restart
