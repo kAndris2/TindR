@@ -51,6 +51,7 @@ class RecommendationService
        $earthRadius = 6371000;
 
        // convert from degrees to radians
+       var_dump($user1);
         $latFrom = deg2rad($user1->latitude);
         $lonFrom = deg2rad($user1->longitude);
 
