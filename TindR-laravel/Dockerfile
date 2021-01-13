@@ -31,6 +31,7 @@ RUN mv a2.conf apache2.conf
 RUN cp apache2.conf /etc/apache2
 RUN mv 000.conf 000-default.conf && mv defssl.conf default-ssl.conf
 RUN a2dissite 000-default.conf
+RUN a2enmod ssl
 RUN cp 000-default.conf default-ssl.conf /etc/apache2/sites-available
 RUN a2ensite default-ssl.conf
 RUN service apache2 restart
