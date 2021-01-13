@@ -12,6 +12,7 @@ import Picture_upload from './Picture_upload';
 import Test from './Test';
 import NotifyMe from 'react-notification-timeline';
 import Checkbox from '@material-ui/core/Checkbox';
+import Loading from './Loading'
 
 const options = [
   { value: 'Men', label: 'Men' },
@@ -85,6 +86,7 @@ export default class SideBar extends Component {
             passion:newSettings.finalTags.join()
           });
         }
+        this.props.forceRender();
       }
 
       this.hidePrefs();
@@ -167,7 +169,7 @@ export default class SideBar extends Component {
 
     let settings = this.state;
     if(isLoading){
-      return(<p>Loading...</p>)
+      return(<Loading />)
     }
     
     return (

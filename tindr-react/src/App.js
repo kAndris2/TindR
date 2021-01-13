@@ -8,6 +8,7 @@ import Settings from "./components/Settings";
 import Asd from './components/Asd'
 import Recommendations from "./components/Recommendations";
 import SideBar from "./components/SideBar";
+import Loading from './components/Loading'
 
 import Deck from './components/Deck';
 import Test from './components/Test';
@@ -128,7 +129,7 @@ class App extends Component {
     }
     else
       return (
-        <h1>Loading...</h1>
+        <Loading />
       );
   }
 }

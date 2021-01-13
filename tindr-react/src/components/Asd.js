@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import SideBar from './SideBar'
+import Loading from './Loading'
 import './css/side.css'
 import Deck from './Deck';
 import axios from 'axios';
@@ -15,6 +16,7 @@ export default class Asd extends Component {
 
     this.getSearchData = this.getSearchData.bind(this);
     this.handleSearchData = this.handleSearchData.bind(this);
+    this.forceRender = this.forceRender.bind(this);
   }
 
   // -- Request a PIN --
@@ -47,6 +49,11 @@ export default class Asd extends Component {
     this.getSearchData();
   }
 
+  forceRender() {
+    this.setState({isLoading : true});
+    this.componentDidMount();
+  }
+
   render() {
     const { isLoading, searchData } = this.state;
 
@@ -59,17 +66,18 @@ export default class Asd extends Component {
             pageWrapId={'page-wrap'} 
             outerContainerId={'outer-container'} 
             searchData={searchData}
+            forceRender={this.forceRender}
           />
 
-          <div id="recommendations">
-            <Deck userID={this.props.user.id}></Deck>
-          </div>
+          <Deck 
+            userID={this.props.user.id}
+          />
         </>
       );
     }
     else {
       return (
-        <h1>Loading...</h1>
+        <Loading />
       );
     }
   }
