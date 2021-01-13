@@ -11,12 +11,14 @@ export default class Asd extends Component {
 
     this.state = {
       searchData: [],
-      isLoading: true
+      isLoading: true,
+      deck: []
     }
 
     this.getSearchData = this.getSearchData.bind(this);
     this.handleSearchData = this.handleSearchData.bind(this);
     this.forceRender = this.forceRender.bind(this);
+    this.getDeck = this.getDeck.bind(this);
   }
 
   // -- Request a PIN --
@@ -33,8 +35,8 @@ export default class Asd extends Component {
   // -d "phone=TO_NUMBER" \
   // -d "code=PIN"
 
-  getSearchData() {
-    axios.get(`http://${process.env.REACT_APP_IP}:8000/api/profile_data/${this.props.user.id}`)
+  async getSearchData() {
+    await axios.get(`${process.env.REACT_APP_IP}/api/profile_data/${this.props.user.id}`)
     .then(this.handleSearchData)
   }  
 
@@ -45,8 +47,21 @@ export default class Asd extends Component {
     });
   }
 
-  componentDidMount() {
-    this.getSearchData();
+  async getDeck() {
+    await fetch(`${process.env.REACT_APP_IP}/api/profiles/${this.props.user.id}`)
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        this.setState({
+          deck : response
+        });
+      })
+  }
+
+  async componentDidMount() {
+    await this.getSearchData();
+    await this.getDeck();
   }
 
   forceRender() {
@@ -55,7 +70,7 @@ export default class Asd extends Component {
   }
 
   render() {
-    const { isLoading, searchData } = this.state;
+    const { isLoading, searchData, deck } = this.state;
 
     if(!isLoading) {
       return (
@@ -69,9 +84,31 @@ export default class Asd extends Component {
             forceRender={this.forceRender}
           />
 
-          <Deck 
-            userID={this.props.user.id}
-          />
+          {deck.length !== 0 ?
+            <Deck 
+              userID={this.props.user.id}
+              data={deck}
+            />
+            :
+              <div className="container" style={{height: '100vh'}}>
+                <div class="flex-container">
+                  <div class="unit">
+                    <div class="heart">
+                      <div class="heart-piece-0"></div>
+                      <div class="heart-piece-1"></div>
+                      <div class="heart-piece-2"></div>
+                      <div class="heart-piece-3"></div>
+                      <div class="heart-piece-4"></div>
+                      <div class="heart-piece-5"></div>
+                      <div class="heart-piece-6"></div>
+                      <div class="heart-piece-7"></div>
+                      <div class="heart-piece-8"></div>
+                    </div>
+                    <p>Please wait...</p>
+                  </div>
+                </div>
+              </div>
+          }
         </>
       );
     }

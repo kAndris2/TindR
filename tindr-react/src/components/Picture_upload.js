@@ -83,7 +83,7 @@ export default class Picture_upload extends Component {
     }
 
     uploadFile(){
-        axios.post("http://"+process.env.REACT_APP_IP+":8000/api/pictures/upload/"+this.props.user.id,{
+        axios.post(process.env.REACT_APP_IP+"/api/pictures/upload/"+this.props.user.id,{
            img_raw:this.state.image_raw
         });
     }
@@ -103,7 +103,7 @@ export default class Picture_upload extends Component {
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.post("http://"+process.env.REACT_APP_IP+":8000/api/pictures/delete/"+this.props.user.id,{
+                    axios.post(process.env.REACT_APP_IP+"/api/pictures/delete/"+this.props.user.id,{
                         del_data: data
                     });
                     Swal.fire(
@@ -122,7 +122,7 @@ export default class Picture_upload extends Component {
     }
 
     sendd(){
-        axios.post("http://"+process.env.REACT_APP_IP+":8000/api/pictures/setmain/"+this.props.user.id,{
+        axios.post(process.env.REACT_APP_IP+"/api/pictures/setmain/"+this.props.user.id,{
                 pic_id:this.state.checkedid
         })
     }

@@ -74,7 +74,7 @@ class WelcomePage extends Component {
     }
 
     doLogin(email, password) {
-      axios.post("http://"+process.env.REACT_APP_IP+":8000/api/login", {
+      axios.post(process.env.REACT_APP_IP+"/api/login", {
         email: email,
         password: password
       }).then(response => {
@@ -153,7 +153,7 @@ class WelcomePage extends Component {
 
     async isValidEmail(email) {
       let temp = undefined;
-      await axios.get("http://"+process.env.REACT_APP_IP+":8000/api/valid_email/" + email)
+      await axios.get(process.env.REACT_APP_IP+"/api/valid_email/" + email)
       .then(response => {
           temp = response.data.length == 0
       })
@@ -161,7 +161,7 @@ class WelcomePage extends Component {
     }
 
     async requestPin(number){
-      await axios.post("http://"+process.env.REACT_APP_IP+":8000/api/getpin",{
+      await axios.post(process.env.REACT_APP_IP+"/api/getpin",{
         appkey:this.state.appkey,
         apikey:this.state.apikey,
         phone:number
@@ -217,7 +217,7 @@ class WelcomePage extends Component {
         confirmButtonText: 'Validate',
         showLoaderOnConfirm: true,
         preConfirm: (usuallytrue) => {
-          return axios.post("http://"+process.env.REACT_APP_IP+":8000/api/validatecode",{
+          return axios.post(process.env.REACT_APP_IP+"/api/validatecode",{
             appkey:this.state.appkey,
             apikey:this.state.apikey,
             phone:pinnumber,
@@ -411,7 +411,7 @@ class WelcomePage extends Component {
     async doRegistration(file) {
       const {userName, email, phoneNumber, password, birthDate, passions} = this.state;
 
-      await axios.post("http://"+process.env.REACT_APP_IP+":8000/api/register", {
+      await axios.post(process.env.REACT_APP_IP+"/api/register", {
         name: userName,
         email: email,
         phone_number: phoneNumber,
