@@ -9,6 +9,7 @@ import Asd from './components/Asd'
 import Recommendations from "./components/Recommendations";
 import SideBar from "./components/SideBar";
 import Loading from './components/Loading'
+import Pulse from './components/Pulse'
 
 import Deck from './components/Deck';
 import Test from './components/Test';
@@ -119,9 +120,15 @@ class App extends Component {
                 </div>
                 }
               </Route>
+
               <Route exact path="/test">
                 <Test></Test>
               </Route>
+
+              <Route exact path='/pulse'>
+                <Pulse />
+              </Route>
+
             </Switch>
           </Router>
         </>

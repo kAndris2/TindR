@@ -64,16 +64,16 @@ export default class SideBar extends Component {
         }
         else songID = oldSettings.anthem;
 
-        axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_user/"+this.props.user.id,{
+        axios.put("https://"+process.env.REACT_APP_IP+":8443/api/update_user/"+this.props.user.id,{
           name:newSettings.name,
           description:newSettings.description,
           anthem:songID
         });
-        axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_account/"+this.props.user.id,{
+        axios.put("https://"+process.env.REACT_APP_IP+":8443/api/update_account/"+this.props.user.id,{
           email:newSettings.email,
           phone_number:newSettings.phone_number
         });
-        axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_search/"+this.props.user.id,{
+        axios.put("https://"+process.env.REACT_APP_IP+":8443/api/update_search/"+this.props.user.id,{
           max_distance: newSettings.distanceValue,
           looking_for: newSettings.lookingFor.value,
           min_age: newSettings.ageValue.min,
@@ -82,7 +82,7 @@ export default class SideBar extends Component {
           global: newSettings.global
         });
         if (this.state.finalTags.length >= 1){
-          axios.put("http://"+process.env.REACT_APP_IP+":8000/api/update_user/"+this.props.user.id,{
+          axios.put("https://"+process.env.REACT_APP_IP+":8443/api/update_user/"+this.props.user.id,{
             passion:newSettings.finalTags.join()
           });
         }
@@ -134,7 +134,7 @@ export default class SideBar extends Component {
   }
 
   async getProfilePictures(user) {
-    await axios.get(`http://${process.env.REACT_APP_IP}:8000/api/pictures/${user.id}`)
+    await axios.get(`https://${process.env.REACT_APP_IP}:8443/api/pictures/${user.id}`)
     .then(response => {
       /*
       Promise.all(response.data.map(p => {
@@ -152,7 +152,7 @@ export default class SideBar extends Component {
   }
 
   async getDetails(userid){
-    await axios.get("http://"+process.env.REACT_APP_IP+":8000/api/details/"+userid)
+    await axios.get("https://"+process.env.REACT_APP_IP+":8443/api/details/"+userid)
     .then(resp => {
       this.setState({details:resp.data})
     })

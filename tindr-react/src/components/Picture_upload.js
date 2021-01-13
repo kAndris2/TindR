@@ -122,7 +122,7 @@ export default class Picture_upload extends Component {
     }
 
     sendd(){
-        axios.post("http://"+process.env.REACT_APP_IP+":8000/api/pictures/setmain/"+this.props.user.id,{
+        axios.post("https://"+process.env.REACT_APP_IP+":8443/api/pictures/setmain/"+this.props.user.id,{
                 pic_id:this.state.checkedid
         })
     }

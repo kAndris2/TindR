@@ -4,6 +4,7 @@ import { useGesture } from "react-with-gesture";
 import axios from 'axios';
 
 import Card from "./Card";
+import Pulse from "./Pulse";
 
 import "./css/deck.css";
 import './css/loading_heart.css';
@@ -22,125 +23,101 @@ const trans = (r, s) =>
   `perspective(1500px) rotateX(30deg) rotateY(${r /
   10}deg) rotateZ(${r}deg) scale(${s})`;
 
-const Deck = (props) => {
+function Deck({userID, data}) {
 
-  const [data, setData] = useState([]);
-  const [isLoading, setLoading] = useState(true);
+  const [gone, setGone] = useState(() => new Set());
 
   useEffect(() => {
-    fetch(`http://${process.env.REACT_APP_IP}:8000/api/profiles/${props.userID}`)
-      .then(response => {
-        return response.json();
-      })
-      .then(response => {
-        setData(response);
-        setLoading(false);
-      })
-      .catch(err => {
-      });
-  }, []);
+    console.log("gone change")
+  }, [gone])
 
-    const [gone] = useState(() => new Set());
+  const [cardState, set] = useSprings(data.length, i => ({
+    ...to(i),
+    from: from(i)
+  }));
 
-    const [cardState, set] = useSprings(data.length, i => ({
-      ...to(i),
-      from: from(i)
-    }));
+  const bind = useGesture(
+    ({
+      args: [index],
+      down,
+      delta: [xDelta],
+      distance,
+      direction: [xDir],
+      velocity
+    }) => {
+      const trigger = velocity > 0.2;
 
-    const bind = useGesture(
-      ({
-        args: [index],
-        down,
-        delta: [xDelta],
-        distance,
-        direction: [xDir],
-        velocity
-      }) => {
-        const trigger = velocity > 0.2;
+      const dir = xDir < 0 ? -1 : 1;
 
-        const dir = xDir < 0 ? -1 : 1;
-
-        if (!down && trigger) {
-          gone.add(index);
-          
-          const send = {
-            "index": index,
-             "giverid": props.userID,
-             "direction": dir
-          }
-
-          fetch(`http://${process.env.REACT_APP_IP}:8000/api/give_vote`, {
-            method: 'post',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify(send)
-           });
+      if (!down && trigger) {
+        const temp = gone;
+        temp.add(index);
+        setGone(temp);
+        
+        const send = {
+          "index": index,
+            "giverid": userID.userID,
+            "direction": dir
         }
 
-        set(i => {
-          if (index !== i) return;
-          const isGone = gone.has(index);
-
-          const x = isGone ? (200 + window.innerWidth) * dir : down ? xDelta : 0;
-
-          const rot = xDelta / 100 + (isGone ? dir * 10 * velocity : 0);
-
-          const scale = down ? 1.1 : 1;
-          return {
-            x,
-            rot,
-            scale,
-            delay: undefined,
-            config: { friction: 50, tension: down ? 800 : isGone ? 200 : 500 }
-          };
-        });
-
-        if (!down && gone.size === data.length) {
-          setTimeout(() => gone.clear() || set(i => to(i)), 600);
-        }
+        fetch(`https://${process.env.REACT_APP_IP}:8443/api/give_vote`, {
+          method: 'post',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(send)
+          });
       }
-    );
 
-    if (!isLoading) {
-      return (
-        <div id='recommendations'>
-          {cardState.map(({ x, y, rot, scale }, i) => (
-            <Card
-              key={i}
-              i={i}
-              x={x}
-              y={y}
-              rot={rot}
-              scale={scale}
-              trans={trans}
-              data={data}
-              bind={bind}
-            />
-          ))}
-        </div>
-      );
+      set(i => {
+        if (index !== i) return;
+        const isGone = gone.has(index);
+
+        const x = isGone ? (200 + window.innerWidth) * dir : down ? xDelta : 0;
+
+        const rot = xDelta / 100 + (isGone ? dir * 10 * velocity : 0);
+
+        const scale = down ? 1.1 : 1;
+        return {
+          x,
+          rot,
+          scale,
+          delay: undefined,
+          config: { friction: 50, tension: down ? 800 : isGone ? 200 : 500 }
+        };
+      });
+
+      if (!down && gone.size === data.length) {
+        console.log('yeyp')
+        setTimeout(() => gone.clear() || set(i => to(i)), 600);
+      }
     }
-    else {
-      return (
-        <div className="container" style={{height: '100vh'}}>
-        <div class="flex-container">
-          <div class="unit">
-            <div class="heart">
-              <div class="heart-piece-0"></div>
-              <div class="heart-piece-1"></div>
-              <div class="heart-piece-2"></div>
-              <div class="heart-piece-3"></div>
-              <div class="heart-piece-4"></div>
-              <div class="heart-piece-5"></div>
-              <div class="heart-piece-6"></div>
-              <div class="heart-piece-7"></div>
-              <div class="heart-piece-8"></div>
-            </div>
-            <p>love is love</p>
-          </div>
-        </div>
-        </div>
-      );
-    }
+  );
+
+  console.log('gone: ' + gone.size);
+  if(cardState.length != gone.size) {
+    return (
+      <>
+      <div id='recommendations'>
+        {cardState.map(({ x, y, rot, scale }, i) => (
+          <Card
+            key={i}
+            i={i}
+            x={x}
+            y={y}
+            rot={rot}
+            scale={scale}
+            trans={trans}
+            data={data}
+            bind={bind}
+          />
+        ))}
+        <h2>{gone}</h2>
+      </div>
+      </>
+    );
+  }
+  else {
+    return(<Pulse userID={userID.userID} />);
+  }
 }
 
 export default Deck;
