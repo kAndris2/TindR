@@ -60,7 +60,7 @@ function Deck({userID, data}) {
             "direction": dir
         }
 
-        fetch(`https://${process.env.REACT_APP_IP}:8443/api/give_vote`, {
+        fetch(`${process.env.REACT_APP_IP}/api/give_vote`, {
           method: 'post',
           headers: {'Content-Type':'application/json'},
           body: JSON.stringify(send)

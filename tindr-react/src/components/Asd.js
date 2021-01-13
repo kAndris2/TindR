@@ -36,7 +36,7 @@ export default class Asd extends Component {
   // -d "code=PIN"
 
   async getSearchData() {
-    await axios.get(`https://${process.env.REACT_APP_IP}:8443/api/profile_data/${this.props.user.id}`)
+    await axios.get(`${process.env.REACT_APP_IP}/api/profile_data/${this.props.user.id}`)
     .then(this.handleSearchData)
   }  
 
@@ -48,7 +48,7 @@ export default class Asd extends Component {
   }
 
   async getDeck() {
-    await fetch(`https://${process.env.REACT_APP_IP}:8443/api/profiles/${this.props.user.id}`)
+    await fetch(`${process.env.REACT_APP_IP}/api/profiles/${this.props.user.id}`)
       .then(response => {
         return response.json();
       })

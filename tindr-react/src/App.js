@@ -49,7 +49,7 @@ class App extends Component {
 
   saveCoordinates(id) {
     navigator.geolocation.getCurrentPosition(response => {
-      axios.post(`http://${process.env.REACT_APP_IP}:8000/api/save_position/${id}`,{
+      axios.post(`${process.env.REACT_APP_IP}/api/save_position/${id}`,{
         latitude: response.coords.latitude,
         longitude: response.coords.longitude
     })
@@ -65,7 +65,7 @@ class App extends Component {
     const id = Cookies.get('userid');
     if (id !== undefined) {
       this.setState({isLoading : true})
-      await axios.get("http://"+process.env.REACT_APP_IP+":8000/api/user/" + id)
+      await axios.get(process.env.REACT_APP_IP+"/api/user/" + id)
       .then(response => {
         this.setState({
           user : response.data,

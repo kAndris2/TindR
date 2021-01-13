@@ -17,7 +17,7 @@ export default class Pulse extends Component {
     }
 
     async getProfilePicture() {
-        await axios.get(`https://${process.env.REACT_APP_IP}:8443/api/pictures/${this.props.userID}`)
+        await axios.get(`${process.env.REACT_APP_IP}/api/pictures/${this.props.userID}`)
         .then(response => {
             Promise.all(response.data.map(p => {
                 this.setState({
