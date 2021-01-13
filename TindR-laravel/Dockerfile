@@ -34,3 +34,7 @@ RUN a2dissite 000-default.conf
 RUN cp 000-default.conf default-ssl.conf /etc/apache2/sites-available
 RUN a2ensite default-ssl.conf
 RUN service apache2 restart
+RUN rm -rf /var/www/html/index.html
+RUN cp -r . /var/www/html
+RUN chown -R www-data:www-data /var/www
+
