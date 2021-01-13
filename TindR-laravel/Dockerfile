@@ -11,7 +11,7 @@ ARG DB_U
 ENV DB_USERNAME=$DB_U
 ARG DB_PAS
 ENV DB_PASSWORD=$DB_PAS
-RUN apt-get update -y && apt-get install -y libmcrypt-dev openssl libpq-dev git zip unzip
+RUN apt-get update -y && apt-get install -y libmcrypt-dev openssl libpq-dev git zip unzip apache2
 RUN docker-php-ext-install pdo pdo_pgsql pgsql
 RUN ln -s /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 RUN sed -i -e 's/;extension=pgsql/extension=pgsql/' /usr/local/etc/php/php.ini
