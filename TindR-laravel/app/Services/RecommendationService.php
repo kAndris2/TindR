@@ -49,9 +49,8 @@ class RecommendationService
        $user1 = Account::find($from_id);
        $user2 = Account::find($to_id); 
        $earthRadius = 6371000;
-
+        var_dump($user1);
        // convert from degrees to radians
-       var_dump($user1);
         $latFrom = deg2rad($user1->latitude);
         $lonFrom = deg2rad($user1->longitude);
 
