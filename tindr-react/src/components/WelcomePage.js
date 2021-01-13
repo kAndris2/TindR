@@ -467,8 +467,6 @@ class WelcomePage extends Component {
                 </a>
               </div>
             </div>
-            
-            <button onClick={() => this.requestPin(this.state.phoneNumber)}>TEEEEEST</button>
           </section>
         </>
       );
