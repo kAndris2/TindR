@@ -30,11 +30,10 @@ function Deck({userID, data}) {
 
   useEffect(() => {
     async function giveVote(index, direction) {
-      console.log("fetch");
       const send = {
         "index": index,
-          "giverid": userID.userID,
-          "direction": direction
+        "giverid": userID,
+        "direction": direction
       }
 
       await fetch(`${process.env.REACT_APP_IP}/api/give_vote`, {
@@ -54,7 +53,6 @@ function Deck({userID, data}) {
     }
   }, [doFetch])
 
-  console.log("start");
   const [gone] = useState(() => new Set());
   const [cardState, set] = useSprings(data.length, i => ({
     ...to(i),
