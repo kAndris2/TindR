@@ -58,6 +58,7 @@ export default class Asd extends Component {
         return response.json();
       })
       .then(response => {
+        console.log(response)
         this.setState({
           deck : response
         });
@@ -96,18 +97,18 @@ export default class Asd extends Component {
             />
             :
               <div className="container" style={{height: '100vh'}}>
-                <div class="flex-container">
-                  <div class="unit">
-                    <div class="heart">
-                      <div class="heart-piece-0"></div>
-                      <div class="heart-piece-1"></div>
-                      <div class="heart-piece-2"></div>
-                      <div class="heart-piece-3"></div>
-                      <div class="heart-piece-4"></div>
-                      <div class="heart-piece-5"></div>
-                      <div class="heart-piece-6"></div>
-                      <div class="heart-piece-7"></div>
-                      <div class="heart-piece-8"></div>
+                <div className="flex-container">
+                  <div className="unit">
+                    <div className="heart">
+                      <div className="heart-piece-0"></div>
+                      <div className="heart-piece-1"></div>
+                      <div className="heart-piece-2"></div>
+                      <div className="heart-piece-3"></div>
+                      <div className="heart-piece-4"></div>
+                      <div className="heart-piece-5"></div>
+                      <div className="heart-piece-6"></div>
+                      <div className="heart-piece-7"></div>
+                      <div className="heart-piece-8"></div>
                     </div>
                     <p>Please wait...</p>
                   </div>

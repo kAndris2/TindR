@@ -139,7 +139,7 @@ function Deck({userID, data}) {
     );
   }
   else {
-    return(<Pulse userID={userID.userID} />);
+    return(<Pulse userID={userID} />);
   }
 }
 
