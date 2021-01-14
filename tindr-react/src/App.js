@@ -44,7 +44,7 @@ class App extends Component {
       isLoggedIn : true,
       isLoading: false
     });
-    //this.saveCoordinates(user.id);
+    this.saveCoordinates(user.id);
   }
 
   saveCoordinates(id) {

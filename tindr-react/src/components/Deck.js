@@ -25,12 +25,35 @@ const trans = (r, s) =>
 
 function Deck({userID, data}) {
 
-  const [gone, setGone] = useState(() => new Set());
+  const [doFetch, setFetch] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log("gone change")
-  }, [gone])
+    async function giveVote(index, direction) {
+      const send = {
+        "index": index,
+        "giverid": userID,
+        "direction": direction
+      }
 
+      await fetch(`${process.env.REACT_APP_IP}/api/give_vote`, {
+        method: 'post',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(send)
+        })
+        .then(() => {
+          console.log("fetch done");
+          setLoading(false);
+        });
+    }
+    
+    if (doFetch !== "") {
+      const temp = doFetch.split(',');
+      giveVote(temp[0], temp[1]);
+    }
+  }, [doFetch])
+
+  const [gone] = useState(() => new Set());
   const [cardState, set] = useSprings(data.length, i => ({
     ...to(i),
     from: from(i)
@@ -49,24 +72,11 @@ function Deck({userID, data}) {
 
       const dir = xDir < 0 ? -1 : 1;
 
-      if (!down && trigger) {
-        const temp = new Set(gone, index);
-        temp.add(index);
-        setGone(temp);
-        
-        const send = {
-          "index": index,
-            "giverid": userID.userID,
-            "direction": dir
-        }
+      let temp = "";
 
-        /*
-        fetch(`${process.env.REACT_APP_IP}/api/give_vote`, {
-          method: 'post',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify(send)
-          });
-        */
+      if (!down && trigger) {
+        gone.add(index);
+        temp = `${index},${dir}`;
       }
 
       set(i => {
@@ -87,6 +97,11 @@ function Deck({userID, data}) {
         };
       });
 
+      if(temp.length != 0) {
+        setLoading(true);
+        setFetch(temp);
+      }
+
       /*
       if (!down && gone.size === data.length) {
         console.log('yeyp')
@@ -96,10 +111,15 @@ function Deck({userID, data}) {
     }
   );
 
-  console.log('gone: ' + gone.size);
-  if(cardState.length != gone.size) {
+  if(isLoading) {
+    return (
+      <h1>fetch loading...</h1>
+    );
+  }
+  else if(cardState.length != gone.size) {
     return (
       <>
+      {console.log("render")}
       <div id='recommendations'>
         {cardState.map(({ x, y, rot, scale }, i) => (
           <Card
@@ -114,7 +134,6 @@ function Deck({userID, data}) {
             bind={bind}
           />
         ))}
-        <h2>{gone}</h2>
       </div>
       </>
     );
