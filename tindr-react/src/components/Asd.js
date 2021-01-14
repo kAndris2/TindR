@@ -48,7 +48,12 @@ export default class Asd extends Component {
   }
 
   async getDeck() {
-    await fetch(`${process.env.REACT_APP_IP}/api/profiles/${this.props.user.id}`,{mode: 'cors'})
+    await fetch(`${process.env.REACT_APP_IP}/api/profiles/${this.props.user.id}`,
+    {mode: 'cors',
+    headers: {
+      'Access-Control-Allow-Origin':'*'
+    }
+    })
       .then(response => {
         return response.json();
       })
