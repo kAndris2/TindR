@@ -66,7 +66,7 @@ class WelcomePage extends Component {
 
       if (formValues !== undefined) {
         if (formValues[0] == "" || formValues[1] == "") {
-          this.handleLogin("You must be enter your username and your password!");
+          this.handleLogin("You must enter your username and your password!");
         }
         else
           this.doLogin(formValues[0], formValues[1]);
@@ -108,9 +108,9 @@ class WelcomePage extends Component {
 
       if (username !== undefined) {
         if (username[0] == "")
-          this.regEnterUsername("You must be enter your username!");
+          this.regEnterUsername("You must enter your username!");
         else if (username[0].length <= 3)
-          this.regEnterUsername("Username must have 4 characters long!");
+          this.regEnterUsername("Username must have at least 4 characters!");
         else {
             this.setState({userName : username[0]});
             this.regEnterEmail();
@@ -136,7 +136,7 @@ class WelcomePage extends Component {
 
       if (email !== undefined) {
         if (email[0] == "")
-          return this.regEnterEmail("You must be enter your e-mail address!")
+          return this.regEnterEmail("You must enter your e-mail address!")
         else if (email[0].includes("@") == false || email[0].includes(".") == false)
           return this.regEnterEmail("Invalid e-mail address!")
       
@@ -290,13 +290,13 @@ class WelcomePage extends Component {
       
       if (formValues !== undefined) {
         if (formValues[0] == "" || formValues[1] == "")
-          this.regEnterPassword("You must be enter your password and confirm it!");
+          this.regEnterPassword("You must enter your password and confirm it!");
         else if (formValues[0] === formValues[1]) {
             this.setState({password : formValues[0]});
             this.regEnterBirthdate();
         }
         else
-          this.regEnterPassword("Invalid confirm password!", formValues[0]);
+          this.regEnterPassword("Passwords do not match!", formValues[0]);
       }
     }
 
@@ -354,7 +354,7 @@ class WelcomePage extends Component {
           this.regUploadImage();
         }
         else
-          this.regEnterPassions("You have to enter minimum 3 passion!")
+          this.regEnterPassions("You have to enter at least 3 passions!")
       }
     }
 
@@ -377,7 +377,7 @@ class WelcomePage extends Component {
           this.showDetails(file);
         }
         else
-          this.regUploadImage("You must be upload an image!");
+          this.regUploadImage("You must upload an image!");
       }
     }
 
