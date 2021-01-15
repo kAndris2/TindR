@@ -32,12 +32,13 @@ export default class SideBar extends Component {
       tags:this.props.user.passion.split(","),
       finalTags:[],
       tocompsave:false,
-      distanceValue: this.props.searchData.max_distance,
+      distanceValue: undefined,
       ageValue: { 
-        min: this.props.searchData.min_age, 
-        max: this.props.searchData.max_age 
+        min: undefined, 
+        max: undefined
       },
-      lookingFor: this.props.searchData.looking_for
+      lookingFor: undefined,
+      searchData: []
     }
 
      // Save settings after close
@@ -80,13 +81,14 @@ export default class SideBar extends Component {
           max_age: newSettings.ageValue.max,
           status: newSettings.status,
           global: newSettings.global
+        }).then(() => {
+          this.props.forceRender();
         });
         if (this.state.finalTags.length >= 1){
           axios.put(process.env.REACT_APP_IP+"/api/update_user/"+this.props.user.id,{
             passion:newSettings.finalTags.join()
           });
         }
-        this.props.forceRender();
       }
 
       this.hidePrefs();
@@ -145,8 +147,7 @@ export default class SideBar extends Component {
       }))
       */
         this.setState({
-            profilePath: response.data,
-            isLoading: false
+            profilePath: response.data
         });
     })
   }
@@ -158,14 +159,33 @@ export default class SideBar extends Component {
     })
   }
 
+  async getSearchData() {
+    await axios.get(`${process.env.REACT_APP_IP}/api/profile_data/${this.props.user.id}`)
+    .then(response => {
+      const tempAge = {
+        min: response.data.min_age,
+        max: response.data.max_age
+      }
+  
+      this.setState({
+        searchData: response.data,
+        isLoading: false,
+        distanceValue: response.data.max_distance,
+        ageValue: tempAge,
+        lookingFor: response.data.looking_for
+      });
+    })
+  }  
+
   async componentDidMount(){
     await this.getProfilePictures(this.props.user);
     await this.getDetails(this.props.user.id);
+    await this.getSearchData();
   }
 
   render() {
-    const {isLoading, profilePath, details, tags, lookingFor} = this.state;
-    const { searchData } = this.props;
+    const {isLoading, profilePath, details, tags, lookingFor, ageValue, distanceValue, searchData} = this.state;
+    console.log(searchData)
 
     let settings = this.state;
     if(isLoading){
@@ -352,7 +372,7 @@ export default class SideBar extends Component {
                         maxValue={150}
                         minValue={0}
                         formatLabel={value => `${value} km`}
-                        value={this.state.distanceValue}
+                        value={distanceValue}
                         onChange={value => {
                           this.setState({ distanceValue : value });
                           //this._settingsChanged();
@@ -364,7 +384,7 @@ export default class SideBar extends Component {
                       <InputRange
                         maxValue={100}
                         minValue={18}
-                        value={this.state.ageValue}
+                        value={ageValue}
                         onChange={value => {
                           this.setState({ ageValue : value });
                           //this._settingsChanged();
@@ -377,7 +397,7 @@ export default class SideBar extends Component {
                         id="status" 
                         name="status" 
                         value="true"
-                        defaultChecked={this.props.searchData.status}
+                        defaultChecked={searchData.status}
                         onChange={this._settingsChanged} 
                       />
                       <label for="status">Show me on TindR</label><br />
@@ -388,7 +408,7 @@ export default class SideBar extends Component {
                         id="global" 
                         name="global" 
                         value="true"
-                        defaultChecked={this.props.searchData.global}
+                        defaultChecked={searchData.global}
                         onChange={this._settingsChanged}
                       />
                       <label for="global">Global mode</label><br />
