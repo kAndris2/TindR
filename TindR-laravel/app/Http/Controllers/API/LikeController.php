@@ -17,7 +17,7 @@ class LikeController extends Controller
     public function manageLikes(Request $request)
     {
         $this->voteService->manageVote(
-            $request["index"],
+            $request["receiverid"],
             $request["giverid"],
             $request["direction"]
         );

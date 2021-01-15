@@ -29,9 +29,9 @@ function Deck({userID, data}) {
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function giveVote(index, direction) {
+    async function giveVote(receiverID, direction) {
       const send = {
-        "index": index,
+        "receiverid": receiverID,
         "giverid": userID,
         "direction": direction
       }
@@ -75,7 +75,7 @@ function Deck({userID, data}) {
 
       if (!down && trigger) {
         gone.add(index);
-        temp = `${index},${dir}`;
+        temp = `${data[index].id},${dir}`;
       }
 
       set(i => {

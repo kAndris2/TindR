@@ -8,20 +8,12 @@ use App\Models\Match;
 
 class VoteService
 {
-
-    public $recomService;
-
-    public function __construct() {
-        $this->recomService = new RecommendationService();
-    }
-
-    public function manageVote($index, $giverID, $direction) 
+    public function manageVote($receiverID, $giverID, $direction) 
     {
-        $profiles = $this->recomService->getRecommendations($giverID);
-
-        $receiverID = json_decode($profiles, true)[$index]["id"];
-
-        $direction == 1 ? $this->createLike($receiverID, $giverID) : $this->createDislike($receiverID, $giverID);
+        $direction == 1 ? 
+            $this->createLike($receiverID, $giverID) 
+            : 
+            $this->createDislike($receiverID, $giverID);
     }
 
     function createLike($receiverID, $giverID)
