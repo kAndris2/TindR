@@ -42,7 +42,6 @@ function Deck({userID, data}) {
         body: JSON.stringify(send)
         })
         .then(() => {
-          console.log("fetch done");
           setLoading(false);
         });
     }
@@ -104,7 +103,6 @@ function Deck({userID, data}) {
 
       /*
       if (!down && gone.size === data.length) {
-        console.log('yeyp')
         setTimeout(() => gone.clear() || set(i => to(i)), 600);
       }
       */
@@ -119,7 +117,6 @@ function Deck({userID, data}) {
   else if(cardState.length != gone.size) {
     return (
       <>
-      {console.log("render")}
       <div id='recommendations'>
         {cardState.map(({ x, y, rot, scale }, i) => (
           <Card

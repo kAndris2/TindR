@@ -56,7 +56,6 @@ export default class Asd extends Component {
   }
 
   async forceRender() {
-    console.log("force")
     this.setState({
       deckIsLoading: true
     });

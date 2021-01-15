@@ -185,7 +185,6 @@ export default class SideBar extends Component {
 
   render() {
     const {isLoading, profilePath, details, tags, lookingFor, ageValue, distanceValue, searchData} = this.state;
-    console.log(searchData)
 
     let settings = this.state;
     if(isLoading){
