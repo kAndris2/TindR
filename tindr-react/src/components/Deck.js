@@ -133,7 +133,7 @@ function Deck({userID, data}) {
           />
         ))}
         {isLoading === true &&
-          <h1>Amúgy tőt</h1>
+          <h1>fetch loading...</h1>
         }
       </div>
       </>
