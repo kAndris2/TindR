@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSprings } from "react-spring";
 import { useGesture } from "react-with-gesture";
-import axios from 'axios';
 
 import Card from "./Card";
 import Pulse from "./Pulse";
@@ -109,14 +108,16 @@ function Deck({userID, data}) {
     }
   );
 
+  /*
   if(isLoading) {
     return (
       <h1>fetch loading...</h1>
     );
   }
-  else if(cardState.length != gone.size) {
+  else */if(cardState.length != gone.size) {
     return (
       <>
+      <div className="background-image"></div>
       <div id='recommendations'>
         {cardState.map(({ x, y, rot, scale }, i) => (
           <Card
@@ -131,6 +132,9 @@ function Deck({userID, data}) {
             bind={bind}
           />
         ))}
+        {isLoading === true &&
+          <h1>Amúgy tőt</h1>
+        }
       </div>
       </>
     );

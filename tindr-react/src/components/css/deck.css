@@ -15,6 +15,17 @@ body {
   overflow: hidden;
 }
 
+.background-image {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://images.pexels.com/photos/4173624/pexels-photo-4173624.jpeg?cs=srgb&dl=pexels-elijah-o%27donnell-4173624.jpg&fm=jpg');
+  filter: blur(15px);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
 #recommendations {
   filter:blur(0px);
   position: fixed;
