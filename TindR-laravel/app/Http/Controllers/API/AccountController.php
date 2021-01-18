@@ -46,12 +46,9 @@ class AccountController extends Controller
     {
         $account = Account::where("email", "=", $request["email"])->first();
 
-        if ($account != null)
+        if ($account != null && (Hash::check($request["password"], $account->password)))
         {
-            if (Hash::check($request["password"], $account->password))
-            {
-                return User::find($account->id);
-            }
+            return User::find($account->id);
         }
     
         return null;
