@@ -71,8 +71,7 @@ class AccountController extends Controller
 
     public function isValidEmail($email) 
     {
-        $account = Account::where("email", "=", $email)->first();
-        return $account;
+        return Account::where("email", "=", $email)->first();
     }
 
     public function getDetails($id)

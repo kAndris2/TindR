@@ -16,6 +16,9 @@ class PictureController extends Controller
         return Picture::where("user_id", "=", $id)->orderBy('upload_date', 'asc')->get();
     }
 
+    private $noid = "No user with the given ID!";
+    private $noimg = "No Image Found, cannot proceed";
+
     public function addPicture(Request $request, $id){
         try {
             $user = User::findOrFail($id);
@@ -38,14 +41,14 @@ class PictureController extends Controller
         catch (ModelNotFoundException $e){
             $toObj = array(
                 "status" => "error",
-                "message" => array("readable" => "No user with the given ID!","exception" => $e->getMessage())
+                "message" => array("readable" => $this->noid,"exception" => $e->getMessage())
             );
             return json_encode($toObj);
         }
         catch (NoImageException $c){
             $toObj = array(
-                "status" => "imaerror",
-                "message" => $c
+                "status" => "img_error",
+                "message" => strval($c)
             );
             return json_encode($toObj);
         }
@@ -57,7 +60,7 @@ class PictureController extends Controller
             $user = User::findOrFail($id);
             $encoded = $request["del_data"];
             if ($encoded == '' ){
-                throw new NoImageException("No Image Found, cannot proceed");
+                throw new NoImageException($this->noimg);
             }
             
             Picture::where([
@@ -74,14 +77,14 @@ class PictureController extends Controller
         catch (ModelNotFoundException $e){
             $toObj = array(
                 "status" => "error",
-                "message" => array("readable" => "No user with the given ID!","exception" => $e->getMessage())
+                "message" => array("readable" => $this->noid,"exception" => $e->getMessage())
             );
             return json_encode($toObj);
         }
         catch (NoImageException $c){
             $toObj = array(
-                "status" => "imaerror",
-                "message" => $c
+                "status" => "img_error",
+                "message" => strval($c)
             );
             return json_encode($toObj);
         }
@@ -111,14 +114,14 @@ class PictureController extends Controller
         catch (ModelNotFoundException $e){
             $toObj = array(
                 "status" => "error",
-                "message" => array("readable" => "No user with the given ID!","exception" => $e->getMessage())
+                "message" => array("readable" => $this->noid,"exception" => $e->getMessage())
             );
             return json_encode($toObj);
         }
         catch (NoImageException $c){
             $toObj = array(
-                "status" => "imaerror",
-                "message" => $c
+                "status" => "img_error",
+                "message" => strval($c)
             );
             return json_encode($toObj);
         }
