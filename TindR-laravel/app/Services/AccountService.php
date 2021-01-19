@@ -43,12 +43,9 @@ class AccountService {
     {
         $account = Account::where("email", "=", $request["email"])->first();
 
-        if ($account != null)
+        if ($account != null && (Hash::check($request["password"], $account->password)))
         {
-            if (Hash::check($request["password"], $account->password))
-            {
-                return User::find($account->id);
-            }
+            return User::find($account->id);
         }
     
         return null;
@@ -66,8 +63,7 @@ class AccountService {
 
     public function isValidEmail($email) 
     {
-        $account = Account::where("email", "=", $email)->first();
-        return $account;
+        return Account::where("email", "=", $email)->first();
     }
 
     public function getDetails($id)
