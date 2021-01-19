@@ -8,6 +8,13 @@ use App\Models\Match;
 
 class VoteService
 {
+    private $nService;
+
+    public function __construct()
+    {
+        $this->nService = new NotificationService();
+    }
+
     public function manageVote($receiverID, $giverID, $direction) 
     {
         $direction == 1 ? 
@@ -27,6 +34,8 @@ class VoteService
                 "user2_id" => $receiverID,
                 "date" => round(microtime(true) * 1000)
             ]);
+            $this->nService->createMatchNotice($receiverID, $giverID);
+            $this->nService->createMatchNotice($giverID, $receiverID);
         }
         else
         {
@@ -34,6 +43,7 @@ class VoteService
                 "owner_id" => $giverID,
                 "receiver_id" => $receiverID
             ]);
+            $this->nService->createLikeNotice($receiverID);
         }
     }
 

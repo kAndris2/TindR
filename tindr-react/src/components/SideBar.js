@@ -38,7 +38,8 @@ export default class SideBar extends Component {
         max: undefined
       },
       lookingFor: undefined,
-      searchData: []
+      searchData: [],
+      notifications: []
     }
 
      // Save settings after close
@@ -169,22 +170,42 @@ export default class SideBar extends Component {
   
       this.setState({
         searchData: response.data,
-        isLoading: false,
         distanceValue: response.data.max_distance,
         ageValue: tempAge,
         lookingFor: response.data.looking_for
       });
     })
-  }  
+  }
+  
+  async getNotifications() {
+    const temp = [];
+    await axios.get(`${process.env.REACT_APP_IP}/api/get_notifications/${this.props.user.id}`)
+    .then(response => {
+      Promise.all(response.data.map(p => {
+        temp.push({
+          "update" : p.content,
+          "timestamp" : p.date
+        });
+      }))
+    });
+
+    this.setState({
+      notifications : temp,
+      isLoading: false
+    });
+  }
 
   async componentDidMount(){
     await this.getProfilePictures(this.props.user);
     await this.getDetails(this.props.user.id);
     await this.getSearchData();
+    await this.getNotifications();
   }
 
   render() {
-    const {isLoading, profilePath, details, tags, lookingFor, ageValue, distanceValue, searchData} = this.state;
+    const {
+      isLoading, profilePath, details, tags, lookingFor, ageValue, distanceValue, searchData, notifications
+    } = this.state;
 
     let settings = this.state;
     if(isLoading){
@@ -196,14 +217,9 @@ export default class SideBar extends Component {
         <Menu>
           <div className="menu-item" href="/">
             {this.props.user.name}
-            {/* <span className="btn pull-right">
+            {<span className="btn pull-right">
               <NotifyMe
-                data={[
-                  {
-                    "update":"70 new employees are shifted",
-                    "timestamp":Date()
-                  },
-                ]}
+                data={notifications}
                 storageKey='notific_key'
                 notific_key='timestamp'
                 notific_value='update'
@@ -214,7 +230,7 @@ export default class SideBar extends Component {
                 color="yellow"
                 markAsReadFn={(e) => console.log(e)}
               />
-            </span> */}
+            </span>}
           </div>
           <a className="navbar-brand text-center" href="#">
             <img src={profilePath[0].route} height="80" alt=""/>

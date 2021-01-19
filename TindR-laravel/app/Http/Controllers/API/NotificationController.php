@@ -5,26 +5,29 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Services\NotificationService;
 
 class NotificationController extends Controller
 {
+    private $nService;
+
+    public function __construct() 
+    {
+        $this->nService = new NotificationService();
+    }
+
     public function createNotice(Request $request)
     {
-        Notification::create([
-            "user_id" => $request["user_id"],
-            "seen" => $request["seen"],
-            "date" => round(microtime(true) * 1000),
-            "content" => $request["content"]
-        ]);
+        $this->nService->createNotice($request);
     }
 
     public function updateNotice(Request $request, $id)
     {
-        Notification::find($id)->update($request->all());
+        $this->nService->updateNotice($request, $id);
     }
 
     public function getNotice($id)
     {
-        return Notification::where("user_id", "=", $id)->get();
+        return $this->nService->getNotice($id);
     }
 }
