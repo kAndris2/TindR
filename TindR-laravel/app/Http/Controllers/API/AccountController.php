@@ -29,11 +29,6 @@ class AccountController extends Controller
         return $this->accountService->login($request);
     }
 
-    public function logout()
-    {
-        setcookie("userid", "", time() - 3600);
-    }
-
     public function updateAccount(Request $request, $id)
     {
         $this->accountService->updateAccount($request, $id);
