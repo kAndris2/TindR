@@ -8,6 +8,7 @@ use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\LikeController;
 use App\Http\Controllers\API\PictureController;
 use App\Http\Controllers\API\PinController;
+use App\Http\Controllers\API\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::get("users", [UserController::class, 'getUsers']);
 Route::get("user/{id}", [UserController::class, 'getUserById']);
 Route::put("update_user/{id}", [UserController::class, 'updateUser']);
 Route::get("recommendations/{id}", [UserController::class, 'getRecommendations']);
+Route::get("profiles/{id}", [UserController::class, 'getRecom2']);
 
 Route::get("profile_data/{id}", [SearchController::class, 'getProfileData']);
 Route::put("update_search/{id}", [SearchController::class, "updateSearch"]);
@@ -52,4 +54,6 @@ Route::post("pictures/setmain/{id}", [PictureController::class, "setMainPic"]);
 Route::post("getpin", [PinController::class, "getPin"]);
 Route::post("validatecode", [PinController::class, "validateCode"]);
 
-Route::get("profiles/{id}", [UserController::class, 'getRecom2']);
+Route::post("create_notifications", [NotificationController::class, 'createNotice']);
+Route::put("update_notifications/{id}", [NotificationController::class, 'updateNotice']);
+Route::get("get_notifications/{id}", [NotificationController::class, 'getNotice']);

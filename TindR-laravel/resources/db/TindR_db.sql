@@ -67,6 +67,15 @@ CREATE TABLE public.dislikes (
 	FOREIGN KEY(receiver_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
+CREATE TABLE public.notifications (
+	id serial not null PRIMARY KEY,
+	user_id int not null,
+	seen boolean not null,
+	date bigint not null,
+	content character varying(200) not null,
+	FOREIGN KEY(user_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
 CREATE FUNCTION create_searches() RETURNS TRIGGER AS $$
 	BEGIN
 		INSERT INTO searches (id, max_distance, looking_for, min_age, max_age, global, status) 

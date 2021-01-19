@@ -8,7 +8,7 @@ use App\Services\VoteService;
 
 class LikeController extends Controller
 {
-    public $voteService;
+    private $voteService;
 
     public function __construct() {
         $this->voteService = new VoteService();
