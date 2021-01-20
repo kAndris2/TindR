@@ -13,6 +13,7 @@ import Test from './Test';
 import NotifyMe from 'react-notification-timeline';
 import Checkbox from '@material-ui/core/Checkbox';
 import Loading from './Loading'
+import ItemLoading from './ItemLoading'
 
 const options = [
   { value: 'Men', label: 'Men' },
@@ -26,7 +27,9 @@ export default class SideBar extends Component {
     this.picupload = React.createRef();
     this.state={
       profilePath:'',
-      isLoading:true,
+      isLoading: true,
+      settingsLoading: true,
+      notiLoading: true,
       details:'',
       formData: '',
       tags:this.props.user.passion.split(","),
@@ -148,7 +151,8 @@ export default class SideBar extends Component {
       }))
       */
         this.setState({
-            profilePath: response.data
+            profilePath: response.data,
+            isLoading: false
         });
     })
   }
@@ -172,7 +176,8 @@ export default class SideBar extends Component {
         searchData: response.data,
         distanceValue: response.data.max_distance,
         ageValue: tempAge,
-        lookingFor: response.data.looking_for
+        lookingFor: response.data.looking_for,
+        settingsLoading : false
       });
     })
   }
@@ -191,7 +196,7 @@ export default class SideBar extends Component {
 
     this.setState({
       notifications : temp,
-      isLoading: false
+      notiLoading : false
     });
   }
 
@@ -204,7 +209,8 @@ export default class SideBar extends Component {
 
   render() {
     const {
-      isLoading, profilePath, details, tags, lookingFor, ageValue, distanceValue, searchData, notifications
+      isLoading, profilePath, details, tags, lookingFor, ageValue, distanceValue, searchData, notifications,
+      settingsLoading, notiLoading
     } = this.state;
 
     let settings = this.state;
@@ -217,20 +223,24 @@ export default class SideBar extends Component {
         <Menu>
           <div className="menu-item" href="/">
             {this.props.user.name}
-            {<span className="btn pull-right">
-              <NotifyMe
-                data={notifications}
-                storageKey='notific_key'
-                notific_key='timestamp'
-                notific_value='update'
-                heading='Notification Alerts'
-                sortedByKey={false}
-                showDate={true}
-                size={36}
-                color="yellow"
-                markAsReadFn={(e) => console.log(e)}
-              />
-            </span>}
+            {notiLoading === false ?
+              <span className="btn pull-right">
+                <NotifyMe
+                  data={notifications}
+                  storageKey='notific_key'
+                  notific_key='timestamp'
+                  notific_value='update'
+                  heading='Notification Alerts'
+                  sortedByKey={false}
+                  showDate={true}
+                  size={36}
+                  color="yellow"
+                  markAsReadFn={(e) => console.log(e)}
+                />
+            </span>
+            :
+            <ItemLoading />
+            }
           </div>
           <a className="navbar-brand text-center" href="#">
             <img src={profilePath[0].route} height="80" alt=""/>
@@ -238,9 +248,13 @@ export default class SideBar extends Component {
           <a className="menu-item" href="/">
             Home
           </a>
-          <p className="menu-item" style={{cursor:"pointer"}} onClick={this.showPrefs.bind(this)}>
-            Settings
-          </p>
+          {settingsLoading === false ? 
+            <p className="menu-item" style={{cursor:"pointer"}} onClick={this.showPrefs.bind(this)}>
+              Settings
+            </p>
+            :
+            <ItemLoading />
+          }
           <a className="menu-item" href="#">
             Asd
           </a>
