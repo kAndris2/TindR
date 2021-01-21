@@ -59,11 +59,11 @@ class NotificationService
         return $user->name . "(" . $id . ")";
     }
 
-    public function createLikeNotice($id)
+    public function createLikeNotice($giverID, $receiverID)
     {
         $request = new Request();
         $request->replace([
-            "user_id" => $id,
+            "user_id" => $receiverID,
             "seen" => false,
             "date" => round(microtime(true) * 1000),
             "content" => "Somebody likes you!"
@@ -71,8 +71,8 @@ class NotificationService
         $this->createNotice($request);
 
         $this->logService->createLog([
-            "user_id" => $uID1,
-            "content" => "Sent like to " . $this->getUserNamebyId($uID2)
+            "user_id" => $giverID,
+            "content" => "Sent like to " . $this->getUserNamebyId($receiverID)
         ]);
     }
 

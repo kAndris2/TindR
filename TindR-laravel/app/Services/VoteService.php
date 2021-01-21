@@ -44,7 +44,7 @@ class VoteService
                 "owner_id" => $giverID,
                 "receiver_id" => $receiverID
             ]);
-            $this->nService->createLikeNotice($receiverID);
+            $this->nService->createLikeNotice($giverID, $receiverID);
         }
     }
 
