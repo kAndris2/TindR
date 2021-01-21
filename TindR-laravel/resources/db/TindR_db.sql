@@ -4,7 +4,8 @@ CREATE TABLE accounts (
 	password character varying(256) not null,
 	phone_number character varying(20),
 	latitude double precision not null,
-	longitude double precision not null
+	longitude double precision not null,
+	admin boolean not null
 );
 
 CREATE TABLE users (
@@ -76,13 +77,20 @@ CREATE TABLE public.notifications (
 	FOREIGN KEY(user_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
+CREATE TABLE public.logs (
+	id serial not null PRIMARY KEY,
+	user_id int not null,
+	date bigint not null,
+	content character varying(200) not null,
+	FOREIGN KEY(user_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
 CREATE FUNCTION create_searches() RETURNS TRIGGER AS $$
 	BEGIN
 		INSERT INTO searches (id, max_distance, looking_for, min_age, max_age, global, status) 
 		VALUES 
 		(NEW.id, 50, 'Everyone', 18, 100, false, true);
-		RETURN NEW;
-			
+		RETURN NEW;		
 	END;
 	$$ LANGUAGE plpgsql;
 
