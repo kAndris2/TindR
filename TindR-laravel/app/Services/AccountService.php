@@ -7,8 +7,16 @@ use App\Models\Account;
 use App\Models\User;
 use App\Models\Picture;
 use Illuminate\Http\Request;
+use App\Services\LogService;
 
-class AccountService {
+class AccountService 
+{
+    private $logService;
+
+    public function __construct()
+    {
+        $this->logService = new LogService();
+    }
 
     public function getAccountById($id) 
     {
@@ -36,12 +44,22 @@ class AccountService {
             "route" => $request["rawImage"]
         ]);
 
+        $this->logService->createLog([
+            "user_id" => $newAccountId,
+            "content" => "Registration"
+        ]);
+
         return $newUser;
     }
 
     public function login(Request $request)
     {
         $account = Account::where("email", "=", $request["email"])->first();
+
+        $this->logService->createLog([
+            "user_id" => $account->id,
+            "content" => $account != null ? "Login" : "Login failed"
+        ]);
 
         if ($account != null && (Hash::check($request["password"], $account->password)))
         {
@@ -54,6 +72,11 @@ class AccountService {
     public function updateAccount(Request $request, $id)
     {
         Account::find($id)->update($request->all());
+
+        $this->logService->createLog([
+            "user_id" => $id,
+            "content" => "Account updated"
+        ]);
     }
 
     public function deleteAccount($id)

@@ -28,8 +28,7 @@ Route::middleware('auth:api')->get('/us', function (Request $request) {
 Route::get("users", [UserController::class, 'getUsers']);
 Route::get("user/{id}", [UserController::class, 'getUserById']);
 Route::put("update_user/{id}", [UserController::class, 'updateUser']);
-Route::get("recommendations/{id}", [UserController::class, 'getRecommendations']);
-Route::get("profiles/{id}", [UserController::class, 'getRecom2']);
+Route::get("profiles/{id}", [UserController::class, 'getRecommendations']);
 
 Route::get("profile_data/{id}", [SearchController::class, 'getProfileData']);
 Route::put("update_search/{id}", [SearchController::class, "updateSearch"]);
