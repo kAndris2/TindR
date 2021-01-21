@@ -15,10 +15,10 @@
 .unit p {
   margin-top: 100px;
   font-family: 'Lato', sans-serif;
-  font-weight: 100;
+  font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: rgb(7, 7, 7);
+  color: rgb(255, 255, 255);
 }
 .heart {
   position: relative;

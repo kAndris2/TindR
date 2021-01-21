@@ -89,7 +89,27 @@ export default class Asd extends Component {
         }
 
         {deckIsLoading === true &&
-          <DeckLoading />
+          <>
+            <video
+              autoPlay={true} 
+              loop={true}
+              muted
+              style={{
+                position: "absolute",
+                width: "100%",
+                left: "50%",
+                top: "50%",
+                height: "120%",
+                objectFit: "cover",
+                transform: "translate(-50%, -50%)",
+                zIndex: "-1",
+                filter: "blur(10px)"
+              }}
+            >
+              <source src="/img/Tindr.mp4" />
+            </video>
+            <DeckLoading />
+          </>
         }
       </>
     );
