@@ -106,7 +106,7 @@ export default class Asd extends Component {
                 filter: "blur(10px)"
               }}
             >
-              <source src="/img/Tindr.mp4" />
+              <source src="https://mradmin.hu/vid/Tindr.mp4" />
             </video>
             <DeckLoading />
           </>
