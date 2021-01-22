@@ -5,14 +5,10 @@ import axios from 'axios';
 
 import WelcomePage from "./components/WelcomePage";
 import Asd from './components/Asd'
-import Recommendations from "./components/Recommendations";
+import CreateTickets from './components/CreateTickets'
 
 import Loading from './components/Loading'
-import Pulse from './components/Pulse'
-
-import Deck from './components/Deck';
-import Test from './components/Test';
-
+import SideBar from './components/SideBar'
 
 class App extends Component {
   constructor() {
@@ -28,6 +24,7 @@ class App extends Component {
     this.setUser = this.setUser.bind(this);
     this.checkLoginStatus = this.checkLoginStatus.bind(this);
     this.saveCoordinates = this.saveCoordinates.bind(this);
+    this.forceRender = this.forceRender.bind(this);
   }
 
   setCookie(id) {
@@ -75,61 +72,58 @@ class App extends Component {
     }
   }
 
+  async forceRender() {
+    this.setState({
+      isLoading : true
+    });
+    await this.componentDidMount();
+  }
+
   async componentDidMount() {
     await this.checkLoginStatus();
   }
 
   render() {
-    const {user, isLoggedIn, isLoading} = this.state;
+    const {user, isLoggedIn, isLoading, doForce} = this.state;
 
     if (!isLoading) {
       return (
         <>
-          <Router>
-            <Switch>
+          {isLoggedIn === true &&
+            <>
+              <SideBar 
+                removeCookie={this.removeCookie} 
+                user={this.state.user} 
+                pageWrapId={'page-wrap'} 
+                outerContainerId={'outer-container'} 
+                forceRender={this.forceRender}
+              />
 
-              <Route exact path="/">
-                {isLoggedIn === false &&
-                  <WelcomePage
-                    setUser={this.setUser}
-                  ></WelcomePage>
-                }
-                {isLoggedIn === true &&
-                  <Asd
-                    user={user}
-                    removeCookie={this.removeCookie}
-                  ></Asd>
-                }
-              </Route>
+              <Router>
+                <Switch>
 
-              <Route exact path="/recom">
-                {isLoggedIn === true &&
-                  <Recommendations
-                    userID={user.id}
-                  ></Recommendations>
-                }
-              </Route>
+                  <Route exact path="/tickets/:id">
+                    <CreateTickets 
+                      userID={user.id}
+                    />
+                  </Route>
 
-              <Route exact path="/recom2">
-                {isLoggedIn === true &&
-                <div id="recommendations">
-                  <Deck
-                    userID={user.id}
-                  ></Deck>
-                </div>
-                }
-              </Route>
+                  <Route exact path="/">
+                    <Asd
+                      user={user}
+                      removeCookie={this.removeCookie}
+                    />
+                  </Route>
 
-              <Route exact path="/test">
-                <Test></Test>
-              </Route>
-
-              <Route exact path='/pulse'>
-                <Pulse />
-              </Route>
-
-            </Switch>
-          </Router>
+                </Switch>
+              </Router>
+            </>
+          }
+          {isLoggedIn === false &&
+            <WelcomePage
+              setUser={this.setUser}
+            ></WelcomePage>
+          }
         </>
       );
     }

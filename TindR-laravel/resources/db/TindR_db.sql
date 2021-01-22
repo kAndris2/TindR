@@ -85,6 +85,19 @@ CREATE TABLE public.logs (
 	FOREIGN KEY(user_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
+CREATE TABLE public.tickets (
+	id serial not null PRIMARY KEY,
+	notifier_id int not null,
+	solved boolean not null,
+	date bigint not null,
+	subject character varying(50) not null,
+	section character varying(25) not null,
+	steps character varying(500) not null,
+	solver_id int
+	FOREIGN KEY(notifier_id) REFERENCES accounts(id) ON DELETE CASCADE,
+	FOREIGN KEY(solver_id) REFERENCES accounts(id)
+);
+
 CREATE FUNCTION create_searches() RETURNS TRIGGER AS $$
 	BEGIN
 		INSERT INTO searches (id, max_distance, looking_for, min_age, max_age, global, status) 

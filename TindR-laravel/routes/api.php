@@ -9,6 +9,7 @@ use App\Http\Controllers\API\LikeController;
 use App\Http\Controllers\API\PictureController;
 use App\Http\Controllers\API\PinController;
 use App\Http\Controllers\API\NotificationController;
+use App\Http\Controllers\API\TicketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,3 +57,8 @@ Route::post("validatecode", [PinController::class, "validateCode"]);
 Route::post("create_notifications", [NotificationController::class, 'createNotice']);
 Route::put("update_notifications/{id}", [NotificationController::class, 'updateNotice']);
 Route::get("get_notifications/{id}", [NotificationController::class, 'getNotice']);
+
+Route::post("create_ticket", [TicketController::class, 'createTicket']);
+Route::put("update_ticket/{id}/{ticketid}", [TicketController::class, 'updateTicket']);
+Route::get("get_tickets/{id}", [TicketController::class, 'getTickets']);
+Route::get("get_all_tickets", [TicketController::class, 'getAllTickets']);

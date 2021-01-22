@@ -255,8 +255,8 @@ export default class SideBar extends Component {
             :
             <ItemLoading />
           }
-          <a className="menu-item" href="#">
-            Asd
+          <a className="menu-item" href={`/tickets/${this.props.user.id}`}>
+            Error report
           </a>
           <a className="menu-item" href="/" onClick={this.props.removeCookie} >
             Logout
