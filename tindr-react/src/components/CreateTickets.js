@@ -3,6 +3,7 @@ import axios from 'axios';
 import moment from "moment";
 
 import Table from './Table';
+import Loading from './Loading'
 
 export default class CreateTickets extends Component {
   constructor(props) {
@@ -172,7 +173,9 @@ export default class CreateTickets extends Component {
                         />
                     </>
                 :
-                    <h1>Loading</h1>
+                    <div style={{margin:"auto", width:"30%"}}>
+                        <Loading />
+                    </div>
                 }
 
             </div>
