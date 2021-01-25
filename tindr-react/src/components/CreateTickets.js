@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import moment from "moment";
 
-import Tickets from './Tickets';
+import Table from './Table';
 
 export default class CreateTickets extends Component {
   constructor(props) {
@@ -11,7 +12,30 @@ export default class CreateTickets extends Component {
       subject: "",
       section: "",
       steps: "",
-      isLoading: false
+      isLoading: true,
+      tickets: [],
+      columns: [
+          {
+              Header: "#",
+              accessor: "index",
+          },
+          {
+            Header: "Date",
+            accessor: "date",
+          },
+          {
+              Header: "Subject",
+              accessor: "subject",
+          },
+          {
+              Header: "Section",
+              accessor: "section",
+          },
+          {
+              Header: "Status",
+              accessor: "solved",
+          },
+      ]
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -25,24 +49,64 @@ export default class CreateTickets extends Component {
   }
 
   handleClick() {
-    const { subject, section, steps } = this.state;
+    const { subject, section, steps, tickets } = this.state;
 
     this.setState({isLoading : true});
 
-    axios.post(`${process.env.REACT_APP_IP}/api/create_ticket`, {
+    const newTicket = {
         "notifier_id": this.props.userID,
         "subject": subject,
         "section": section,
         "steps": steps
-    }).then(() => {
+    };
+
+    axios.post(`${process.env.REACT_APP_IP}/api/create_ticket`, newTicket)
+    .then(() => {
+        const temp = tickets;
+        temp.push(newTicket);
+
         this.setState({
+            tickets, temp,
             isLoading : false
         });
     })
   }
 
+  getFormattedTickets(tickets) {
+    const data = [];
+    let i = 0;
+
+      tickets.map(t => {
+          i++;
+        data.push({
+            index: `${i}.`,
+            date: moment(t.date).format("YYYY. MMM. D."),
+            subject: t.subject,
+            section: t.section,
+            solved: t.solved === false ? "Open" : "Closed",
+            steps: t.steps, 
+        })
+      })
+      return data;
+  }
+
+  getTickets() {
+    axios.get(`${process.env.REACT_APP_IP}/api/get_tickets/${this.props.userID}`)
+    .then(response => {
+        console.log(response)
+      this.setState({
+          isLoading : false,
+          tickets : response.data
+      });
+    });
+}
+
+  componentDidMount() {
+    this.getTickets();
+  }
+
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, tickets, columns } = this.state;
 
       return(
           <>
@@ -99,9 +163,14 @@ export default class CreateTickets extends Component {
                 >Send</button>
 
                 {isLoading !== true ? 
-                    <Tickets 
-                        userID={this.props.userID}
-                    />
+                    <>
+                        <br /><br />
+                        <h1>My tickets:</h1>
+                        <Table 
+                            data={this.getFormattedTickets(tickets)}
+                            columnsData={columns}
+                        />
+                    </>
                 :
                     <h1>Loading</h1>
                 }
