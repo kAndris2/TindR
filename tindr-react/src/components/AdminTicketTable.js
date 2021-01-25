@@ -30,7 +30,7 @@ const Styles = styled.div`
       background: white;
 
       :last-child {
-        border-right: 0;
+        border-right: 0; 
       }
     }
   }
