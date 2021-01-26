@@ -59,6 +59,6 @@ Route::put("update_notifications/{id}", [NotificationController::class, 'updateN
 Route::get("get_notifications/{id}", [NotificationController::class, 'getNotice']);
 
 Route::post("create_ticket", [TicketController::class, 'createTicket']);
-Route::put("update_ticket/{id}/{ticketid}", [TicketController::class, 'updateTicket']);
+Route::put("update_ticket/{id}", [TicketController::class, 'updateTicket']);
 Route::get("get_tickets/{id}", [TicketController::class, 'getTickets']);
 Route::get("get_all_tickets", [TicketController::class, 'getAllTickets']);

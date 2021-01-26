@@ -6,6 +6,7 @@ import axios from 'axios';
 import WelcomePage from "./components/WelcomePage";
 import Asd from './components/Asd'
 import CreateTickets from './components/CreateTickets'
+import ShowTickets from './components/ShowTickets'
 
 import Loading from './components/Loading'
 import SideBar from './components/SideBar'
@@ -93,7 +94,7 @@ class App extends Component {
             <>
               <SideBar 
                 removeCookie={this.removeCookie} 
-                user={this.state.user} 
+                user={user} 
                 pageWrapId={'page-wrap'} 
                 outerContainerId={'outer-container'} 
                 forceRender={this.forceRender}
@@ -112,6 +113,12 @@ class App extends Component {
                     <Asd
                       user={user}
                       removeCookie={this.removeCookie}
+                    />
+                  </Route>
+
+                  <Route exact path="/tickets">
+                    <ShowTickets 
+                      userID={user.id}
                     />
                   </Route>
 

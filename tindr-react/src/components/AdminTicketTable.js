@@ -1,10 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useTable, useSortBy, useFilters, useColumnOrder } from 'react-table'
+import { useTable, useSortBy, useFilters, useColumnOrder, useExpanded } from 'react-table'
 import { motion, AnimatePresence } from 'framer-motion'
-import matchSorter from 'match-sorter'
-
-//import makeData from './makeData'
+import {matchSorter} from 'match-sorter'
 
 const Styles = styled.div`
   padding: 1rem;
@@ -191,7 +189,8 @@ function shuffle(arr) {
   return shuffled
 }
 
-function Table({ columns, data }) {
+function Table({ columns, data, renderRowSubComponent }) {
+  console.log(columns)
   const defaultColumn = React.useMemo(
     () => ({
       // Let's set up our default Filter UI
@@ -208,7 +207,7 @@ function Table({ columns, data }) {
     visibleColumns,
     prepareRow,
     setColumnOrder,
-    state,
+    state: { expanded },
   } = useTable(
     {
       columns,
@@ -217,7 +216,8 @@ function Table({ columns, data }) {
     },
     useColumnOrder,
     useFilters,
-    useSortBy
+    useSortBy,
+    useExpanded
   )
 
   const spring = React.useMemo(
@@ -229,13 +229,8 @@ function Table({ columns, data }) {
     []
   )
 
-  const randomizeColumns = () => {
-    setColumnOrder(shuffle(visibleColumns.map(d => d.id)))
-  }
-
   return (
     <>
-      <button onClick={() => randomizeColumns({})}>Randomize Columns</button>
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup, i) => (
@@ -270,6 +265,7 @@ function Table({ columns, data }) {
             {rows.slice(0, 10).map((row, i) => {
               prepareRow(row)
               return (
+                <>
                 <motion.tr
                   {...row.getRowProps({
                     layoutTransition: spring,
@@ -288,14 +284,26 @@ function Table({ columns, data }) {
                     )
                   })}
                 </motion.tr>
+                {row.isExpanded ? (
+                  <tr>
+                    <td colSpan={visibleColumns.length}>
+                      {/*
+                          Inside it, call our renderRowSubComponent function. In reality,
+                          you could pass whatever you want as props to
+                          a component like this, including the entire
+                          table instance. But for this example, we'll just
+                          pass the row
+                        */}
+                      {renderRowSubComponent({ row })}
+                    </td>
+                  </tr>
+                ) : null}
+                </>
               )
             })}
           </AnimatePresence>
         </tbody>
       </table>
-      <pre>
-        <code>{JSON.stringify(state, null, 2)}</code>
-      </pre>
     </>
   )
 }
@@ -314,68 +322,86 @@ function filterGreaterThan(rows, id, filterValue) {
 // check, but here, we want to remove the filter if it's not a number
 filterGreaterThan.autoRemove = val => typeof val !== 'number'
 
-function App(data) {
+function App({data, updateTicket}) {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Name',
-        columns: [
-          {
-            Header: 'First Name',
-            accessor: 'firstName',
-            minWidth: 150,
-          },
-          {
-            Header: 'Last Name',
-            accessor: 'lastName',
-            minWidth: 150,
-            // Use our custom `fuzzyText` filter on this column
-            filter: 'fuzzyText',
-          },
-        ],
+        // Make an expander cell
+        Header: () => null, // No header
+        id: 'expander', // It needs an ID
+        Cell: ({ row }) => (
+          // Use Cell to render an expander for each row.
+          // We can use the getToggleRowExpandedProps prop-getter
+          // to build the expander.
+          <span {...row.getToggleRowExpandedProps()}>
+            {row.isExpanded ? '👇' : '👉'}
+          </span>
+        ),
       },
-      {
-        Header: 'Info',
-        columns: [
-          {
-            Header: 'Age',
-            accessor: 'age',
-            minWidth: 150,
-            Filter: SliderColumnFilter,
-            filter: 'equals',
-          },
-          {
-            Header: 'Visits',
-            accessor: 'visits',
-            minWidth: 150,
-            Filter: NumberRangeColumnFilter,
-            filter: 'between',
-          },
-          {
-            Header: 'Status',
-            accessor: 'status',
-            minWidth: 150,
-            Filter: SelectColumnFilter,
-            filter: 'includes',
-          },
-          {
-            Header: 'Profile Progress',
-            accessor: 'progress',
-            minWidth: 150,
-            Filter: SliderColumnFilter,
-            filter: filterGreaterThan,
-          },
-        ],
-      },
+        {
+          Header: 'ID',
+          accessor: 'id',
+          Filter: NumberRangeColumnFilter,
+          filter: "between"
+        },
+        {
+          Header: 'Date',
+          accessor: 'date',
+        },
+        {
+          Header: 'Subject',
+          accessor: 'subject',
+        },
+        {
+          Header: 'Section',
+          accessor: 'section',
+        },
+        {
+          Header: 'Status',
+          accessor: 'solved',
+          Filter: SelectColumnFilter,
+          filter: 'includes'
+        },
     ],
     []
   )
 
-  //const data = React.useMemo(() => makeData(100), [])
+  // Create a function that will render our row sub components
+  const renderRowSubComponent = React.useCallback(
+    ({ row }) => (
+      <>
+        <pre style={{fontSize: '10px', position: 'relative'}}>
+          <p>Steps:</p>
+          {data[row.index].steps.split(",").map(s =>
+            <ul>
+                <li>{s}</li>
+            </ul>
+          )}
+          <button
+            type="button" 
+            class={data[row.index].solved === "Closed" ? "btn btn-warning" : "btn btn-success"} 
+            style={{position: "absolute", right:"2%", bottom:'0%'}}
+            onClick={() => {
+              updateTicket(
+                data[row.index].id, 
+                data[row.index].solved === "Closed" ? false : true
+              )}}
+          >
+            {data[row.index].solved === "Closed" ? "Re-open" : "Close"}
+          </button>
+        </pre>
+      </>
+    ),
+    []
+  )
 
   return (
     <Styles>
-      <Table columns={columns} data={data} />
+      <Table 
+        columns={columns} 
+        data={data}
+        renderRowSubComponent={renderRowSubComponent}
+      />
     </Styles>
   )
 }

@@ -33,14 +33,15 @@ class TicketController extends Controller
         ]);
     }
 
-    public function updateTicket($id, $ticketid) 
+    public function updateTicket(Request $request, $id) 
     {
-        Ticket::find($ticketid)->update(["solved" => true]);
+        Ticket::find($id)->update($request->all());
 
         $this->logService->createLog([
-            "user_id" => $id,
-            "content" => "Solved an error (" . $ticketid . ")"
+            "user_id" => $request["solver_id"],
+            "content" => $request["solved"] == true ? "Solved an error (" . $request["id"] . ")" : "Re-opened an error (" . $request["id"] . ")"
         ]);
+        return $this->getAllTickets();
     }
 
     public function getTickets($id)
