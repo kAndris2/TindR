@@ -94,7 +94,6 @@ export default class CreateTickets extends Component {
   getTickets() {
     axios.get(`${process.env.REACT_APP_IP}/api/get_tickets/${this.props.userID}`)
     .then(response => {
-        console.log(response)
       this.setState({
           isLoading : false,
           tickets : response.data
