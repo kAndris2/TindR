@@ -166,11 +166,17 @@ export default class CreateTickets extends Component {
                 {isLoading !== true ? 
                     <>
                         <br /><br />
-                        <h1>My tickets:</h1>
-                        <Table 
-                            data={this.getFormattedTickets(tickets)}
-                            columnsData={columns}
-                        />
+                        {tickets.length !== 0 ?
+                            <>
+                                <h1>My tickets:</h1>
+                                <Table 
+                                    data={this.getFormattedTickets(tickets)}
+                                    columnsData={columns}
+                                />
+                            </>
+                        :
+                            <p>You didn't sent any bug report yet!</p>
+                        }
                     </>
                 :
                     <div style={{margin:"auto", width:"30%"}}>
