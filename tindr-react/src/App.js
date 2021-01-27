@@ -7,6 +7,7 @@ import WelcomePage from "./components/WelcomePage";
 import Asd from './components/Asd'
 import CreateTickets from './components/CreateTickets'
 import ShowTickets from './components/ShowTickets'
+import InvalidPage from "./components/InvalidPage"
 
 import Loading from './components/Loading'
 import SideBar from './components/SideBar'
@@ -137,7 +138,7 @@ class App extends Component {
                       />
                     </Route>
                   :
-                    <h1>You have no permission to access this page!</h1>
+                    <InvalidPage />
                   }
 
                 </Switch>
