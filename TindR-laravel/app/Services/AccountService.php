@@ -28,7 +28,9 @@ class AccountService
         $newAccountId = Account::create([
             "email" => $request["email"],
             "password" => Hash::make($request["password"]),
-            "phone_number" => $request["phone_number"]
+            "phone_number" => $request["phone_number"],
+            "admin" => false,
+            "last_activity" => round(microtime(true) * 1000)
         ])->id;
 
         $newUser = User::create([
@@ -102,5 +104,12 @@ class AccountService
     public function savePosition($id, Request $request) 
     {
         Account::find($id)->update($request->all());
+    }
+
+    public function getRole($id)
+    {
+        return array(
+            'role' => Account::find($id)->admin
+        );
     }
 }

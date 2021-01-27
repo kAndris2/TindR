@@ -4,6 +4,7 @@ import { animated, interpolate } from "react-spring";
 import Carousel from "nuka-carousel";
 import Test from './Test';
 import { InputTags } from 'react-bootstrap-tagsinput';
+import { useGesture } from "react-with-gesture";
 
 const ageCalculation = (date) => {
   const now = new Date();
@@ -13,8 +14,27 @@ const ageCalculation = (date) => {
   return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
 }
 
+const formatText = (text) => {
+  if(text !== null) {
+    let temp = "";
+    const charText = text.split('');
+
+    for(let i = 0; i < charText.length; i++) {
+      if(i < 86)
+        temp += charText[i];
+      else {
+        temp += "...";
+        break;
+      }
+    }
+    return temp;
+  }
+  else
+    return text;
+}
+
 const Card = ({ i, x, y, rot, scale, trans, bind, data }) => {
-  const { name, age, distance, text, pics, anthem } = data[i];
+  const { name, age, distance, text, pics, anthem, activity } = data[i];
 
   const [userMeta, setData] = useState([]);
 
@@ -27,6 +47,9 @@ const Card = ({ i, x, y, rot, scale, trans, bind, data }) => {
       return (
         <>
           <div>
+            {user.description !== null &&
+              <p>{user.description}</p>
+            }
             {user.gender !== null &&
               <p>Gender: {user.gender}</p>
             }
@@ -77,8 +100,17 @@ const Card = ({ i, x, y, rot, scale, trans, bind, data }) => {
             </Carousel>
             <h2 onClick={handleClick}>{name},</h2>
             <h2>{ageCalculation(age)}</h2>
-            <h5>{distance}</h5><br />
-            <h5>{text}</h5>
+            <h6>{distance}</h6>
+            {activity === true &&
+              <h6>Recently active</h6>
+              /*
+                <svg xmlns="http://www.w3.org/2000/svg" style={{height:'5%'}}>
+                    <circle cx="14" cy="5" r="5" fill="green" />
+                  </svg>
+              */
+            }
+            <br />
+            <h6>{formatText(text)}</h6>
           </div>
         </animated.div>
         {showMeta(userMeta)}

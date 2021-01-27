@@ -18,7 +18,8 @@ class App extends Component {
     this.state = {
       user: undefined,
       isLoggedIn: false,
-      isLoading: false
+      isLoading: false,
+      role: undefined
     }
 
     this.setCookie = this.setCookie.bind(this);
@@ -66,9 +67,9 @@ class App extends Component {
       .then(response => {
         this.setState({
           user : response.data,
-          isLoggedIn : true,
-          isLoading : false
-        })
+          isLoggedIn : true//,
+          //isLoading : false
+        });
       })
     }
   }
@@ -80,17 +81,30 @@ class App extends Component {
     await this.componentDidMount();
   }
 
+  async checkUserRole() {
+    if(this.state.user !== undefined) {
+      await axios.get(`${process.env.REACT_APP_IP}/api/get_role/${this.state.user.id}`)
+      .then(response => {
+          this.setState({
+              role : response.data.role,
+              isLoading : false
+          });
+      })
+    }
+  }
+
   async componentDidMount() {
     await this.checkLoginStatus();
+    await this.checkUserRole();
   }
 
   render() {
-    const {user, isLoggedIn, isLoading, doForce} = this.state;
+    const {user, isLoggedIn, isLoading, role} = this.state;
 
     if (!isLoading) {
       return (
         <>
-          {isLoggedIn === true &&
+          {isLoggedIn === true ?
             <>
               <SideBar 
                 removeCookie={this.removeCookie} 
@@ -116,17 +130,20 @@ class App extends Component {
                     />
                   </Route>
 
-                  <Route exact path="/tickets">
-                    <ShowTickets 
-                      userID={user.id}
-                    />
-                  </Route>
+                  {role === true ?
+                    <Route exact path="/tickets">
+                      <ShowTickets 
+                        userID={user.id}
+                      />
+                    </Route>
+                  :
+                    <h1>You have no permission to access this page!</h1>
+                  }
 
                 </Switch>
               </Router>
             </>
-          }
-          {isLoggedIn === false &&
+          :
             <WelcomePage
               setUser={this.setUser}
             ></WelcomePage>

@@ -5,7 +5,8 @@ CREATE TABLE accounts (
 	phone_number character varying(20),
 	latitude double precision not null,
 	longitude double precision not null,
-	admin boolean not null
+	admin boolean not null,
+	last_activity bigint not null
 );
 
 CREATE TABLE users (
@@ -111,3 +112,16 @@ CREATE TRIGGER create_searches_trigger
 	AFTER INSERT ON accounts
 	FOR EACH ROW
 		EXECUTE FUNCTION create_searches();
+
+CREATE FUNCTION update_activity() RETURNS TRIGGER AS $$
+	BEGIN
+		UPDATE accounts SET last_activity = extract(epoch FROM now()) * 1000
+		WHERE NEW.user_id = id;
+		RETURN NEW;		
+	END;
+	$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_activity_trigger
+	AFTER INSERT ON logs
+	FOR EACH ROW
+		EXECUTE FUNCTION update_activity();
