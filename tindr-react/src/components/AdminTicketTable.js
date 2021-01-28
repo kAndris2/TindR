@@ -371,24 +371,34 @@ function App({data, updateTicket}) {
     ({ row }) => (
       <>
         <pre style={{fontSize: '10px', position: 'relative'}}>
+
+          <p style={{textAlign:'center'}}><b>Notifier ID: {data[row.index].notifier_id}</b></p>
+          
           <p>Steps:</p>
           {data[row.index].steps.split(",").map(s =>
             <ul>
                 <li>{s}</li>
             </ul>
           )}
-          <button
-            type="button" 
-            class={data[row.index].solved === "Closed" ? "btn btn-warning" : "btn btn-success"} 
-            style={{position: "absolute", right:"2%", bottom:'0%'}}
-            onClick={() => {
-              updateTicket(
-                data[row.index].id, 
-                data[row.index].solved === "Closed" ? false : true
-              )}}
-          >
-            {data[row.index].solved === "Closed" ? "Re-open" : "Close"}
-          </button>
+
+          <div style={{position: "absolute", right:"2%", bottom:'0%'}}>
+            <button
+              type="button" 
+              className={data[row.index].solved === "Closed" ? "btn btn-warning" : "btn btn-success"} 
+              onClick={() => {
+                updateTicket(
+                  data[row.index].id, 
+                  data[row.index].solved === "Closed" ? false : true
+                )}}
+            >
+              {data[row.index].solved === "Closed" ? "Re-open" : "Close"}
+            </button>
+
+            {data[row.index].solver_id !== null &&
+              <p>Solver ID: {data[row.index].solver_id}</p>
+            }
+          </div>
+
         </pre>
       </>
     ),

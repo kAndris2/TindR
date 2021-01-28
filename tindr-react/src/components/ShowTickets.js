@@ -39,7 +39,9 @@ export default class ShowTickets extends Component {
                 subject: t.subject,
                 section: t.section,
                 solved: t.solved === false ? "Open" : "Closed",
-                steps: t.steps, 
+                steps: t.steps,
+                notifier_id: t.notifier_id,
+                solver_id: t.solver_id,
             })
         })
         return data;
