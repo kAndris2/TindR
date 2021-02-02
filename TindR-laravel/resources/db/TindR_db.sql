@@ -99,6 +99,17 @@ CREATE TABLE public.tickets (
 	FOREIGN KEY(solver_id) REFERENCES accounts(id)
 );
 
+CREATE TABLE public.messages (
+	id serial not null PRIMARY KEY,
+	from_id int not null,
+	to_id int not null,
+	date bigint not null,
+	seen boolean not null,
+	content character varying(500) not null,
+	FOREIGN KEY(from_id) REFERENCES accounts(id) ON DELETE CASCADE,
+	FOREIGN KEY(to_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
 CREATE FUNCTION create_searches() RETURNS TRIGGER AS $$
 	BEGIN
 		INSERT INTO searches (id, max_distance, looking_for, min_age, max_age, global, status) 

@@ -10,6 +10,7 @@ use App\Http\Controllers\API\PictureController;
 use App\Http\Controllers\API\PinController;
 use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\TicketController;
+use App\Http\Controllers\API\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,3 +64,6 @@ Route::post("create_ticket", [TicketController::class, 'createTicket']);
 Route::put("update_ticket/{id}", [TicketController::class, 'updateTicket']);
 Route::get("get_tickets/{id}", [TicketController::class, 'getTickets']);
 Route::get("get_all_tickets", [TicketController::class, 'getAllTickets']);
+
+Route::get("get_messages/{uid1}/{uid2}", [MessageController::class, 'getMessages']);
+Route::post("send_message", [MessageController::class, 'sendMessages']);
