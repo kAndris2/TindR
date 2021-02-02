@@ -6,14 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Services\RecommendationService;
+use App\Services\LogService;
 
 class UserController extends Controller
 {
-
-    public $recomService;
+    private $recomService;
+    private $logService;
 
     public function __construct() {
         $this->recomService = new RecommendationService();
+        $this->logService = new LogService();
     }
 
     public function getUsers() 
@@ -29,22 +31,14 @@ class UserController extends Controller
     public function updateUser(Request $request, $id)
     {
         User::find($id)->update($request->all());
+
+        $this->logService->createLog([
+            "user_id" => $id,
+            "content" => "Profile updated"
+        ]);
     }
 
     public function getRecommendations($id)
-    {
-        //$recommendations = array();
-        $users = User::where("id", "!=", $id)->get();
-        /*
-        $searches = Search::all();
-        $matches = Match::all();
-        $likes = Like::all();
-        $dislikes = Dislike::all();
-        */
-        return $users;
-    }
-
-    public function getRecom2($id)
     {
         return $this->recomService->getRecommendations($id);
     }

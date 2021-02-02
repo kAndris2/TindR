@@ -14,6 +14,13 @@ import Test from './components/Test';
 import NewSide from './components/NewSide';
 import Temp from './components/Temp';
 
+import CreateTickets from './components/CreateTickets'
+import ShowTickets from './components/ShowTickets'
+import InvalidPage from "./components/InvalidPage"
+import UserList from "./components/UserList"
+
+import Loading from './components/Loading'
+import SideBar from './components/SideBar'
 
 class App extends Component {
   constructor() {
@@ -22,13 +29,15 @@ class App extends Component {
     this.state = {
       user: undefined,
       isLoggedIn: false,
-      isLoading: false
+      isLoading: false,
+      role: undefined
     }
 
     this.setCookie = this.setCookie.bind(this);
     this.setUser = this.setUser.bind(this);
     this.checkLoginStatus = this.checkLoginStatus.bind(this);
     this.saveCoordinates = this.saveCoordinates.bind(this);
+    this.forceRender = this.forceRender.bind(this);
   }
 
   setCookie(id) {
@@ -69,23 +78,44 @@ class App extends Component {
       .then(response => {
         this.setState({
           user : response.data,
-          isLoggedIn : true,
-          isLoading : false
-        })
+          isLoggedIn : true//,
+          //isLoading : false
+        });
+      })
+    }
+  }
+
+  async forceRender() {
+    this.setState({
+      isLoading : true
+    });
+    await this.componentDidMount();
+  }
+
+  async checkUserRole() {
+    if(this.state.user !== undefined) {
+      await axios.get(`${process.env.REACT_APP_IP}/api/get_role/${this.state.user.id}`)
+      .then(response => {
+          this.setState({
+              role : response.data.role,
+              isLoading : false
+          });
       })
     }
   }
 
   async componentDidMount() {
     await this.checkLoginStatus();
+    await this.checkUserRole();
   }
 
   render() {
-    const {user, isLoggedIn, isLoading} = this.state;
+    const {user, isLoggedIn, isLoading, role} = this.state;
 
     if (!isLoading) {
       return (
         <>
+<<<<<<< HEAD
           <Router>
             <Switch>
 
@@ -139,6 +169,58 @@ class App extends Component {
 
             </Switch>
           </Router>
+=======
+          {isLoggedIn === true ?
+            <>
+              <SideBar 
+                removeCookie={this.removeCookie} 
+                user={user} 
+                pageWrapId={'page-wrap'} 
+                outerContainerId={'outer-container'} 
+                forceRender={this.forceRender}
+              />
+
+              <Router>
+                <Switch>
+
+                  <Route exact path="/tickets/:id">
+                    <CreateTickets 
+                      userID={user.id}
+                    />
+                  </Route>
+
+                  <Route exact path="/">
+                    <Asd
+                      user={user}
+                      removeCookie={this.removeCookie}
+                    />
+                  </Route>
+
+                  {role === true ?
+                    <>
+                      <Route exact path="/tickets">
+                        <ShowTickets 
+                          userID={user.id}
+                        />
+                      </Route>
+
+                      <Route exact path="/userlist">
+                        <UserList />
+                      </Route>
+                    </>
+                  :
+                    <InvalidPage />
+                  }
+
+                </Switch>
+              </Router>
+            </>
+          :
+            <WelcomePage
+              setUser={this.setUser}
+            ></WelcomePage>
+          }
+>>>>>>> 93c49e87bf592fc0d6c574e9e57032baf904ad90
         </>
       );
     }

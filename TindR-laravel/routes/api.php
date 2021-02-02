@@ -9,6 +9,7 @@ use App\Http\Controllers\API\LikeController;
 use App\Http\Controllers\API\PictureController;
 use App\Http\Controllers\API\PinController;
 use App\Http\Controllers\API\NotificationController;
+use App\Http\Controllers\API\TicketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,8 +29,7 @@ Route::middleware('auth:api')->get('/us', function (Request $request) {
 Route::get("users", [UserController::class, 'getUsers']);
 Route::get("user/{id}", [UserController::class, 'getUserById']);
 Route::put("update_user/{id}", [UserController::class, 'updateUser']);
-Route::get("recommendations/{id}", [UserController::class, 'getRecommendations']);
-Route::get("profiles/{id}", [UserController::class, 'getRecom2']);
+Route::get("profiles/{id}", [UserController::class, 'getRecommendations']);
 
 Route::get("profile_data/{id}", [SearchController::class, 'getProfileData']);
 Route::put("update_search/{id}", [SearchController::class, "updateSearch"]);
@@ -43,6 +43,7 @@ Route::put("update_account/{id}", [AccountController::class, "updateAccount"]);
 Route::delete("delete_account/{id}", [AccountController::class, "deleteAccount"]);
 Route::get("valid_email/{email}", [AccountController::class, "isValidEmail"]);
 Route::get("details/{id}", [AccountController::class, "getDetails"]);
+Route::get("get_role/{id}", [AccountController::class, "getRole"]);
 
 Route::post("give_vote", [LikeController::class, "manageLikes"]);
 
@@ -57,3 +58,8 @@ Route::post("validatecode", [PinController::class, "validateCode"]);
 Route::post("create_notifications", [NotificationController::class, 'createNotice']);
 Route::put("update_notifications/{id}", [NotificationController::class, 'updateNotice']);
 Route::get("get_notifications/{id}", [NotificationController::class, 'getNotice']);
+
+Route::post("create_ticket", [TicketController::class, 'createTicket']);
+Route::put("update_ticket/{id}", [TicketController::class, 'updateTicket']);
+Route::get("get_tickets/{id}", [TicketController::class, 'getTickets']);
+Route::get("get_all_tickets", [TicketController::class, 'getAllTickets']);

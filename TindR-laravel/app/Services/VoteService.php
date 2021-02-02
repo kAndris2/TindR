@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Like;
 use App\Models\Dislike;
 use App\Models\Match;
+use App\Services\NotificationService;
 
 class VoteService
 {
@@ -43,7 +44,7 @@ class VoteService
                 "owner_id" => $giverID,
                 "receiver_id" => $receiverID
             ]);
-            $this->nService->createLikeNotice($receiverID);
+            $this->nService->createLikeNotice($giverID, $receiverID);
         }
     }
 
@@ -54,5 +55,6 @@ class VoteService
             "receiver_id" => $receiverID,
             "date" => round(microtime(true) * 1000)
         ]);
+        $this->nService->createDislikeLog($giverID, $receiverID);
     }
 }

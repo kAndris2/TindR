@@ -53,4 +53,9 @@ class AccountController extends Controller
     {
         $this->accountService->savePosition($id, $request);
     }
+
+    public function getRole($id)
+    {
+        return $this->accountService->getRole($id);
+    }
 }

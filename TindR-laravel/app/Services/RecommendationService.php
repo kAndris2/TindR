@@ -37,7 +37,8 @@ class RecommendationService
                     'text' => $u->description,
                     'pics' => $img_temp,
                     'anthem' => $u->anthem,
-                    'user' => User::find($u->id)
+                    'user' => User::find($u->id),
+                    'activity' => $this->checkActivity($u->id)
                 )
             );
         }
@@ -158,5 +159,13 @@ class RecommendationService
                 return false;
         }
         return true;
+    }
+
+    private function checkActivity($id)
+    {
+        $user = Account::find($id);
+        $milliseconds = round(microtime(true) * 1000);
+
+        return ($milliseconds - $user->last_activity) <= 3600000; //1 hour
     }
 }

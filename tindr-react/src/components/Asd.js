@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import SideBar from './SideBar'
 import DeckLoading from './DeckLoading'
 import './css/side.css'
 import Deck from './Deck';
 import Pulse from "./Pulse";
-import axios from 'axios';
 
 export default class Asd extends Component {
   constructor(props){
@@ -15,7 +13,6 @@ export default class Asd extends Component {
       deck: []
     }
 
-    this.forceRender = this.forceRender.bind(this);
     this.getDeck = this.getDeck.bind(this);
   }
 
@@ -55,26 +52,11 @@ export default class Asd extends Component {
     await this.getDeck();
   }
 
-  async forceRender() {
-    this.setState({
-      deckIsLoading: true
-    });
-    await this.componentDidMount();
-  }
-
   render() {
-    const { deckIsLoading, searchData, deck } = this.state;
+    const { deckIsLoading, deck } = this.state;
 
     return (
       <>
-        <SideBar 
-          removeCookie={this.props.removeCookie} 
-          user={this.props.user} 
-          pageWrapId={'page-wrap'} 
-          outerContainerId={'outer-container'} 
-          forceRender={this.forceRender}
-        />
-
         {(deckIsLoading === false && deck.length !== 0) &&
           <Deck 
             userID={this.props.user.id}
@@ -89,7 +71,27 @@ export default class Asd extends Component {
         }
 
         {deckIsLoading === true &&
-          <DeckLoading />
+          <>
+            <video
+              autoPlay={true} 
+              loop={true}
+              muted
+              style={{
+                position: "absolute",
+                width: "100%",
+                left: "50%",
+                top: "50%",
+                height: "120%",
+                objectFit: "cover",
+                transform: "translate(-50%, -50%)",
+                zIndex: "-1",
+                filter: "blur(10px)"
+              }}
+            >
+              <source src="https://mradmin.hu/vid/Tindr.mp4" />
+            </video>
+            <DeckLoading />
+          </>
         }
       </>
     );

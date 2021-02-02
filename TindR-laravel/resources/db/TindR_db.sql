@@ -4,7 +4,9 @@ CREATE TABLE accounts (
 	password character varying(256) not null,
 	phone_number character varying(20),
 	latitude double precision not null,
-	longitude double precision not null
+	longitude double precision not null,
+	admin boolean not null,
+	last_activity bigint not null
 );
 
 CREATE TABLE users (
@@ -76,13 +78,33 @@ CREATE TABLE public.notifications (
 	FOREIGN KEY(user_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
+CREATE TABLE public.logs (
+	id serial not null PRIMARY KEY,
+	user_id int not null,
+	date bigint not null,
+	content character varying(200) not null,
+	FOREIGN KEY(user_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE public.tickets (
+	id serial not null PRIMARY KEY,
+	notifier_id int not null,
+	solved boolean not null,
+	date bigint not null,
+	subject character varying(50) not null,
+	section character varying(25) not null,
+	steps character varying(500) not null,
+	solver_id int
+	FOREIGN KEY(notifier_id) REFERENCES accounts(id) ON DELETE CASCADE,
+	FOREIGN KEY(solver_id) REFERENCES accounts(id)
+);
+
 CREATE FUNCTION create_searches() RETURNS TRIGGER AS $$
 	BEGIN
 		INSERT INTO searches (id, max_distance, looking_for, min_age, max_age, global, status) 
 		VALUES 
 		(NEW.id, 50, 'Everyone', 18, 100, false, true);
-		RETURN NEW;
-			
+		RETURN NEW;		
 	END;
 	$$ LANGUAGE plpgsql;
 
@@ -90,3 +112,16 @@ CREATE TRIGGER create_searches_trigger
 	AFTER INSERT ON accounts
 	FOR EACH ROW
 		EXECUTE FUNCTION create_searches();
+
+CREATE FUNCTION update_activity() RETURNS TRIGGER AS $$
+	BEGIN
+		UPDATE accounts SET last_activity = extract(epoch FROM now()) * 1000
+		WHERE NEW.user_id = id;
+		RETURN NEW;		
+	END;
+	$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_activity_trigger
+	AFTER INSERT ON logs
+	FOR EACH ROW
+		EXECUTE FUNCTION update_activity();
