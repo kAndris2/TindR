@@ -53,7 +53,11 @@ export class Chat extends React.Component {
     }
 
     load(){
+<<<<<<< HEAD
         axios.get(`http://172.31.1.57:7777/getChannels`)
+=======
+        axios.get(`https://${process.env.CHAT_SERVER_IP}/getChannels`)
+>>>>>>> abff6e56f3be2b42da964f29c2891613e5385f91
         .then(res => {
             this.setState({channels:res.data.channels})
         })
