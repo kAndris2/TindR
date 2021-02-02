@@ -13,6 +13,7 @@ import Test from './Test';
 import NotifyMe from 'react-notification-timeline';
 import Checkbox from '@material-ui/core/Checkbox';
 import Loading from './Loading'
+import NewSide from './NewSide';
 
 const options = [
   { value: 'Men', label: 'Men' },
@@ -227,8 +228,8 @@ export default class SideBar extends Component {
                 sortedByKey={false}
                 showDate={true}
                 size={36}
-                color="yellow"
-                markAsReadFn={(e) => console.log(e)}
+                color="red"
+                //12markAsReadFn={/*() => /*yourOwnFunctionHandler()*/}
               />
             </span>}
           </div>

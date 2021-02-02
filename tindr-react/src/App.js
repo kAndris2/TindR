@@ -6,12 +6,13 @@ import axios from 'axios';
 import WelcomePage from "./components/WelcomePage";
 import Asd from './components/Asd'
 import Recommendations from "./components/Recommendations";
-
 import Loading from './components/Loading'
 import Pulse from './components/Pulse'
 
 import Deck from './components/Deck';
 import Test from './components/Test';
+import NewSide from './components/NewSide';
+import Temp from './components/Temp';
 
 
 class App extends Component {
@@ -123,10 +124,18 @@ class App extends Component {
               <Route exact path="/test">
                 <Test></Test>
               </Route>
+              <Route exact path="/test2">
+                <NewSide></NewSide>
+              </Route>
 
               <Route exact path='/pulse'>
                 <Pulse />
               </Route>
+
+              <Route exact path='/temp'>
+                <Temp></Temp>
+              </Route>
+
 
             </Switch>
           </Router>
