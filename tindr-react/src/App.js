@@ -12,15 +12,14 @@ import Pulse from './components/Pulse'
 import Deck from './components/Deck';
 import Test from './components/Test';
 import NewSide from './components/NewSide';
-import Temp from './components/Temp';
 
 import CreateTickets from './components/CreateTickets'
 import ShowTickets from './components/ShowTickets'
 import InvalidPage from "./components/InvalidPage"
 import UserList from "./components/UserList"
 
-import Loading from './components/Loading'
 import SideBar from './components/SideBar'
+import { Chat } from './components/chat/Chat';
 
 class App extends Component {
   constructor() {
@@ -115,7 +114,6 @@ class App extends Component {
     if (!isLoading) {
       return (
         <>
-<<<<<<< HEAD
           <Router>
             <Switch>
 
@@ -154,24 +152,22 @@ class App extends Component {
               <Route exact path="/test">
                 <Test></Test>
               </Route>
-              <Route exact path="/test2">
-                <NewSide></NewSide>
-              </Route>
+              
 
               <Route exact path='/pulse'>
                 <Pulse />
               </Route>
 
               <Route exact path='/temp'>
-                <Temp></Temp>
+                <NewSide></NewSide>
               </Route>
 
 
             </Switch>
           </Router>
-=======
           {isLoggedIn === true ?
             <>
+            
               <SideBar 
                 removeCookie={this.removeCookie} 
                 user={user} 
@@ -182,6 +178,9 @@ class App extends Component {
 
               <Router>
                 <Switch>
+                  <Route exact path="/chat">
+                    <Chat user={user.name}></Chat>
+                  </Route>
 
                   <Route exact path="/tickets/:id">
                     <CreateTickets 
@@ -220,7 +219,6 @@ class App extends Component {
               setUser={this.setUser}
             ></WelcomePage>
           }
->>>>>>> 93c49e87bf592fc0d6c574e9e57032baf904ad90
         </>
       );
     }

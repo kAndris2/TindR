@@ -224,7 +224,6 @@ export default class SideBar extends Component {
         <Menu>
           <div className="menu-item" href="/">
             {this.props.user.name}
-<<<<<<< HEAD
             {<span className="btn pull-right">
               <NotifyMe
                 data={notifications}
@@ -239,7 +238,6 @@ export default class SideBar extends Component {
                 //12markAsReadFn={/*() => /*yourOwnFunctionHandler()*/}
               />
             </span>}
-=======
             {notiLoading === false ?
               <span className="btn pull-right">
                 <NotifyMe
@@ -258,7 +256,6 @@ export default class SideBar extends Component {
             :
             <ItemLoading />
             }
->>>>>>> 93c49e87bf592fc0d6c574e9e57032baf904ad90
           </div>
           <a className="navbar-brand text-center" href="#">
             <img src={profilePath[0].route} height="80" alt=""/>
