@@ -20,6 +20,7 @@ RUN yarn install --silent
 COPY . ./
 RUN mv envexample .env
 RUN sed -i -e 's~appip~'"$(printenv REACT_APP_IP)"'~' .env
+RUN sed -i -e 's~chatserverip~'"$(printenv CHAT_SERVER_IP)"'~' .env
 
 # start app
 CMD ["yarn", "start"]
