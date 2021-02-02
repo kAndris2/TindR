@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "bebc04452a508e7eef6ced2ddf46af8e",
+=======
+    "content-hash": "d7f88a323463f7e90ca2568c4417a9f9",
+>>>>>>> 2b0b2c3028b6ef19659b058cdeac640510d4df51
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1370,6 +1374,58 @@
             "time": "2020-10-18T11:50:25+00:00"
         },
         {
+            "name": "macromindonline/pusher-php-server",
+            "version": "v3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/macromindonline/pusher-http-php.git",
+                "reference": "03d3417748fc70a889c97271e25e282ff1ff0ae3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/macromindonline/pusher-http-php/zipball/03d3417748fc70a889c97271e25e282ff1ff0ae3",
+                "reference": "03d3417748fc70a889c97271e25e282ff1ff0ae3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": "^5.4 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8 || ^5.7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pusher\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Library for interacting with the Pusher REST API",
+            "keywords": [
+                "events",
+                "messaging",
+                "php-pusher-server",
+                "publish",
+                "push",
+                "pusher",
+                "real time",
+                "real-time",
+                "realtime",
+                "rest",
+                "trigger"
+            ],
+            "time": "2017-10-20T11:18:01+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "2.1.1",
             "source": {
@@ -1721,11 +1777,14 @@
                 "pseudorandom",
                 "random"
             ],
+<<<<<<< HEAD
             "support": {
                 "email": "info@paragonie.com",
                 "issues": "https://github.com/paragonie/random_compat/issues",
                 "source": "https://github.com/paragonie/random_compat"
             },
+=======
+>>>>>>> 2b0b2c3028b6ef19659b058cdeac640510d4df51
             "time": "2020-10-15T08:29:30+00:00"
         },
         {
@@ -1808,10 +1867,13 @@
                 "secret-key cryptography",
                 "side-channel resistant"
             ],
+<<<<<<< HEAD
             "support": {
                 "issues": "https://github.com/paragonie/sodium_compat/issues",
                 "source": "https://github.com/paragonie/sodium_compat/tree/v1.14.0"
             },
+=======
+>>>>>>> 2b0b2c3028b6ef19659b058cdeac640510d4df51
             "time": "2020-12-03T16:26:19+00:00"
         },
         {
@@ -2320,10 +2382,13 @@
                 "rest",
                 "trigger"
             ],
+<<<<<<< HEAD
             "support": {
                 "issues": "https://github.com/pusher/pusher-http-php/issues",
                 "source": "https://github.com/pusher/pusher-http-php/tree/v4.1.5"
             },
+=======
+>>>>>>> 2b0b2c3028b6ef19659b058cdeac640510d4df51
             "time": "2020-12-09T09:38:19+00:00"
         },
         {
@@ -6360,10 +6425,6 @@
                 "testing",
                 "xunit"
             ],
-            "support": {
-                "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.4.2"
-            },
             "funding": [
                 {
                     "url": "https://phpunit.de/donate.html",
@@ -7395,12 +7456,12 @@
             "version": "1.9.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "shasum": ""
             },
@@ -7453,5 +7514,9 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
+<<<<<<< HEAD
     "plugin-api-version": "2.0.0"
+=======
+    "plugin-api-version": "1.1.0"
+>>>>>>> 2b0b2c3028b6ef19659b058cdeac640510d4df51
 }

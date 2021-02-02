@@ -17,6 +17,7 @@ import CreateTickets from './components/CreateTickets'
 import ShowTickets from './components/ShowTickets'
 import InvalidPage from "./components/InvalidPage"
 import UserList from "./components/UserList"
+import Chat2 from "./components/Chat"
 
 import SideBar from './components/SideBar'
 import { Chat } from './components/chat/Chat';
@@ -192,6 +193,12 @@ class App extends Component {
                     <Asd
                       user={user}
                       removeCookie={this.removeCookie}
+                    />
+                  </Route>
+
+                  <Route exact path="/chat2">
+                    <Chat2
+                      userID={user.id}
                     />
                   </Route>
 
