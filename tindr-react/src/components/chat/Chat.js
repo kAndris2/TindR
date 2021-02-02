@@ -4,7 +4,7 @@ import './chat.scss';
 import { MessagesPanel } from './MessagesPanel';
 import socketClient from "socket.io-client";
 import axios from 'axios';
-const SERVER = "http://127.0.0.1:7777";
+const SERVER = process.env.REACT_APP_IP;
 
 
 export class Chat extends React.Component {
@@ -53,7 +53,7 @@ export class Chat extends React.Component {
     }
 
     load(){
-        axios.get('http://172.31.1.57:7777/getChannels')
+        axios.get(`${process.env.REACT_APP_IP}/getChannels`)
         .then(res => {
             this.setState({channels:res.data.channels})
         })
