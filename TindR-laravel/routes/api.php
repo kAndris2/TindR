@@ -67,3 +67,4 @@ Route::get("get_all_tickets", [TicketController::class, 'getAllTickets']);
 
 Route::get("get_messages/{uid1}/{uid2}", [MessageController::class, 'getMessages']);
 Route::post("send_message", [MessageController::class, 'sendMessages']);
+Route::get("get_match_message/{id}", [MessageController::class, 'getMatchMessage']);

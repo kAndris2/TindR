@@ -1,0 +1,98 @@
+<?php
+
+namespace App\Services;
+
+use Illuminate\Http\Request;
+
+use App\Services\PictureService;
+
+use App\Models\Message;
+use App\Models\Match;
+use App\Models\User;
+
+class MessageService
+{
+    private $pictureService;
+
+    public function __construct()
+    {
+        $this->pictureService = new PictureService();
+    }
+
+    public function getMessages($uid1, $uid2)
+    {
+        $messages = Messages::all();
+        $ids = array($uid1, $uid2);
+        $result = array();
+
+        foreach($messages as $message)
+        {
+            if(in_array($message->from_id, $ids, TRUE) || in_array($message->to_id, $ids, TRUE)) 
+            {
+                array_push($result, $message);
+            } 
+        }
+
+        return $result;
+    }
+
+    public function sendMessages(Request $request)
+    {
+        $message = Message::create([
+            "from_id" => $request["fromid"],
+            "to_id" => $request["toid"],
+            "date" => round(microtime(true) * 1000),
+            "seen" => false,
+            "content" => $request["content"]
+        ]);
+    }
+
+    public function getMatchMessage($id)
+    {
+        $userIDs = $this->getMatches($id);
+        $result = array();
+
+        foreach($userIDs as $userID)
+        {
+            array_push($result,
+                array([
+                    "user_name" => User::where("id", "=", $userID)->first()->name,
+                    "last_message" => $this->getLastMessage($id, $userID)[0]->content,
+                    "img" => $this->pictureService->getPictures($userID)[0]->route
+                ])
+            );
+        }
+
+        return $result;
+    }
+
+    private function getLastMessage($id1, $id2)
+    {
+        return Message::select("content")
+        ->where("from_id", $id1)->where("to_id", $id2)
+        ->orWhere("from_id", $id2)->where("to_id", $id1)
+        ->orderBy("date", "DESC")
+        ->take(1)
+        ->get();
+    }
+
+    private function getMatches($id)
+    {
+        $all_match = Match::all();
+        $result = array();
+
+        foreach($all_match as $match)
+        {
+            if($match->user1_id == $id)
+            {
+                array_push($result, $match->user2_id);
+            }
+            else if($match->user2_id == $id)
+            {
+                array_push($result, $match->user1_id);
+            }
+        }
+
+        return $result;
+    }
+}
