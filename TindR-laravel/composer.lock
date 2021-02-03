@@ -4,11 +4,6 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "bebc04452a508e7eef6ced2ddf46af8e",
-=======
-    "content-hash": "d7f88a323463f7e90ca2568c4417a9f9",
->>>>>>> 2b0b2c3028b6ef19659b058cdeac640510d4df51
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1777,14 +1772,6 @@
                 "pseudorandom",
                 "random"
             ],
-<<<<<<< HEAD
-            "support": {
-                "email": "info@paragonie.com",
-                "issues": "https://github.com/paragonie/random_compat/issues",
-                "source": "https://github.com/paragonie/random_compat"
-            },
-=======
->>>>>>> 2b0b2c3028b6ef19659b058cdeac640510d4df51
             "time": "2020-10-15T08:29:30+00:00"
         },
         {
@@ -1867,13 +1854,6 @@
                 "secret-key cryptography",
                 "side-channel resistant"
             ],
-<<<<<<< HEAD
-            "support": {
-                "issues": "https://github.com/paragonie/sodium_compat/issues",
-                "source": "https://github.com/paragonie/sodium_compat/tree/v1.14.0"
-            },
-=======
->>>>>>> 2b0b2c3028b6ef19659b058cdeac640510d4df51
             "time": "2020-12-03T16:26:19+00:00"
         },
         {
@@ -2382,13 +2362,6 @@
                 "rest",
                 "trigger"
             ],
-<<<<<<< HEAD
-            "support": {
-                "issues": "https://github.com/pusher/pusher-http-php/issues",
-                "source": "https://github.com/pusher/pusher-http-php/tree/v4.1.5"
-            },
-=======
->>>>>>> 2b0b2c3028b6ef19659b058cdeac640510d4df51
             "time": "2020-12-09T09:38:19+00:00"
         },
         {
@@ -7514,9 +7487,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-<<<<<<< HEAD
     "plugin-api-version": "2.0.0"
-=======
-    "plugin-api-version": "1.1.0"
->>>>>>> 2b0b2c3028b6ef19659b058cdeac640510d4df51
 }

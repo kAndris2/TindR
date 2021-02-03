@@ -3,19 +3,19 @@ const http = require('http').createServer(app);
 const fetch = require("node-fetch");
 const axios = require('axios');
 const PORT = 7777;
+require('dotenv').config()
 
 var io = require('socket.io')(http, {
     cors: {
-      origin: "http://172.31.1.57:3000",
+      origin: "https://staging.mradmin.hu",
       methods: ["GET", "POST"]
 }});
 
 var USERCHANNELS = '';
 
 async function loadUsers(){
-    await axios.get('http://172.31.1.57:8000/api/users')
-    //.then(res => USERCHANNELS.push(res.json())
-    //.then(json => USERCHANNELS = json);
+    await axios.get(process.env.APP_IP+'/api/users')
+    
     .then(res =>{
        USERCHANNELS = res.data
     })
