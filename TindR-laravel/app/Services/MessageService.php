@@ -21,19 +21,12 @@ class MessageService
 
     public function getMessages($uid1, $uid2)
     {
-        $messages = Messages::all();
-        $ids = array($uid1, $uid2);
-        $result = array();
-
-        foreach($messages as $message)
-        {
-            if(in_array($message->from_id, $ids, TRUE) || in_array($message->to_id, $ids, TRUE)) 
-            {
-                array_push($result, $message);
-            } 
-        }
-
-        return $result;
+        return Message::where("from_id", $uid1)
+        ->orWhere("from_id", $uid2)
+        ->orWhere("to_id", $uid1)
+        ->orWhere("to_id", $uid2)
+        ->take(10)
+        ->get();
     }
 
     public function sendMessages(Request $request)
@@ -57,7 +50,7 @@ class MessageService
             array_push($result,
                 array([
                     "user_name" => User::where("id", "=", $userID)->first()->name,
-                    "last_message" => $this->getLastMessage($id, $userID)[0]->content,
+                    "last_message" => $this->getLastMessage($id, $userID),
                     "img" => $this->pictureService->getPictures($userID)[0]->route
                 ])
             );
@@ -68,7 +61,7 @@ class MessageService
 
     private function getLastMessage($id1, $id2)
     {
-        return Message::select("content")
+        return Message::select("content", "date", "from_id", "seen")
         ->where("from_id", $id1)->where("to_id", $id2)
         ->orWhere("from_id", $id2)->where("to_id", $id1)
         ->orderBy("date", "DESC")
@@ -78,7 +71,9 @@ class MessageService
 
     private function getMatches($id)
     {
-        $all_match = Match::all();
+        $all_match = Match::where("user1_id", $id)
+                        ->orWhere("user2_id", $id)
+                        ->get();
         $result = array();
 
         foreach($all_match as $match)
