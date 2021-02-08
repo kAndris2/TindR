@@ -5,19 +5,12 @@ import axios from 'axios';
 
 import WelcomePage from "./components/WelcomePage";
 import Asd from './components/Asd'
-import Recommendations from "./components/Recommendations";
 import Loading from './components/Loading'
-import Pulse from './components/Pulse'
-
-import Deck from './components/Deck';
-import Test from './components/Test';
-import NewSide from './components/NewSide';
 
 import CreateTickets from './components/CreateTickets'
 import ShowTickets from './components/ShowTickets'
 import InvalidPage from "./components/InvalidPage"
 import UserList from "./components/UserList"
-import Chat2 from "./components/Chat"
 
 import SideBar from './components/SideBar'
 import { Chat } from './components/chat/Chat';
@@ -115,57 +108,6 @@ class App extends Component {
     if (!isLoading) {
       return (
         <>
-          <Router>
-            <Switch>
-
-              <Route exact path="/">
-                {isLoggedIn === false &&
-                  <WelcomePage
-                    setUser={this.setUser}
-                  ></WelcomePage>
-                }
-                {isLoggedIn === true &&
-                  <Asd
-                    user={user}
-                    removeCookie={this.removeCookie}
-                  ></Asd>
-                }
-              </Route>
-
-              <Route exact path="/recom">
-                {isLoggedIn === true &&
-                  <Recommendations
-                    userID={user.id}
-                  ></Recommendations>
-                }
-              </Route>
-
-              <Route exact path="/recom2">
-                {isLoggedIn === true &&
-                <div id="recommendations">
-                  <Deck
-                    userID={user.id}
-                  ></Deck>
-                </div>
-                }
-              </Route>
-
-              <Route exact path="/test">
-                <Test></Test>
-              </Route>
-              
-
-              <Route exact path='/pulse'>
-                <Pulse />
-              </Route>
-
-              <Route exact path='/temp'>
-                <NewSide></NewSide>
-              </Route>
-
-
-            </Switch>
-          </Router>
           {isLoggedIn === true ?
             <>
             
@@ -183,7 +125,7 @@ class App extends Component {
                     <Chat user={user.name}></Chat>
                   </Route>
 
-                  <Route exact path="/tickets/:id">
+                  <Route exact path={`/tickets/${user.id}`}>
                     <CreateTickets 
                       userID={user.id}
                     />
@@ -196,27 +138,34 @@ class App extends Component {
                     />
                   </Route>
 
-                  <Route exact path="/chat2">
-                    <Chat2
+                  <Route exact path="/tickets">
+                    {role === true ?
+                      <ShowTickets 
+                        userID={user.id}
+                      />
+                    :
+                      <InvalidPage 
+                        mode={"not_admin"}
+                      />
+                    }
+                  </Route>
+
+                  <Route exact path="/userlist">
+                    {role === true ?
+                      <UserList />
+                    :
+                      <InvalidPage 
+                        mode={"not_admin"}
+                      />
+                    }
+                  </Route>
+
+                  <Route>
+                    <InvalidPage 
+                      mode={"no_page"}
                       userID={user.id}
                     />
                   </Route>
-
-                  {role === true ?
-                    <>
-                      <Route exact path="/tickets">
-                        <ShowTickets 
-                          userID={user.id}
-                        />
-                      </Route>
-
-                      <Route exact path="/userlist">
-                        <UserList />
-                      </Route>
-                    </>
-                  :
-                    <InvalidPage />
-                  }
 
                 </Switch>
               </Router>

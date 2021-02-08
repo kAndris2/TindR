@@ -9,6 +9,8 @@ export default class InvalidPage extends Component {
     }
 
     render() {
+        const { mode, userID } = this.props;
+
         return(
             <div style={{width:'50%', marginRight:'auto', marginLeft:'auto', display:'block'}}>
                 <svg 
@@ -27,7 +29,22 @@ export default class InvalidPage extends Component {
                             style={{fill:'#004488', fillOpacity:'1'}} />
                     </g>
                 </svg>
-                <h2>You have no permission to access this page!</h2>
+                
+                {mode === "not_admin" &&
+                    <>
+                        <br />
+                        <h2>You have no permission to access this page!</h2>
+                    </>
+                }
+                {mode === "no_page" &&
+                    <>
+                        <br />
+                        <h2>Oops! We can't find the page you're looking for</h2>
+                        <p>You tried to request a page that doesn't exist. If you believe this to be in error, let
+                                        us know <a href={`/tickets/${userID}`}>with a ticket</a>.</p>
+                    </>
+                }
+
             </div>
         );
     }
