@@ -7,7 +7,7 @@ require('dotenv').config()
 
 var io = require('socket.io')(http, {
     cors: {
-      origin: "http://localhost:3000",//"https://staging.mradmin.hu",
+      origin: process.env.APP_ORIGIN,//"https://staging.mradmin.hu",
       methods: ["GET", "POST"]
 }});
 
