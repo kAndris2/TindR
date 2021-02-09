@@ -10,6 +10,7 @@ export class Channel extends React.Component {
         return (
             <div className='channel-item' onClick={this.click}>
                 <div>{this.props.name}</div>
+                <div>{this.props.lastMessage.content}</div>
                 <span>{this.props.participants}</span>
             </div>
         )

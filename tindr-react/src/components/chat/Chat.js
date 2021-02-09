@@ -53,9 +53,13 @@ export class Chat extends React.Component {
     }
 
     load(){
-        axios.get(`https://${process.env.REACT_APP_CHAT_SERVER_IP}/getChannels`)
+        axios.get(`${process.env.REACT_APP_CHAT_SERVER_IP}/getChannels/${this.props.userID}`)
         .then(res => {
-            this.setState({channels:res.data.channels})
+            let temp = [];
+            res.data.channels.map(r => {
+                temp.push(r);
+            })
+            this.setState({channels : temp})
         })
     }
 
@@ -73,6 +77,7 @@ export class Chat extends React.Component {
     }
 
     render() {
+        console.log(this.state.channels);
 
         return (
             <div className='chat-app'>

@@ -9,6 +9,7 @@ use App\Services\PictureService;
 use App\Models\Message;
 use App\Models\Match;
 use App\Models\User;
+use App\Models\ChatModel;
 
 class MessageService
 {
@@ -44,16 +45,19 @@ class MessageService
     {
         $userIDs = $this->getMatches($id);
         $result = array();
+        $i = 0;
 
         foreach($userIDs as $userID)
         {
             array_push($result,
-                array([
-                    "user_name" => User::where("id", "=", $userID)->first()->name,
-                    "last_message" => $this->getLastMessage($id, $userID),
-                    "img" => $this->pictureService->getPictures($userID)[0]->route
-                ])
+                new ChatModel(
+                    $i,
+                    User::where("id", "=", $userID)->first()->name,
+                    $this->getLastMessage($id, $userID),
+                    $this->pictureService->getPictures($userID)[0]->route
+                )
             );
+            $i++;
         }
 
         return $result;

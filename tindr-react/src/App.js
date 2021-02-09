@@ -122,7 +122,10 @@ class App extends Component {
               <Router>
                 <Switch>
                   <Route exact path="/chat">
-                    <Chat user={user.name}></Chat>
+                    <Chat 
+                      user={user.name}
+                      userID={user.id}
+                    ></Chat>
                   </Route>
 
                   <Route exact path={`/tickets/${user.id}`}>
