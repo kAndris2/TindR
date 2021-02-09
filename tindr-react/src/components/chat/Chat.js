@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChannelList } from './ChannelList';
 import './chat.scss';
+import './Chat2.css';
 import { MessagesPanel } from './MessagesPanel';
 import socketClient from "socket.io-client";
 import axios from 'axios';
@@ -53,11 +54,7 @@ export class Chat extends React.Component {
     }
 
     load(){
-<<<<<<< HEAD
-        axios.get(`http://${process.env.REACT_APP_CHAT_SERVER_IP}/getChannels`)
-=======
         axios.get(`${process.env.REACT_APP_CHAT_SERVER_IP}/getChannels/${this.props.userID}`)
->>>>>>> 59d4081895fe2bc14a7ddde9af1d68ea26395dfb
         .then(res => {
             let temp = [];
             res.data.channels.map(r => {
@@ -84,9 +81,21 @@ export class Chat extends React.Component {
         console.log(this.state.channels);
 
         return (
-            <div className='chat-app'>
-                <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
-                <MessagesPanel onSendMessage={this.handleSendMessage} channel={this.state.channel} />
+            <div className='container'>
+                <h3 class=" text-center">Messaging</h3>
+                <div class="messaging">
+                    <div class="inbox_msg">
+                        <div class="inbox_people">
+                            <div class="headind_srch">
+                                <div class="recent_heading">
+                                <h4>Recent</h4>
+                                </div>
+                            </div>
+                            <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
+                        </div>  
+                        <MessagesPanel username={this.props.user} onSendMessage={this.handleSendMessage} channel={this.state.channel} />
+                    </div>
+                </div>
             </div>
         );
     }
