@@ -32,16 +32,16 @@ class MessageService
 
     public function sendMessages(Request $request)
     {
-        echo $request;
-        /*
-        $message = Message::create([
-            "from_id" => $request["fromid"],
-            "to_id" => $request["toid"],
-            "date" => round(microtime(true) * 1000),
-            "seen" => false,
-            "content" => $request["content"]
-        ]);
-        */
+        foreach($request["messages"] as $message)
+        {
+            Message::create([
+                "from_id" => $request["from_id"],
+                "to_id" => $request["to_id"],
+                "date" => $message["date"],
+                "seen" => $message["seen"],
+                "content" => $message["content"]
+            ]);
+        }
     }
 
     public function getMatchMessage($id)
