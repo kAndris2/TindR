@@ -9,7 +9,7 @@ class User extends Model
 
     protected $primaryKey = 'id';
     public $timestamps = false;
-    protected $appends = ['status'];
+    //protected $appends = ['status'];
     protected $fillable = [
         'id',
         'name',
@@ -22,8 +22,8 @@ class User extends Model
         'school',
         'anthem',
         'sexual_orientation',
-        'global',
-        'status'
+        'global'//,
+        //'status'
     ];
     public function getStatusAttribute(){
         return true;

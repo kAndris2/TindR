@@ -32,35 +32,45 @@ class MessageService
 
     public function sendMessages(Request $request)
     {
-        $message = Message::create([
-            "from_id" => $request["fromid"],
-            "to_id" => $request["toid"],
-            "date" => round(microtime(true) * 1000),
-            "seen" => false,
-            "content" => $request["content"]
-        ]);
+        foreach($request["messages"] as $message)
+        {
+            Message::create([
+                "from_id" => $request["from_id"],
+                "to_id" => $request["to_id"],
+                "date" => $message["date"],
+                "seen" => $message["seen"],
+                "content" => $message["content"]
+            ]);
+        }
     }
 
     public function getMatchMessage($id)
     {
         $userIDs = $this->getMatches($id);
         $result = array();
-        $i = 0;
+        $index = 0;
 
         foreach($userIDs as $userID)
         {
             array_push($result,
                 new ChatModel(
-                    $i,
-                    User::where("id", "=", $userID)->first()->name,
+                    $index,
+                    $this->getUser($userID),
                     $this->getLastMessage($id, $userID),
                     $this->pictureService->getPictures($userID)[0]->route
                 )
             );
-            $i++;
+            $index++;
         }
 
         return $result;
+    }
+
+    private function getUser($id)
+    {
+        return User::select("id", "name")
+        ->where("id", $id)
+        ->first();
     }
 
     private function getLastMessage($id1, $id2)
@@ -69,8 +79,7 @@ class MessageService
         ->where("from_id", $id1)->where("to_id", $id2)
         ->orWhere("from_id", $id2)->where("to_id", $id1)
         ->orderBy("date", "DESC")
-        ->take(1)
-        ->get();
+        ->first();
     }
 
     private function getMatches($id)
