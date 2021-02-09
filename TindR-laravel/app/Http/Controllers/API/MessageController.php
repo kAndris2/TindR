@@ -2,39 +2,35 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
+use App\Services\MessageService;
+
 use App\Models\Message;
 use App\Models\User;
 
 class MessageController extends Controller
 {
+    private $messageService;
+
+    public function __construct()
+    {
+        $this->messageService = new MessageService();
+    }
+
     public function getMessages($uid1, $uid2)
     {
-        $messages = Messages::all();
-        $ids = array($uid1, $uid2);
-        $result = array();
-
-        foreach($messages as $message)
-        {
-            if(in_array($message->from_id, $ids, TRUE) || in_array($message->to_id, $ids, TRUE)) 
-            {
-                array_push($result, $message);
-            } 
-        }
-
-        return $result;
+        return $this->messageService->getMessages($uid1, $uid2);
     }
 
     public function sendMessages(Request $request)
     {
-        $message = Message::create([
-            "from_id" => $request["fromid"],
-            "to_id" => $request["toid"],
-            "date" => round(microtime(true) * 1000),
-            "seen" => false,
-            "content" => $request["content"]
-        ]);
+        $this->messageService->sendMessages($request);
+    }
+
+    public function getMatchMessage($id)
+    {
+        return $this->messageService->getMatchMessage($id);
     }
 }

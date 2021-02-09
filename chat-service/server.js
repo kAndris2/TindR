@@ -7,18 +7,23 @@ require('dotenv').config()
 
 var io = require('socket.io')(http, {
     cors: {
+<<<<<<< HEAD
       origin: "http://172.31.1.57:3000",
+=======
+      origin: process.env.APP_ORIGIN,//"https://staging.mradmin.hu",
+>>>>>>> 59d4081895fe2bc14a7ddde9af1d68ea26395dfb
       methods: ["GET", "POST"]
 }});
 
 var USERCHANNELS = '';
 
-async function loadUsers(){
-    await axios.get(process.env.APP_IP+'/api/users')
+async function loadUsers(id){
+    await axios.get(process.env.APP_IP+'/api/get_match_message/' + id)
     
-    .then(res =>{
-       USERCHANNELS = res.data
+    .then(res => {
+        USERCHANNELS = res.data;
     })
+    .catch(err => {/*console.log(err)*/})
 }
 
 var STATIC_CHANNELS = [
@@ -42,14 +47,25 @@ app.use((req, res, next) => {
     next();
 })
 
+async function startLoad(id) {
+    await loadUsers(id);
+    
+    for (let i = 0 ; i < USERCHANNELS.length; i++) {
+        USERCHANNELS[i].sockets = [];
+        USERCHANNELS[i].participants = 0;
+        //USERCHANNELS[i].id = i;
+    }
+}
 
 http.listen(PORT, async () => {
+    /*
     await loadUsers();
     
     for (let i = 0 ; i < USERCHANNELS.length; i++){
         USERCHANNELS[i].sockets = [];
         USERCHANNELS[i].participants = 0;
     }
+    */
     console.log(`listening on *:${PORT}`);
 });
 
@@ -58,22 +74,25 @@ io.on('connection', (socket) => { // socket object may be used to send specific 
     socket.emit('connection', null);
     socket.on('channel-join', id => {
         console.log('channel join', id);
-        USERCHANNELS.forEach(c => {
-            if (c.id === id) {
-                if (c.sockets.indexOf(socket.id) == (-1)) {
-                    c.sockets.push(socket.id);
-                    c.participants++;
-                    io.emit('channel', c);
+        if(USERCHANNELS.length != 0) {
+            USERCHANNELS.forEach(c => {
+                //console.log(c);
+                if (c.id === id) {
+                    if (c.sockets.indexOf(socket.id) == (-1)) {
+                        c.sockets.push(socket.id);
+                        c.participants++;
+                        io.emit('channel', c);
+                    }
+                } else {
+                    let index = c.sockets.indexOf(socket.id);
+                    if (index != (-1)) {
+                        c.sockets.splice(index, 1);
+                        c.participants--;
+                        io.emit('channel', c);
+                    }
                 }
-            } else {
-                let index = c.sockets.indexOf(socket.id);
-                if (index != (-1)) {
-                    c.sockets.splice(index, 1);
-                    c.participants--;
-                    io.emit('channel', c);
-                }
-            }
-        });
+            });
+        }
 
         return id;
     });
@@ -82,21 +101,24 @@ io.on('connection', (socket) => { // socket object may be used to send specific 
     });
 
     socket.on('disconnect', () => {
-        USERCHANNELS.forEach(c => {
-            let index = c.sockets.indexOf(socket.id);
-            if (index != (-1)) {
-                c.sockets.splice(index, 1);
-                c.participants--;
-                io.emit('channel', c);
-            }
-        });
+        if(USERCHANNELS.length != 0) {
+            USERCHANNELS.forEach(c => {
+                let index = c.sockets.indexOf(socket.id);
+                if (index != (-1)) {
+                    c.sockets.splice(index, 1);
+                    c.participants--;
+                    io.emit('channel', c);
+                }
+            });
+        }
     });
 
 });
 
 
 
-app.get('/getChannels', (req, res) => {
+app.get('/getChannels/:id', async (req, res) => {
+    await startLoad(req.params.id);
     res.json({
         channels: USERCHANNELS
     })
