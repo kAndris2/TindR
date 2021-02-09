@@ -7,14 +7,14 @@ namespace App\Models;
 class ChatModel //extends Model
 {
     public $id;
-    public $userName;
+    public $userData;
     public $lastMessage;
     public $img;
 
-    function __construct($userid, $uName, $lMessage, $uImg) 
+    function __construct($id, $uData, $lMessage, $uImg) 
     {
-        $this->id = $userid;
-        $this->userName = $uName;
+        $this->id = $id;
+        $this->userData = $uData;
         $this->lastMessage = $lMessage;
         $this->img = $uImg;
     }

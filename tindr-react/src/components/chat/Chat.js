@@ -11,7 +11,8 @@ export class Chat extends React.Component {
     state = {
         channels: null,
         socket: null,
-        channel: null
+        channel: null,
+        currentUserID: undefined
     }
     socket;
     componentDidMount() {
@@ -63,12 +64,15 @@ export class Chat extends React.Component {
         })
     }
 
-    handleChannelSelect = id => {
+    handleChannelSelect = (chanelID, userID) => {
         let channel = this.state.channels.find(c => {
-            return c.id === id;
+            return c.id === chanelID;
         });
-        this.setState({ channel });
-        this.socket.emit('channel-join', id, ack => {
+        this.setState({ 
+            channel,
+            currentUserID : userID
+         });
+        this.socket.emit('channel-join', chanelID, ack => {
         });
     }
 
@@ -81,8 +85,17 @@ export class Chat extends React.Component {
 
         return (
             <div className='chat-app'>
-                <ChannelList channels={this.state.channels} onSelectChannel={this.handleChannelSelect} />
-                <MessagesPanel onSendMessage={this.handleSendMessage} channel={this.state.channel} />
+                <ChannelList 
+                    channels={this.state.channels} 
+                    onSelectChannel={this.handleChannelSelect} 
+                />
+                
+                <MessagesPanel 
+                    onSendMessage={this.handleSendMessage} 
+                    channel={this.state.channel} 
+                    userID={this.props.userID}
+                    partnerID={this.state.currentUserID}
+                />
             </div>
         );
     }
